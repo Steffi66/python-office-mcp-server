@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "scope": "Five XLSX value-edit dependency descriptions; syntax/inventory only",
+  "reviewedSourceCommit": "eb99f092f33f592f8967aaaa29a630384140b408",
+  "sourceSha256": {
+    "tests/conftest.py": "1f3f8d173438c11be5a467004ac4504707d03f9e552c92ae3216b25adebd9e56",
+    "tests/test_xlsx_dependency_preservation.py": "20eaf9d71ab81fecf7ae58b8848595c9737127783ed3e0270eb2ddc51bd097ed"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 5,
+    "recordedCases": 5,
+    "changedMappingRows": 5,
+    "scenarios": [
+      {
+        "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-b4cbe8ef34",
+        "steps": 11
+      },
+      {
+        "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-06aa509d55",
+        "steps": 11
+      },
+      {
+        "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-232a6f4854",
+        "steps": 7
+      },
+      {
+        "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-4ce21ae4f6",
+        "steps": 4
+      },
+      {
+        "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-5587a2b78e",
+        "steps": 10
+      }
+    ],
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 178,
+    "existingEntriesExtended": 2,
+    "newEntries": 3,
+    "totalEntries": 181
+  },
+  "localDocumentationLinks": 10,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "50bf03b741fb7e2c9387e3c3334fcaf8d0db916eef4c71ed7e84706cff7fc8f9",
+    "docs/catalogue-staging/python-native/features/test_xlsx_dependency_preservation.feature": "887eea35fea9dd8ec799b3c75653e6ca16fa076742a54f85bd79be6cab036dde",
+    "docs/catalogue-staging/python-native/mapping.json": "0d882ebf88cee0c1e488faab5cd6910c4677a23bdc8dcce579832a339170e8e0",
+    "docs/catalogue-staging/python-native/xlsx-dependencies-review.md": "605d96ca1a59e8aac2132b1f137b907f61e4ba2687df7894a9e6c6b7a3702452"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "No style-selection, calculation or effective-inheritance execution credit",
+    "Central reconciliation and generated-seed inventory incomplete"
+  ]
+}

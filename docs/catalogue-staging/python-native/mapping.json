@@ -29637,7 +29637,7 @@
       "sourceLine": 23,
       "sourceSha256": "20eaf9d71ab81fecf7ae58b8848595c9737127783ed3e0270eb2ddc51bd097ed",
       "feature": "features/test_xlsx_dependency_preservation.feature",
-      "scenario": "Native check: multiline edit saves style dependency and retains opaque parts",
+      "scenario": "A multiline value edit saves wrap text and valid worksheet style references",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -29653,11 +29653,14 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Conditional assertion: the native test may not exercise every branch"
-      ]
+        "Conditional assertion: the native test may not exercise every branch",
+        "Checks equal member keys and untargeted payloads plus sheet1 s-index bounds; no complete XF dependency validation, exact assigned index, post-call source bytes or rendering assertion."
+      ],
+      "semanticReviewCommit": "eb99f092f33f592f8967aaaa29a630384140b408",
+      "semanticReviewNotes": "xlsx-dependencies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-06aa509d55",
@@ -29666,7 +29669,7 @@
       "sourceLine": 50,
       "sourceSha256": "20eaf9d71ab81fecf7ae58b8848595c9737127783ed3e0270eb2ddc51bd097ed",
       "feature": "features/test_xlsx_dependency_preservation.feature",
-      "scenario": "Native check: cross sheet formula cache is invalidated without calculation",
+      "scenario": "A cross-sheet input edit clears the observed formula cache and requests recalculation",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -29682,11 +29685,14 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Conditional assertion: the native test may not exercise every branch"
-      ]
+        "Conditional assertion: the native test may not exercise every branch",
+        "Reported invalidate-all-formula-caches is observed only at Calc!A1; no member-key equality, complete calcPr validation or calculated result assertion. Loop has two read modes within one native case."
+      ],
+      "semanticReviewCommit": "eb99f092f33f592f8967aaaa29a630384140b408",
+      "semanticReviewNotes": "xlsx-dependencies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-232a6f4854",
@@ -29695,7 +29701,7 @@
       "sourceLine": 77,
       "sourceSha256": "20eaf9d71ab81fecf7ae58b8848595c9737127783ed3e0270eb2ddc51bd097ed",
       "feature": "features/test_xlsx_dependency_preservation.feature",
-      "scenario": "Native check: existing custom style indices remain valid",
+      "scenario": "A multiline edit retains B1 custom formatting and enables A1 wrap text",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -29710,10 +29716,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks B1 format/alignment and A1 wrap only; no numeric style IDs, B1 value preservation, A1 value or unrelated-member assertion."
+      ],
+      "semanticReviewCommit": "eb99f092f33f592f8967aaaa29a630384140b408",
+      "semanticReviewNotes": "xlsx-dependencies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-4ce21ae4f6",
@@ -29722,7 +29732,7 @@
       "sourceLine": 95,
       "sourceSha256": "20eaf9d71ab81fecf7ae58b8848595c9737127783ed3e0270eb2ddc51bd097ed",
       "feature": "features/test_xlsx_dependency_preservation.feature",
-      "scenario": "Native check: style reindexing is refused",
+      "scenario": "The style merge helper refuses changing an existing XF font reference",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -29733,10 +29743,14 @@
           "fixtures": []
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Refusal changes one XF fontId from 0 to 1; it does not reorder a style list or exercise package rollback."
+      ],
+      "semanticReviewCommit": "eb99f092f33f592f8967aaaa29a630384140b408",
+      "semanticReviewNotes": "xlsx-dependencies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-5587a2b78e",
@@ -29745,7 +29759,7 @@
       "sourceLine": 102,
       "sourceSha256": "20eaf9d71ab81fecf7ae58b8848595c9737127783ed3e0270eb2ddc51bd097ed",
       "feature": "features/test_xlsx_dependency_preservation.feature",
-      "scenario": "Native check: calculation chain relationship and content type are removed",
+      "scenario": "An input edit removes the injected calculation chain and its metadata tokens",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -29760,10 +29774,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks calcChain member/token absence, not complete relationship/content-type graph validity, other-member preservation or formula/cache readback."
+      ],
+      "semanticReviewCommit": "eb99f092f33f592f8967aaaa29a630384140b408",
+      "semanticReviewNotes": "xlsx-dependencies-review.md"
     }
   ],
   "gaps": [
@@ -30766,14 +30784,16 @@
       "nativeDefinition": "tests/test_xlsx_dependency_preservation.py::test_multiline_edit_saves_style_dependency_and_retains_opaque_parts",
       "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-b4cbe8ef34",
       "gaps": [
-        "Conditional assertion: the native test may not exercise every branch"
+        "Conditional assertion: the native test may not exercise every branch",
+        "Checks equal member keys and untargeted payloads plus sheet1 s-index bounds; no complete XF dependency validation, exact assigned index, post-call source bytes or rendering assertion."
       ]
     },
     {
       "nativeDefinition": "tests/test_xlsx_dependency_preservation.py::test_cross_sheet_formula_cache_is_invalidated_without_calculation",
       "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-06aa509d55",
       "gaps": [
-        "Conditional assertion: the native test may not exercise every branch"
+        "Conditional assertion: the native test may not exercise every branch",
+        "Reported invalidate-all-formula-caches is observed only at Calc!A1; no member-key equality, complete calcPr validation or calculated result assertion. Loop has two read modes within one native case."
       ]
     },
     {
@@ -31040,6 +31060,27 @@
       "candidateScenarioId": "@candidate-python-workflows-980faaa900",
       "gaps": [
         "Only len(result.get(shapes, [])) >= 2 is asserted; no returned identity/type/text/geometry, exact count, error absence, source preservation or rendering assertion. Textbox creation is python-pptx setup, not a tested authoring tool operation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_xlsx_dependency_preservation.py::test_existing_custom_style_indices_remain_valid",
+      "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-232a6f4854",
+      "gaps": [
+        "Checks B1 format/alignment and A1 wrap only; no numeric style IDs, B1 value preservation, A1 value or unrelated-member assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_xlsx_dependency_preservation.py::test_style_reindexing_is_refused",
+      "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-4ce21ae4f6",
+      "gaps": [
+        "Refusal changes one XF fontId from 0 to 1; it does not reorder a style list or exercise package rollback."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_xlsx_dependency_preservation.py::test_calculation_chain_relationship_and_content_type_are_removed",
+      "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-5587a2b78e",
+      "gaps": [
+        "Checks calcChain member/token absence, not complete relationship/content-type graph validity, other-member preservation or formula/cache readback."
       ]
     }
   ],

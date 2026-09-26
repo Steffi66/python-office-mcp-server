@@ -50,9 +50,13 @@ The [transaction review](patch-transactions-review.md) checks seven definitions 
 
 The [text-box listing review](pptx-textbox-listing-review.md) checks three definitions at `0229c14`. Each creates a text box with python-pptx as setup, then asserts only that shape listing returns at least two entries. Returned identity, type, text and geometry are untested; the cases provide no text-box authoring credit. Equivalent workflow checks retain their separate candidate IDs for central reconciliation.
 
+## XLSX dependency source review
+
+The [XLSX dependency review](xlsx-dependencies-review.md) checks five definitions at `eb99f09`. It restores the two formula-read modes and injected calculation-chain metadata, separates reported all-cache invalidation from the one observed cache, and bounds custom-format and registry-rewrite assertions. Value edits that invalidate caches remain distinct from style-only assignment that preserves them.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 178 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries and three text-box listing entries. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 181 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries and three new XLSX dependency entries. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 

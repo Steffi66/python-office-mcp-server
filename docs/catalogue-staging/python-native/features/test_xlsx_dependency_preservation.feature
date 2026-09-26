@@ -1,77 +1,69 @@
 @captured @python_candidate
-Feature: xlsx dependency preservation native behavior capture
+Feature: Native Python XLSX value-edit dependencies and calculation metadata
 
-  These candidate descriptions need central reconciliation.
-  Captured text grants no execution credit.
+  Five native definitions describe saved-package or merge-helper observations.
+  Shared fixture references remain central; no fixture bytes are copied here.
+  Candidate descriptions need reconciliation and grant no execution credit.
 
   @candidate-python-xlsx-dependency-preservation-b4cbe8ef34
   # Native: tests/test_xlsx_dependency_preservation.py::test_multiline_edit_saves_style_dependency_and_retains_opaque_parts
-  Scenario: Native check: multiline edit saves style dependency and retains opaque parts
-    Given an isolated writable temporary directory
-    And source is prepared as tmp path under "source.xlsx"
-    And output is prepared as tmp path under "out.xlsx"
-    And before is prepared as the result of parts with tmp path under "source.xlsx"
-    When OfficeServer().tool office patch using str representation of tmp path under "source.xlsx"; [{"target": "A1", "value": "first\nsecond"}]; mode "safe"; output path str representation of tmp path under "out.xlsx"
-    Then result at "changes_applied" equals 1
-    And the result of parts with tmp path under "out.xlsx" keys equals the result of parts with tmp path under "source.xlsx" keys
-    And when name does not occur in "{'xl/styles.xml', 'xl/worksheets/sheet1.xml'}", the result of parts with tmp path under "out.xlsx" at name equals the result of parts with tmp path under "source.xlsx" at name
-    And the result of load workbook with tmp path under "out.xlsx" active at "A1" value equals "first\nsecond"
-    And the result of load workbook with tmp path under "out.xlsx" active at "A1" alignment wrap text is non-empty or true
-    And 0 is at most int representation of c field "s", defaulting to "0" and int representation of c field "s", defaulting to "0" is below the number of entries in the result of ET.fromstring with the result of parts with tmp path under "out.xlsx" at "xl/styles.xml" first match for S joined with "cellXfs"
+  Scenario: A multiline value edit saves wrap text and valid worksheet style references
+    Given shared_fixture("default-style.xlsx") is copied to a temporary source.xlsx
+    And the source ZIP member names and payloads are captured before the call
+    When OfficeServer.tool_office_patch sets A1 to "first\nsecond" in safe mode with distinct out.xlsx output
+    Then changes_applied equals 1
+    When output ZIP members are read
+    Then output member keys equal the captured source member keys
+    And every member except xl/worksheets/sheet1.xml and xl/styles.xml has its captured source payload
+    When the output is reopened with load_workbook
+    Then active-sheet A1 has value "first\nsecond" and truthy alignment.wrap_text
+    When output xl/styles.xml and xl/worksheets/sheet1.xml are parsed
+    Then every cell's integer s value, defaulting to 0, is nonnegative and below the number of cellXfs children
 
   @candidate-python-xlsx-dependency-preservation-06aa509d55
   # Native: tests/test_xlsx_dependency_preservation.py::test_cross_sheet_formula_cache_is_invalidated_without_calculation
-  Scenario: Native check: cross sheet formula cache is invalidated without calculation
-    Given an isolated writable temporary directory
-    And source is prepared as tmp path under "source.xlsx"
-    And output is prepared as tmp path under "out.xlsx"
-    And before is prepared as the result of parts with tmp path under "source.xlsx"
-    When OfficeServer().tool office patch using str representation of tmp path under "source.xlsx"; [{"target": "Input!A1", "value": 10}]; mode "safe"; output path str representation of tmp path under "out.xlsx"
-    Then result at "changes_applied" equals 1
-    And result at "calculation_state" equals "recalculation-required"
-    And result at "preservation" at "cache_policy" equals "invalidate-all-formula-caches"
-    And the result of load workbook with tmp path under "out.xlsx"; data only data only at "Input" at "A1" value equals 10
-    And the result of load workbook with tmp path under "out.xlsx"; data only data only at "Calc" at "A1" value equals expected
-    And when name does not occur in "{'xl/worksheets/sheet2.xml', 'xl/workbook.xml', 'xl/worksheets/sheet1.xml'}", the result of parts with tmp path under "source.xlsx" at name equals the result of parts with tmp path under "out.xlsx" at name
-    And the result of ET.fromstring with the result of parts with tmp path under "out.xlsx" at "xl/workbook.xml" first match for S joined with "calcPr" field "forceFullCalc" equals "1"
+  Scenario: A cross-sheet input edit clears the observed formula cache and requests recalculation
+    Given shared_fixture("cross-sheet-cache.xlsx") is copied to a temporary source.xlsx
+    And the source ZIP member names and payloads are captured before the call
+    When OfficeServer.tool_office_patch sets Input!A1 to 10 in safe mode with distinct out.xlsx output
+    Then changes_applied equals 1 and calculation_state equals "recalculation-required"
+    And preservation.cache_policy equals "invalidate-all-formula-caches"
+    When the output is reopened first with data_only true and then with data_only false
+    Then Input!A1 equals 10 in both reads
+    And Calc!A1 is null with data_only true and "=Input!A1*2" with data_only false
+    When output ZIP members and xl/workbook.xml are read
+    Then each captured source member except xl/worksheets/sheet1.xml, xl/worksheets/sheet2.xml and xl/workbook.xml has an equal output payload
+    And the workbook calcPr element has forceFullCalc equal to "1"
 
   @candidate-python-xlsx-dependency-preservation-232a6f4854
   # Native: tests/test_xlsx_dependency_preservation.py::test_existing_custom_style_indices_remain_valid
-  Scenario: Native check: existing custom style indices remain valid
-    Given an isolated writable temporary directory
-    And wb.save with tmp path under "source.xlsx"
-    And source is prepared as tmp path under "source.xlsx"
-    And wb active at "B1" is set to 1.25
-    And wb active at "B1" number format is set to "#,##0.0000\" units\""
-    And wb active at "B1" alignment is set to the result of Alignment with horizontal "right"
-    When OfficeServer().tool office patch using str representation of tmp path under "source.xlsx"; [{"target": "A1", "value": "a\nb"}]
-    Then result at "changes_applied" equals 1
-    And wb active at "B1" number format equals "#,##0.0000\" units\""
-    And wb active at "B1" alignment horizontal equals "right"
-    And wb active at "A1" alignment wrap text is non-empty or true
+  Scenario: A multiline edit retains B1 custom formatting and enables A1 wrap text
+    Given a saved generated workbook with B1 value 1.25
+    And B1 number_format is '#,##0.0000" units"' and horizontal alignment is "right"
+    When OfficeServer.tool_office_patch sets A1 to "a\nb", omitting mode and output_path
+    Then changes_applied equals 1
+    When the source is reopened with load_workbook
+    Then B1 number_format remains '#,##0.0000" units"' and horizontal alignment remains "right"
+    And A1 alignment.wrap_text is truthy
 
   @candidate-python-xlsx-dependency-preservation-4ce21ae4f6
   # Native: tests/test_xlsx_dependency_preservation.py::test_style_reindexing_is_refused
-  Scenario: Native check: style reindexing is refused
-    Given original is prepared as the result of f'<styleSheet xmlns="{S[1:-1]}"><cellXfs count="1"><xf fontId="0"/></cellXfs></styleSheet>'.encode with no arguments
-    And rewritten is prepared as the result of original.replace with "b'fontId=\"0\"'"; "b'fontId=\"1\"'"
-    When merge styles using the result of f'<styleSheet xmlns="{S[1:-1]}"><cellXfs count="1"><xf fontId="0"/></cellXfs></styleSheet>'.encode with no arguments; the result of original.replace with "b'fontId=\"0\"'"; "b'fontId=\"1\"'"
-    Then the operation raises ValueError with a message matching "registry rewrite"
+  Scenario: The style merge helper refuses changing an existing XF font reference
+    Given SpreadsheetML styleSheet bytes with one cellXfs child xf whose fontId is "0" and count is "1"
+    And rewritten bytes differ only by replacing fontId "0" with fontId "1"
+    When merge_styles receives the original and rewritten bytes
+    Then it raises ValueError with a message matching "registry rewrite"
 
   @candidate-python-xlsx-dependency-preservation-5587a2b78e
   # Native: tests/test_xlsx_dependency_preservation.py::test_calculation_chain_relationship_and_content_type_are_removed
-  Scenario: Native check: calculation chain relationship and content type are removed
-    Given an isolated writable temporary directory
-    And source is prepared as tmp path under "source.xlsx"
-    And entries is prepared as the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx"
-    And rel ns is prepared as "{http://schemas.openxmlformats.org/package/2006/relationships}"
-    And rels is prepared as the result of ET.fromstring with the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx" at "xl/_rels/workbook.xml.rels"
-    And the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx" at "xl/_rels/workbook.xml.rels" is set to the result of ET.tostring with the result of ET.fromstring with the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx" at "xl/_rels/workbook.xml.rels"
-    And types is prepared as the result of ET.fromstring with the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx" at "[Content_Types].xml"
-    And the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx" at "[Content_Types].xml" is set to the result of ET.tostring with the result of ET.fromstring with the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx" at "[Content_Types].xml"
-    And the result of parts with the result of shared fixture with "cross-sheet-cache.xlsx" at "xl/calcChain.xml" is set to the result of f'<calcChain xmlns="{S[1:-1]}"><c r="A1" i="2"/></calcChain>'.encode with no arguments
-    When OfficeServer().tool office patch using str representation of tmp path under "source.xlsx"; [{"target": "Input!A1", "value": 10}]
-    Then result at "changes_applied" equals 1
-    And "xl/calcChain.xml" does not occur in the result of parts with tmp path under "source.xlsx"
-    And "b'calcChain'" does not occur in the result of parts with tmp path under "source.xlsx" at "xl/_rels/workbook.xml.rels"
-    And "b'calcChain'" does not occur in the result of parts with tmp path under "source.xlsx" at "[Content_Types].xml"
+  Scenario: An input edit removes the injected calculation chain and its metadata tokens
+    Given ZIP members are read from shared_fixture("cross-sheet-cache.xlsx")
+    And xl/_rels/workbook.xml.rels gains an internal calcChain relationship with Id "rIdCalcChain" and Target "calcChain.xml"
+    And [Content_Types].xml gains an override for /xl/calcChain.xml with the SpreadsheetML calcChain content type
+    And xl/calcChain.xml contains a SpreadsheetML calcChain with cell r="A1" and i="2"
+    And all prepared entries are written as a temporary source.xlsx archive
+    When OfficeServer.tool_office_patch sets Input!A1 to 10, omitting mode and output_path
+    Then changes_applied equals 1
+    When saved source ZIP members are read
+    Then xl/calcChain.xml is absent
+    And the bytes "calcChain" occur in neither xl/_rels/workbook.xml.rels nor [Content_Types].xml
