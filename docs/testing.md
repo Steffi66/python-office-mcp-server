@@ -44,9 +44,23 @@ The decoded JSON value contains a newline. Step text outside a table has a diffe
 
 The root schema-2 manifest seals fixture payloads, `workflows/mutation-safety.feature` and `contracts/mutation-safety.json`. There is no nested pack manifest or generated case inventory; the runner compiles the official Gherkin to derive scenario instances and typed inputs. Document bytes live once under the central `fixtures/` directory, organised by format and scenario group. `tests/fixture-assets.json` maps Python's logical fixture names to content-addressed IDs. The resolver reads physical paths from the central manifest, verifies metadata and hashes, and rejects unsafe paths or symlinks. Historical aliases are metadata only; the consumer creates no compatibility directories or fixture copies. The minimal contract refers to asset IDs and records expected read-back facts, exact ZIP membership, member hashes and the allowed changed parts. The preserve set is computed as every member outside that allowance. Original fixture bytes, feature bytes and stable case identities are unchanged. New revisions need an explicit submodule update and local verification. Shared fact/consumer ledgers are reference metadata, not a substitute for local assertions.
 
+## Canonical XML comparison
+
+```sh
+PYTHON=.venv/bin/python bash tests/run_tests.sh \
+  tests/xml_comparison tests/test_xml_comparison_mapping.py \
+  tests/test_package_preservation.py -q -o addopts=''
+```
+
+The separate XML lane compiles `workflows/xml/comparison.feature` from the pinned submodule with the official Gherkin parser. Its five IDs expand to ten input pairs and 40 steps. Explicit bindings call the conservative Boolean comparator and check the exact expected result. They do not test lexical parsing, XML canonical output, signatures or Office rendering.
+
+The native-source mapping retains the reviewed input pairs and source hashes. Changed inputs, operation wording, expected results, missing/duplicate variants or unreviewed native implementation changes refuse before execution. Mapping starts cases at `not-run`; central consumer ledgers cannot award a local pass.
+
+`test-results/xml-comparison.json` resets before collection and records each step outcome, observed Boolean, feature/native implementation hashes, release pin, working status and a fresh run ID. Selecting only part of this lane leaves it incomplete and returns failure. The mutation report remains independent at `test-results/acceptance.json`; neither lane can overwrite the other's results. The canonical feature is read in place, with no accepted local feature copy.
+
 ## Real MCP and wheel installation
 
-The Gherkin cases call the server methods directly. Separate transport tests start a real stdio server, initialise MCP, list tools, preview edits, commit and read back results:
+The mutation Gherkin cases call the server methods directly. Separate transport tests start a real stdio server, initialise MCP, list tools, preview edits, commit and read back results:
 
 ```sh
 PYTHON=.venv/bin/python bash tests/run_tests.sh \
@@ -108,7 +122,9 @@ Before adopting a release, verify its annotated tag and expected commit, update 
 
 ## Fixture migration verification
 
-[Minimal-contract release verification](../validation/fixture-contract-cleanup.json) records official `v0.3.0` at `a3048639f5b9c521852b9d126b83639c08eae056`. Python 3.12 passed **1,163 committed tests**, plus four preserved local-only tests; three optional LibreOffice checks remain skipped. All 19 shared cases / 159 steps and 13 installed-wheel checks passed. The earlier Python 3.10/3.12/3.13 matrix passed 1,163 native tests per runtime against candidate `29af401`; final fixture names and documentation changed afterwards without changing bytes or contract policies. The report keeps those source scopes separate.
+[Canonical XML comparison verification](../validation/canonical-xml-comparison.json) records official `v0.4.0` at `40eb26e684b12073956e4f24915444075a60c212`. The Python 3.12 default run passed **1,184 committed tests**, plus four preserved local-only tests, with three optional LibreOffice skips. XML comparison executed ten cases / 40 steps; mutation acceptance separately executed 19 cases / 159 steps. These are overlapping suite scopes, not additional passes to sum. The accepted local comparison feature was removed; reviewed native assertions and mapping provenance remain.
+
+Historical [minimal-contract release verification](../validation/fixture-contract-cleanup.json) records official `v0.3.0` at `a3048639f5b9c521852b9d126b83639c08eae056`. Python 3.12 passed **1,163 committed tests**, plus four preserved local-only tests; three optional LibreOffice checks remain skipped. All 19 shared cases / 159 steps and 13 installed-wheel checks passed. The earlier Python 3.10/3.12/3.13 matrix passed 1,163 native tests per runtime against candidate `29af401`; final fixture names and documentation changed afterwards without changing bytes or contract policies. The report keeps those source scopes separate.
 
 Historical [schema-2 release verification](../validation/fixture-schema2-release.json) records official `v0.2.0` at `631b1136c9d65451d21746db2ae2635866902cb4`: **1,156 committed tests passed** on Python 3.10, 3.12 and 3.13, plus four preserved local-only tests and three optional LibreOffice skips per runtime. All 19 shared cases / 159 steps and 13 installed-wheel checks passed. These overlapping scopes are not added together. The current release tag, commit and single root-manifest seal are in `tests/fixtures-pin.json`.
 

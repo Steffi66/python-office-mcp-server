@@ -4,6 +4,8 @@ This directory stages Python test descriptions for import and reconciliation in 
 
 ## Scope
 
+This is the recorded pre-v0.4 capture denominator, not the current pytest collection. The bounded persistent comparison lane and its mapping guards were added afterwards; wider catalogue regeneration/reconciliation has not been completed.
+
 - 1,022 native test definitions across 67 test modules.
 - 1,147 collected native cases, including parameter variants.
 - 19 existing shared Gherkin cases reused by their original stable keys; no copied feature.
@@ -22,7 +24,7 @@ An independent bounded review found lost intermediate-value meanings, conditiona
 
 ## XML-family source review
 
-The [XML-family review](xml-family-review.md) separates Boolean XML equivalence, package admission and package diffing. Nine native definitions were checked directly; two staging prose values were corrected without changing tests. The mapping marks these entries `native-source-reviewed`; this is semantic review status, not central acceptance or new execution credit.
+The [XML-family review](xml-family-review.md) separates Boolean XML equivalence, package admission and package diffing. Nine native definitions were checked directly; two staging prose values were corrected without changing tests. The mapping marks these entries `native-source-reviewed`. Five of those native definitions now have an accepted central comparison feature, bound locally in `tests/xml_comparison/`; its ten-case execution report is separate from this broader staging inventory. The accepted local comparison feature was removed after adopting v0.4.0. Other staging descriptions still confer no execution credit.
 
 ## Remaining reconciliation
 

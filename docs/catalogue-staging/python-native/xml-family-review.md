@@ -1,6 +1,6 @@
 # XML-family reconciliation notes
 
-Reviewed against native source at `de17e86d9f71d5915a10de4557aefeb6a5465a41`. These are central reconciliation inputs, not new canonical scenarios or execution credit.
+Reviewed against native source at `de17e86d9f71d5915a10de4557aefeb6a5465a41`. The five comparison definitions were subsequently reconciled into canonical `workflows/xml/comparison.feature`, supplied by shared release v0.4.0. Python's `tests/xml_comparison/` executes its ten variants with a separate report. The package-admission and diff notes below remain reconciliation inputs; the comparison results grant them no execution credit.
 
 ## Three separate operations
 

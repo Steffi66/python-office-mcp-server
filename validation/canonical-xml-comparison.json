@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "scope": "Official v0.4 canonical XML comparison binding; normal consumer update only",
+  "consumerParentCommit": "7175e5d079713910410bdcdbbcd4bfb29456ae8f",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.4.0",
+    "commit": "40eb26e684b12073956e4f24915444075a60c212",
+    "manifestSha256": "40197c33917e4516a1eed7e1d0552ae6485da6b6097d7abbd80d3982bb95924c"
+  },
+  "annotatedTagObject": "69afd9de1d69ff0ca6466038b686da6456b0b99c",
+  "releaseDefaultRun": {
+    "runtime": "3.12",
+    "committedPassed": 1184,
+    "localOnlyPassed": 4,
+    "optionalLibreOfficeSkipped": 3,
+    "seconds": 38.881,
+    "junitSha256": "0a0aea1e4761388ad8f9a4d65aaeffa2e5ab43e6f6e04e752e70a06966a86728"
+  },
+  "xmlComparison": {
+    "cases": 10,
+    "steps": 40,
+    "outcome": "passed",
+    "runId": "43615ce0-5aa7-4394-8de3-5ecc2221a62d",
+    "feature": "workflows/xml/comparison.feature",
+    "featureSha256": "b700a3da8670cb048aa3f836c193f4533908730c185847f63e167e59c48f5e93",
+    "nativeMappingSha256": "1e9f44f0d34efb01a5aaa5481cfcb9bd7f93466cc2a03f468fb617d505fc2a29",
+    "sourceHashes": {
+      "tests/xml_comparison/cases.py": "74982fc3b726024b1ac95ad4c5029a580c9561303d595b1470928a20fbdd59be",
+      "tests/xml_comparison/test_comparison.py": "e9e2fbe3d6b85478a61cdba7ae88c2b5c2ac8001b504302090a97589301fe657",
+      "tests/xml_comparison/conftest.py": "63a6ddf796aac4b876846a95c78c4f38a7850cf0acd260dc210a3a2baa06fe41",
+      "tests/xml_comparison/__init__.py": "a913d567d4f2ad5c28682f3a62eafb815710e85cc5f742387793f633fc9b419a",
+      "tests/acceptance/ledger.py": "c9763994690d1fa1b580c78059423c0e28bb616bae06e0fa1e203cdcf1208ffb",
+      "tests/fixture_paths.py": "824a07da407d78371c3e82deb97be30d6f544acbbed93ad61982baca58509dd8",
+      "tools/package_preservation.py": "e87c942b854a67d0780e688e9a9e53d289edbb46b35bc737d8ec5bf7897c4704",
+      "tests/test_package_preservation.py": "3ac94b514ec3aa8fb8111283bdf1735370dc2cd08dd4f0c8ebdd669dd3d952d9"
+    }
+  },
+  "mutationAcceptance": {
+    "cases": 19,
+    "steps": 159,
+    "outcome": "passed",
+    "runId": "5083a88c-bdc7-49e1-ac6a-0383251d5b28",
+    "featureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3"
+  },
+  "partialRun": {
+    "exitCode": 1,
+    "outcome": "incomplete-or-failed",
+    "evidenceSha256": "3bb968a0d313afa3967a71f86bcb8eaa086005382f62007f5c268fee633daef4",
+    "unexecutedCasesNeverCountAsPasses": true
+  },
+  "localAcceptedFeatureRemoved": true,
+  "nativeTestsAndImplementationUnchanged": true,
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "XML comparison only: no lexical parser, canonical XML/signature or other XML profile credit",
+    "Three optional LibreOffice skips",
+    "No new runtime dependency/fixture changes",
+    "Broader catalogue semantic reconciliation and generated-seed inventory incomplete",
+    "No production deployment"
+  ]
+}
