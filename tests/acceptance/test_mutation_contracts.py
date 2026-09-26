@@ -15,10 +15,10 @@ from pptx import Presentation
 from pytest_bdd import given, parsers, scenarios, then, when
 
 from office_server import OfficeServer
-from tests.fixture_paths import FEATURE, SHARED, shared_fixture
+from tests.fixture_paths import FEATURE, mutation_contract, preserved_members, shared_fixture
 from tools.word_advanced_tools import _get_text_with_track_changes
 
-MANIFEST = json.loads((SHARED / "fixture-manifest.json").read_text())
+CONTRACT = mutation_contract()
 S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
 scenarios(str(FEATURE))
@@ -46,9 +46,9 @@ def workbook_value(path, target, data_only=False):
 
 @given(parsers.parse('fixture "{name}" verified against the fixture manifest'))
 def fixture(ctx, name):
-    record = next(f for f in MANIFEST["fixtures"] if f["id"] == name)
+    record = next(f for f in CONTRACT["fixtures"] if f["id"] == name)
     data = shared_fixture(name).read_bytes()
-    assert hashlib.sha256(data).hexdigest() == record["sha256"]
+    assert "fixture-" + hashlib.sha256(data).hexdigest() == record["assetId"]
     ctx["fixture"] = record
     ctx["source"] = ctx["root"] / name
     ctx["source"].write_bytes(data)
@@ -180,7 +180,7 @@ def references(ctx):
 def preserved_parts(ctx):
     with zipfile.ZipFile(ctx["output"]) as archive:
         assert set(archive.namelist()) == set(ctx["fixture"]["memberSha256"])
-        for name, digest in ctx["fixture"]["mustPreservePayloads"].items():
+        for name, digest in preserved_members(ctx["fixture"]).items():
             assert hashlib.sha256(archive.read(name)).hexdigest() == digest, name
 
 

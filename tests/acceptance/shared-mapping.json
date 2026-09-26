@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "consumer": "python",
   "contractRevision": "ooxml-shared-contracts-v2",
-  "feature": "shared/v2/pack/features/mutation-safety.feature",
+  "feature": "workflows/mutation-safety.feature",
   "featureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3",
   "implementedCaseKeys": [
     "@id-docx-dry-run-no-mutation:{\"destination\":\"distinct-absent\"}",

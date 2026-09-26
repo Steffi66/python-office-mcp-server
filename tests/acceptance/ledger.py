@@ -98,7 +98,7 @@ def apply_implementation_mapping(cases, mapping, *, feature_path):
         raise ValueError("Invalid Python implementation mapping")
     if mapping.get("contractRevision") != "ooxml-shared-contracts-v2":
         raise ValueError("Unexpected mapped contract revision")
-    if mapping.get("feature") != "shared/v2/pack/features/mutation-safety.feature":
+    if mapping.get("feature") != "workflows/mutation-safety.feature":
         raise ValueError("Unexpected mapped feature")
     digest = hashlib.sha256(Path(feature_path).read_bytes()).hexdigest()
     if mapping.get("featureSha256") != digest or any(c["featureSha256"] != digest for c in cases):

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "purpose": "Central reconciliation input only; no independent authoritative behavior catalogue",
   "consumer": "python",
-  "sourceCommit": "89bccc191ba6ba6aa5d8ab05c08bde4176804604",
+  "sourceCommit": "2f5b97e95148ea57c5ccf98a1fd4c0fc7b1ccaa9",
   "sourceFileHashes": {
-    "tests/test_acceptance_ledger.py": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+    "tests/test_acceptance_ledger.py": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
     "tests/test_advanced_edge_cases.py": "e56c9d4f8604fd84ca4c4f2ed74e19c35596aae277860160d1ac53ce6f3dfdf8",
     "tests/test_aioumcp_validation.py": "b3417256d3d3798d0a815f58d98893aa0bd9ba9a5921dda888e182c5b0d405ba",
     "tests/test_azure_pricing_tools.py": "0dd206f8cfdb1a63816411d9d7aa193015416c557dc97bd06516604f638312cc",
@@ -23,12 +23,13 @@
     "tests/test_final_push.py": "68d4b594bd6cc6140ba92c774629264754b34a931c089ea60957169277dd0d7a",
     "tests/test_fixture_asset_resolution.py": "9ad7a46d2ae254c061a7fc9ad2dff8581be46509859562cbc47f27b0cdd3726b",
     "tests/test_fixture_files_not_encrypted.py": "55144fd3c0a48f7b0aeb847cf55e0124bea0aa3b2a12f49b23af4ad23e4a5899",
-    "tests/test_fixture_source_integrity.py": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+    "tests/test_fixture_source_integrity.py": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
     "tests/test_high_volume.py": "59505137d72bc97fe06bad6161d62a3ed88b1cb060b3810c2b836fe4cf4d6e0a",
     "tests/test_image_insertion.py": "c220938da8d1069df41ecb3a513b5c2f75578bbd31497ad94dae77e715ab6e61",
     "tests/test_libreoffice_oracle.py": "bce594609c61caec63393432ccc92257b890fa0b849ffabde6e7055cbef09164",
     "tests/test_metadata_cache.py": "b1ce664c47890a8188e57188c5ece5965362bd0f6b5fd87e28f389e24b6d2c1f",
     "tests/test_more_coverage.py": "35a1a0840b9f44a8e8066499a7fc0602e88061d29a456827b3b08d130476f6d9",
+    "tests/test_mutation_contract_policy.py": "68109ef4502145a2e4816d40d02098fd33abe9213b2acc5b1d122daf33c3f9a1",
     "tests/test_mutation_diagnostics.py": "b2cc6f4246c76a1c5715bfdd4005c81d87c90c97e62e58794503d6719e3b3d05",
     "tests/test_mutation_faults.py": "1cf0800292da565f81ceb284112918cbf21487cc6872c332820a0b014b88b5ef",
     "tests/test_mutation_modes.py": "dd085dbc5ebe58f0ae0c617a7f6fdec82dca8501b81b544314327039b9689cce",
@@ -45,7 +46,7 @@
     "tests/test_pptx_slide_transfer_tools.py": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
     "tests/test_pptx_tools.py": "070fce88eeb2b30fc9237d768676257cd73aaf2ee9d07e62aac68eaff0ec3e5f",
     "tests/test_preserving_text_and_clone.py": "f685037696949cfbcb82227ee18ca3c28795f95149a0f5fcbebb18caed0ba5da",
-    "tests/test_shared_contract_inventory.py": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+    "tests/test_shared_contract_inventory.py": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
     "tests/test_stdio_mutation_workflows.py": "2cb749554aebfb9059bb5f9e634b61c4294a0b88d9a2b2f897f6e9bd8f82f4e9",
     "tests/test_strategic_coverage.py": "b86074725faf158f77d4b0c40cf16941800487ad92619a9c109646e9f6174ccb",
     "tests/test_targeted_coverage.py": "00776db3be0479a283f7dc3f31fdcdda785ba1c1f5fed0e3b20611a752785f2e",
@@ -71,10 +72,10 @@
     "tests/test_writer_enrolment.py": "65df9e2d378b909981d096f5e2904a0340df5fe2464261233adf2b26787bfa96",
     "tests/test_xlsx_dependency_preservation.py": "20eaf9d71ab81fecf7ae58b8848595c9737127783ed3e0270eb2ddc51bd097ed"
   },
-  "testDefinitionCount": 1019,
-  "nativeCollectedCaseCount": 1140,
+  "testDefinitionCount": 1022,
+  "nativeCollectedCaseCount": 1147,
   "sharedCaseCount": 19,
-  "sharedFeature": "shared/v2/pack/features/mutation-safety.feature",
+  "sharedFeature": "workflows/mutation-safety.feature",
   "sharedFeatureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3",
   "reusedSharedCaseKeys": [
     "@id-docx-dry-run-no-mutation:{\"destination\":\"distinct-absent\"}",
@@ -103,7 +104,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_ledger_replaces_stale_success_before_execution",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 20,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: ledger replaces stale success before execution",
       "parameterGroups": [],
@@ -130,7 +131,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_invalid_inventory_fails",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 37,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: invalid inventory fails",
       "parameterGroups": [
@@ -231,7 +232,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_planned_cases_never_count_as_passes",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 44,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: planned cases never count as passes",
       "parameterGroups": [],
@@ -258,7 +259,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_binding_match_count_exposes_undefined_and_ambiguous",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 54,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: binding match count exposes undefined and ambiguous",
       "parameterGroups": [],
@@ -284,7 +285,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_compiled_table_json_rejects_literal_newlines",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 62,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: compiled table json rejects literal newlines",
       "parameterGroups": [],
@@ -311,7 +312,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_scenario_cannot_override_lifecycle",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 72,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: scenario cannot override lifecycle",
       "parameterGroups": [],
@@ -338,7 +339,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_case_status_cannot_hide_unexecuted_step",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 79,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: case status cannot hide unexecuted step",
       "parameterGroups": [],
@@ -365,7 +366,7 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_shared_mapping_selects_cases_without_awarding_passes",
       "sourcePath": "tests/test_acceptance_ledger.py",
       "sourceLine": 86,
-      "sourceSha256": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
+      "sourceSha256": "3cc352056c5d9aef0203e8e1a40b9f0f7049698b3e55c6c93c7431533b031e57",
       "feature": "features/test_acceptance_ledger.feature",
       "scenario": "Native check: shared mapping selects cases without awarding passes",
       "parameterGroups": [],
@@ -9390,7 +9391,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path0]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/comments/comments-ccdfb41723d5.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/comments/comments-ccdfb41723d5.docx')"
           },
           "markers": [
             "parametrize"
@@ -9403,7 +9404,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path1]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/content-controls/sdt-content-controls-e4f051ec2eb5.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/content-controls/sdt-content-controls-e4f051ec2eb5.docx')"
           },
           "markers": [
             "parametrize"
@@ -9416,7 +9417,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path2]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/creation/minimal-291ea45fd599.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/creation/minimal-291ea45fd599.docx')"
           },
           "markers": [
             "parametrize"
@@ -9429,7 +9430,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path3]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/formatting/formatted-text-12183fb28e49.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/formatting/formatted-text-12183fb28e49.docx')"
           },
           "markers": [
             "parametrize"
@@ -9442,7 +9443,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path4]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/headers-footers/headers-footers-a99df5aa88c5.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/headers-footers/headers-footers-a99df5aa88c5.docx')"
           },
           "markers": [
             "parametrize"
@@ -9455,7 +9456,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path5]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/numbering/bullet-list-fad9dd22fb2d.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/numbering/bullet-list-fad9dd22fb2d.docx')"
           },
           "markers": [
             "parametrize"
@@ -9468,7 +9469,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path6]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/numbering/numbered-list-feaa592c7914.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/numbering/numbered-list-feaa592c7914.docx')"
           },
           "markers": [
             "parametrize"
@@ -9481,7 +9482,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path7]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/revisions/track-changes-e3c5159fbf25.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/revisions/track-changes-e3c5159fbf25.docx')"
           },
           "markers": [
             "parametrize"
@@ -9494,7 +9495,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path8]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/styles/headings-0e3d6fb95187.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/styles/headings-0e3d6fb95187.docx')"
           },
           "markers": [
             "parametrize"
@@ -9507,7 +9508,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path9]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/styles/styles-9548a1ce68ca.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/styles/styles-9548a1ce68ca.docx')"
           },
           "markers": [
             "parametrize"
@@ -9520,7 +9521,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path10]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/tables/complex-table-10737b881f16.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/tables/complex-table-10737b881f16.docx')"
           },
           "markers": [
             "parametrize"
@@ -9533,7 +9534,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path11]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/tables/simple-table-8192955ef935.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/tables/simple-table-8192955ef935.docx')"
           },
           "markers": [
             "parametrize"
@@ -9546,7 +9547,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path12]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/docx/text/single-paragraph-dfca453a4b60.docx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/docx/text/single-paragraph-dfca453a4b60.docx')"
           },
           "markers": [
             "parametrize"
@@ -9559,7 +9560,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path13]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/comments/comments-2c771c00dfe2.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/comments/comments-2c771c00dfe2.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9572,7 +9573,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path14]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/creation/minimal-e6b4859435d7.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/creation/minimal-e6b4859435d7.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9585,7 +9586,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path15]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/layouts/layouts-d902e187a376.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/layouts/layouts-d902e187a376.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9598,7 +9599,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path16]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/layouts/multiple-masters-7342e20ba487.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/layouts/multiple-masters-7342e20ba487.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9611,7 +9612,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path17]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/media/images-792277d2c358.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/media/images-792277d2c358.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9624,7 +9625,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path18]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/notes/notes-e97c8d590798.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/notes/notes-e97c8d590798.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9637,7 +9638,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path19]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/shapes/shapes-10a6d7267ed9.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/shapes/shapes-10a6d7267ed9.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9650,7 +9651,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path20]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/slides/hidden-slides-fa245a3df00f.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/slides/hidden-slides-fa245a3df00f.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9663,7 +9664,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path21]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/tables/tables-3998d8058f35.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/tables/tables-3998d8058f35.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9676,7 +9677,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path22]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/text/bullet-points-50f9157c8ff3.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/text/bullet-points-50f9157c8ff3.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9689,7 +9690,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path23]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/pptx/text/title-slide-1b848867cffb.pptx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/pptx/text/title-slide-1b848867cffb.pptx')"
           },
           "markers": [
             "parametrize"
@@ -9702,7 +9703,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path24]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/cells/data-types-bf5ecc732bd2.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/cells/data-types-bf5ecc732bd2.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9715,7 +9716,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path25]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/cells/single-cell-7c4584b7c6a6.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/cells/single-cell-7c4584b7c6a6.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9728,7 +9729,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path26]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/comments/comments-c03ad6550802.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/comments/comments-c03ad6550802.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9741,7 +9742,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path27]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/conditional-formatting/conditional-format-80f3dc2dbfa2.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/conditional-formatting/conditional-format-80f3dc2dbfa2.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9754,7 +9755,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path28]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/creation/minimal-9145d25de350.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/creation/minimal-9145d25de350.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9767,7 +9768,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path29]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/defined-names/named-ranges-de71d259e267.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/defined-names/named-ranges-de71d259e267.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9780,7 +9781,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path30]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/formatting/formatting-ee0ee5c84016.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/formatting/formatting-ee0ee5c84016.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9793,7 +9794,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path31]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/formulas/formulas-9668136d1f23.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/formulas/formulas-9668136d1f23.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9806,7 +9807,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path32]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/tables/merged-cells-444855bd685a.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/tables/merged-cells-444855bd685a.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9819,7 +9820,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path33]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/tables/tables-7a10c58d6f99.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/tables/tables-7a10c58d6f99.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9832,7 +9833,7 @@
           "nodeid": "tests/test_fixture_files_not_encrypted.py::test_fixture_file_is_not_encrypted[fixture_path34]",
           "originalname": "test_fixture_file_is_not_encrypted",
           "parameters": {
-            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-schema2-consumer-check/references/fixtures-ooxml/fixtures/xlsx/worksheets/multiple-sheets-40628979d414.xlsx')"
+            "fixture_path": "PosixPath('/srv/piclaw-dev/workspace/tmp/python-contract-cleanup-check/references/fixtures-ooxml/fixtures/xlsx/worksheets/multiple-sheets-40628979d414.xlsx')"
           },
           "markers": [
             "parametrize"
@@ -9874,8 +9875,8 @@
       "candidateScenarioId": "@candidate-python-fixture-source-integrity-8819fffbdd",
       "nativeDefinition": "tests/test_fixture_source_integrity.py::test_clean_annotated_release_is_accepted",
       "sourcePath": "tests/test_fixture_source_integrity.py",
-      "sourceLine": 43,
-      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "sourceLine": 42,
+      "sourceSha256": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
       "feature": "features/test_fixture_source_integrity.feature",
       "scenario": "Native check: clean annotated release is accepted",
       "parameterGroups": [],
@@ -9904,8 +9905,8 @@
       "candidateScenarioId": "@candidate-python-fixture-source-integrity-5e151013de",
       "nativeDefinition": "tests/test_fixture_source_integrity.py::test_changes_outside_asset_manifest_refuse",
       "sourcePath": "tests/test_fixture_source_integrity.py",
-      "sourceLine": 55,
-      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "sourceLine": 54,
+      "sourceSha256": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
       "feature": "features/test_fixture_source_integrity.feature",
       "scenario": "Native check: changes outside asset manifest refuse",
       "parameterGroups": [
@@ -10020,8 +10021,8 @@
       "candidateScenarioId": "@candidate-python-fixture-source-integrity-2f1928ccb6",
       "nativeDefinition": "tests/test_fixture_source_integrity.py::test_lightweight_tag_is_not_a_release",
       "sourcePath": "tests/test_fixture_source_integrity.py",
-      "sourceLine": 66,
-      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "sourceLine": 65,
+      "sourceSha256": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
       "feature": "features/test_fixture_source_integrity.feature",
       "scenario": "Native check: lightweight tag is not a release",
       "parameterGroups": [],
@@ -10048,8 +10049,8 @@
       "candidateScenarioId": "@candidate-python-fixture-source-integrity-4ff44d8fbb",
       "nativeDefinition": "tests/test_fixture_source_integrity.py::test_head_must_match_pin",
       "sourcePath": "tests/test_fixture_source_integrity.py",
-      "sourceLine": 74,
-      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "sourceLine": 73,
+      "sourceSha256": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
       "feature": "features/test_fixture_source_integrity.feature",
       "scenario": "Native check: head must match pin",
       "parameterGroups": [],
@@ -10076,8 +10077,8 @@
       "candidateScenarioId": "@candidate-python-fixture-source-integrity-52e383fc1e",
       "nativeDefinition": "tests/test_fixture_source_integrity.py::test_tag_must_point_to_pinned_head",
       "sourcePath": "tests/test_fixture_source_integrity.py",
-      "sourceLine": 81,
-      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "sourceLine": 80,
+      "sourceSha256": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
       "feature": "features/test_fixture_source_integrity.feature",
       "scenario": "Native check: tag must point to pinned head",
       "parameterGroups": [],
@@ -10104,14 +10105,14 @@
       "candidateScenarioId": "@candidate-python-fixture-source-integrity-7db8c2c20b",
       "nativeDefinition": "tests/test_fixture_source_integrity.py::test_wrong_seal_refuses_even_clean_release",
       "sourcePath": "tests/test_fixture_source_integrity.py",
-      "sourceLine": 90,
-      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "sourceLine": 89,
+      "sourceSha256": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
       "feature": "features/test_fixture_source_integrity.feature",
       "scenario": "Native check: wrong seal refuses even clean release",
       "parameterGroups": [
         {
           "arguments": "\"field\"",
-          "values": "[\"manifestSha256\", \"sharedPackManifestSha256\"]"
+          "values": "[\"manifestSha256\"]"
         }
       ],
       "collectedCases": [
@@ -10120,23 +10121,6 @@
           "originalname": "test_wrong_seal_refuses_even_clean_release",
           "parameters": {
             "field": "'manifestSha256'"
-          },
-          "markers": [
-            "parametrize"
-          ],
-          "fixtures": [
-            "tmp_path_factory",
-            "release",
-            "tmp_path",
-            "request",
-            "field"
-          ]
-        },
-        {
-          "nodeid": "tests/test_fixture_source_integrity.py::test_wrong_seal_refuses_even_clean_release[sharedPackManifestSha256]",
-          "originalname": "test_wrong_seal_refuses_even_clean_release",
-          "parameters": {
-            "field": "'sharedPackManifestSha256'"
           },
           "markers": [
             "parametrize"
@@ -10159,8 +10143,8 @@
       "candidateScenarioId": "@candidate-python-fixture-source-integrity-f0b8987151",
       "nativeDefinition": "tests/test_fixture_source_integrity.py::test_nested_directory_is_not_mistaken_for_submodule",
       "sourcePath": "tests/test_fixture_source_integrity.py",
-      "sourceLine": 96,
-      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "sourceLine": 95,
+      "sourceSha256": "bed647b001a9490ce372f2b327f4634f9f1b5438fd264da43b8525a8a9206910",
       "feature": "features/test_fixture_source_integrity.feature",
       "scenario": "Native check: nested directory is not mistaken for submodule",
       "parameterGroups": [],
@@ -12794,6 +12778,155 @@
       ],
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-mutation-contract-policy-a9b9a5c32d",
+      "nativeDefinition": "tests/test_mutation_contract_policy.py::test_preservation_complement_keeps_every_unallowed_member",
+      "sourcePath": "tests/test_mutation_contract_policy.py",
+      "sourceLine": 17,
+      "sourceSha256": "68109ef4502145a2e4816d40d02098fd33abe9213b2acc5b1d122daf33c3f9a1",
+      "feature": "features/test_mutation_contract_policy.feature",
+      "scenario": "Native check: preservation complement keeps every unallowed member",
+      "parameterGroups": [],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_preservation_complement_keeps_every_unallowed_member",
+          "originalname": "test_preservation_complement_keeps_every_unallowed_member",
+          "parameters": {},
+          "markers": [],
+          "fixtures": []
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-mutation-contract-policy-ae88bf4064",
+      "nativeDefinition": "tests/test_mutation_contract_policy.py::test_weakened_or_ambiguous_policies_refuse",
+      "sourcePath": "tests/test_mutation_contract_policy.py",
+      "sourceLine": 26,
+      "sourceSha256": "68109ef4502145a2e4816d40d02098fd33abe9213b2acc5b1d122daf33c3f9a1",
+      "feature": "features/test_mutation_contract_policy.feature",
+      "scenario": "Native check: weakened or ambiguous policies refuse",
+      "parameterGroups": [
+        {
+          "arguments": "\"fault\"",
+          "values": "[\"membership\", \"preserve\", \"unknown-asset\", \"unknown-member\", \"duplicate-member\", \"duplicate-scenario\"]"
+        }
+      ],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_weakened_or_ambiguous_policies_refuse[membership]",
+          "originalname": "test_weakened_or_ambiguous_policies_refuse",
+          "parameters": {
+            "fault": "'membership'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "fault"
+          ]
+        },
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_weakened_or_ambiguous_policies_refuse[preserve]",
+          "originalname": "test_weakened_or_ambiguous_policies_refuse",
+          "parameters": {
+            "fault": "'preserve'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "fault"
+          ]
+        },
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_weakened_or_ambiguous_policies_refuse[unknown-asset]",
+          "originalname": "test_weakened_or_ambiguous_policies_refuse",
+          "parameters": {
+            "fault": "'unknown-asset'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "fault"
+          ]
+        },
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_weakened_or_ambiguous_policies_refuse[unknown-member]",
+          "originalname": "test_weakened_or_ambiguous_policies_refuse",
+          "parameters": {
+            "fault": "'unknown-member'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "fault"
+          ]
+        },
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_weakened_or_ambiguous_policies_refuse[duplicate-member]",
+          "originalname": "test_weakened_or_ambiguous_policies_refuse",
+          "parameters": {
+            "fault": "'duplicate-member'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "fault"
+          ]
+        },
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_weakened_or_ambiguous_policies_refuse[duplicate-scenario]",
+          "originalname": "test_weakened_or_ambiguous_policies_refuse",
+          "parameters": {
+            "fault": "'duplicate-scenario'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "fault"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-mutation-contract-policy-2f6c00a2c0",
+      "nativeDefinition": "tests/test_mutation_contract_policy.py::test_root_manifest_seals_metadata_without_a_pack_manifest",
+      "sourcePath": "tests/test_mutation_contract_policy.py",
+      "sourceLine": 44,
+      "sourceSha256": "68109ef4502145a2e4816d40d02098fd33abe9213b2acc5b1d122daf33c3f9a1",
+      "feature": "features/test_mutation_contract_policy.feature",
+      "scenario": "Native check: root manifest seals metadata without a pack manifest",
+      "parameterGroups": [],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_mutation_contract_policy.py::test_root_manifest_seals_metadata_without_a_pack_manifest",
+          "originalname": "test_root_manifest_seals_metadata_without_a_pack_manifest",
+          "parameters": {},
+          "markers": [],
+          "fixtures": [
+            "tmp_path_factory",
+            "tmp_path",
+            "request"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": []
     },
@@ -20925,8 +21058,8 @@
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-b71c520b86",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_shared_pack_matches_pinned_manifest",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 30,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 36,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: shared pack matches pinned manifest",
       "parameterGroups": [],
@@ -20939,17 +21072,19 @@
           "fixtures": []
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
+      "captureStatus": "needs-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Operation requires manual semantic reconciliation"
+      ]
     },
     {
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-e40d4e868b",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_expanded_inventory_has_unique_ids_and_exact_fixture_pins",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 49,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 43,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: expanded inventory has unique ids and exact fixture pins",
       "parameterGroups": [],
@@ -20971,14 +21106,14 @@
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-d520e49d59",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_fixture_and_member_hashes",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 76,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 64,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: fixture and member hashes",
       "parameterGroups": [
         {
           "arguments": "\"fixture\"",
-          "values": "MANIFEST at \"fixtures\""
+          "values": "POLICY at \"fixtures\""
         }
       ],
       "collectedCases": [
@@ -20986,7 +21121,7 @@
           "nodeid": "tests/test_shared_contract_inventory.py::test_fixture_and_member_hashes[title-and-subtitle.pptx]",
           "originalname": "test_fixture_and_member_hashes",
           "parameters": {
-            "fixture": "{'id': 'title-and-subtitle.pptx', 'path': 'fixtures/pptx/mutation-safety/title-and-subtitle-2aec94471f93.pptx', 'sha256': '2aec94471f93c300d56ca4789106a974411085d1588f3424155362a06dd043f3', 'bytes': 91493, 'origin': {'repository': 'https://github.com/rcarmo/python-office-mcp-server', 'revision': '36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943', 'path': 'tests/_templates/testdata/pptx/title_slide.pptx', 'sha256': '1b848867cffb781112dc5778fa8cc7b9c9bd472c3636a348ec5d50005f05489e'}, 'transformation': 'See build_fixtures.py; generated acceptance text, sentinel, deterministic packaging', 'facts': {'slideCount': 1, 'slide1': {'title': 'Original title', 'subtitle': 'Original subtitle'}}, 'allowedChangedPartsForSuccess': ['ppt/slides/slide1.xml'], 'mustPreservePayloads': {'[Content_Types].xml': '6ab3a68b046347265eb95d2fe8254a47ce1c54ed07786351a81aeeee0d18c83d', '_rels/.rels': '762380638bf9443ce2877735f28fba27bdc8648f138298ef2485806fc36ffbac', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': 'cf6920270eaf515b468f40f211221be4853bfc44aea9d06e591dd1a84a3447ac', 'docProps/app.xml': '8a92317a315a1dd7453a855c22c076b1cfa6a07eeaa697203b2d667a5971611e', 'docProps/core.xml': 'c4b78164023098dca568d528487409cdf8ffeeb60f88f942123696ac201ab448', 'docProps/thumbnail.jpeg': '2f5b46476bb93bb970b0debe6582845721c4c027abe1f0be1fd7c175e2d3bdff', 'ppt/_rels/presentation.xml.rels': '6c38eb3088da6ec9ee6f33f157e329c366fa21ea95fcb45bde372a249590822e', 'ppt/presProps.xml': '9b2d272fb0c0ec29606b8b513dd3e9185f940c53cb81fa0db446c0445ec0ba85', 'ppt/presentation.xml': '16508356e684882c698d5fef1a4082b047d8e4fe20a07acab1d2154d116080eb', 'ppt/slideLayouts/_rels/slideLayout1.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout10.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout11.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout2.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout3.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout4.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout5.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout6.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout7.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout8.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout9.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/slideLayout1.xml': '34d3f04548f15599456032b04d59f7de963df223e0895e1c3c97567a3b437a67', 'ppt/slideLayouts/slideLayout10.xml': '4c7a938cec1c94895f8dcd76ef8a68efa8c892f0defa938db9805cc5f1af7d40', 'ppt/slideLayouts/slideLayout11.xml': '068e18567bb4d72f7c2647b2cf20f1a470399f7b10b5dbc495c51cab25bbe1b9', 'ppt/slideLayouts/slideLayout2.xml': '892506ec9f864e8f9f2d8b5dcb43b1c3d95bfee6b80d819aaee81c95f07b707d', 'ppt/slideLayouts/slideLayout3.xml': '6bf6a2521fb71ea825b21a68634db053fa66fce09e99e469fec229ca8291dfac', 'ppt/slideLayouts/slideLayout4.xml': 'cdbdd8ee98d2c56b16bf4311d983da33aebcd45518bb558b9df3ed57b3e7529e', 'ppt/slideLayouts/slideLayout5.xml': '7e4d7cbeb9b240adfe9272cbe0b4367b35a842010c95f26f8b6c7df2646c86f0', 'ppt/slideLayouts/slideLayout6.xml': '874eff0965a4e992feb8e34c30abf38eca89956b414357cf78835ad0ebbd6a5b', 'ppt/slideLayouts/slideLayout7.xml': '3d8797b1b1b592e4f42cd9431008f1e54ddcd9f8aa2e0e7455f047504bbd4348', 'ppt/slideLayouts/slideLayout8.xml': 'e6ccab7800e506f8b1c8742143ca0ecb506d925e17889b35d771d757e3722c6d', 'ppt/slideLayouts/slideLayout9.xml': '72d77a3d15d60b8ca7373f19935814f7c6ab6ddcd72f36848b5a1db450eda87d', 'ppt/slideMasters/_rels/slideMaster1.xml.rels': 'e9e503158ddaff4d9afa825a3d1048ffa1c1275291d9ab818812ff8e061ea8fd', 'ppt/slideMasters/slideMaster1.xml': 'b2b6bcf3cd43fbfe011adb080745ce55a4f8a2133d20f44479ecd859c32d9e11', 'ppt/slides/_rels/slide1.xml.rels': 'e125c916ff3118a8767f5a2303bd9c0b3068a0e7476556f56fbe2f41943c26a9', 'ppt/tableStyles.xml': '0e7ac03251337ecbaf6c8ca13619db1caeda5c90c4e3210d45d6c3f5df4de103', 'ppt/theme/theme1.xml': '4c3412087e8fa20cf5642f42e69f1e733881c28611a2bdd4622654ee313d214e', 'ppt/viewProps.xml': '0dd9e6966af2b7baae65c67e106052babe84d6f4eda2946f07c69888cab51c8e'}, 'memberSha256': {'[Content_Types].xml': '6ab3a68b046347265eb95d2fe8254a47ce1c54ed07786351a81aeeee0d18c83d', '_rels/.rels': '762380638bf9443ce2877735f28fba27bdc8648f138298ef2485806fc36ffbac', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': 'cf6920270eaf515b468f40f211221be4853bfc44aea9d06e591dd1a84a3447ac', 'docProps/app.xml': '8a92317a315a1dd7453a855c22c076b1cfa6a07eeaa697203b2d667a5971611e', 'docProps/core.xml': 'c4b78164023098dca568d528487409cdf8ffeeb60f88f942123696ac201ab448', 'docProps/thumbnail.jpeg': '2f5b46476bb93bb970b0debe6582845721c4c027abe1f0be1fd7c175e2d3bdff', 'ppt/_rels/presentation.xml.rels': '6c38eb3088da6ec9ee6f33f157e329c366fa21ea95fcb45bde372a249590822e', 'ppt/presProps.xml': '9b2d272fb0c0ec29606b8b513dd3e9185f940c53cb81fa0db446c0445ec0ba85', 'ppt/presentation.xml': '16508356e684882c698d5fef1a4082b047d8e4fe20a07acab1d2154d116080eb', 'ppt/slideLayouts/_rels/slideLayout1.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout10.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout11.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout2.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout3.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout4.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout5.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout6.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout7.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout8.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout9.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/slideLayout1.xml': '34d3f04548f15599456032b04d59f7de963df223e0895e1c3c97567a3b437a67', 'ppt/slideLayouts/slideLayout10.xml': '4c7a938cec1c94895f8dcd76ef8a68efa8c892f0defa938db9805cc5f1af7d40', 'ppt/slideLayouts/slideLayout11.xml': '068e18567bb4d72f7c2647b2cf20f1a470399f7b10b5dbc495c51cab25bbe1b9', 'ppt/slideLayouts/slideLayout2.xml': '892506ec9f864e8f9f2d8b5dcb43b1c3d95bfee6b80d819aaee81c95f07b707d', 'ppt/slideLayouts/slideLayout3.xml': '6bf6a2521fb71ea825b21a68634db053fa66fce09e99e469fec229ca8291dfac', 'ppt/slideLayouts/slideLayout4.xml': 'cdbdd8ee98d2c56b16bf4311d983da33aebcd45518bb558b9df3ed57b3e7529e', 'ppt/slideLayouts/slideLayout5.xml': '7e4d7cbeb9b240adfe9272cbe0b4367b35a842010c95f26f8b6c7df2646c86f0', 'ppt/slideLayouts/slideLayout6.xml': '874eff0965a4e992feb8e34c30abf38eca89956b414357cf78835ad0ebbd6a5b', 'ppt/slideLayouts/slideLayout7.xml': '3d8797b1b1b592e4f42cd9431008f1e54ddcd9f8aa2e0e7455f047504bbd4348', 'ppt/slideLayouts/slideLayout8.xml': 'e6ccab7800e506f8b1c8742143ca0ecb506d925e17889b35d771d757e3722c6d', 'ppt/slideLayouts/slideLayout9.xml': '72d77a3d15d60b8ca7373f19935814f7c6ab6ddcd72f36848b5a1db450eda87d', 'ppt/slideMasters/_rels/slideMaster1.xml.rels': 'e9e503158ddaff4d9afa825a3d1048ffa1c1275291d9ab818812ff8e061ea8fd', 'ppt/slideMasters/slideMaster1.xml': 'b2b6bcf3cd43fbfe011adb080745ce55a4f8a2133d20f44479ecd859c32d9e11', 'ppt/slides/_rels/slide1.xml.rels': 'e125c916ff3118a8767f5a2303bd9c0b3068a0e7476556f56fbe2f41943c26a9', 'ppt/slides/slide1.xml': '9889b9e48d77e8c2e37972b15355a6878dbb590d7e72e6091bf7ae2813cd306b', 'ppt/tableStyles.xml': '0e7ac03251337ecbaf6c8ca13619db1caeda5c90c4e3210d45d6c3f5df4de103', 'ppt/theme/theme1.xml': '4c3412087e8fa20cf5642f42e69f1e733881c28611a2bdd4622654ee313d214e', 'ppt/viewProps.xml': '0dd9e6966af2b7baae65c67e106052babe84d6f4eda2946f07c69888cab51c8e'}, 'assetId': 'fixture-2aec94471f93c300d56ca4789106a974411085d1588f3424155362a06dd043f3'}"
+            "fixture": "{'id': 'title-and-subtitle.pptx', 'assetId': 'fixture-2aec94471f93c300d56ca4789106a974411085d1588f3424155362a06dd043f3', 'facts': {'slideCount': 1, 'slide1': {'title': 'Original title', 'subtitle': 'Original subtitle'}}, 'allowedChangedPartsForSuccess': ['ppt/slides/slide1.xml'], 'memberSha256': {'[Content_Types].xml': '6ab3a68b046347265eb95d2fe8254a47ce1c54ed07786351a81aeeee0d18c83d', '_rels/.rels': '762380638bf9443ce2877735f28fba27bdc8648f138298ef2485806fc36ffbac', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': 'cf6920270eaf515b468f40f211221be4853bfc44aea9d06e591dd1a84a3447ac', 'docProps/app.xml': '8a92317a315a1dd7453a855c22c076b1cfa6a07eeaa697203b2d667a5971611e', 'docProps/core.xml': 'c4b78164023098dca568d528487409cdf8ffeeb60f88f942123696ac201ab448', 'docProps/thumbnail.jpeg': '2f5b46476bb93bb970b0debe6582845721c4c027abe1f0be1fd7c175e2d3bdff', 'ppt/_rels/presentation.xml.rels': '6c38eb3088da6ec9ee6f33f157e329c366fa21ea95fcb45bde372a249590822e', 'ppt/presProps.xml': '9b2d272fb0c0ec29606b8b513dd3e9185f940c53cb81fa0db446c0445ec0ba85', 'ppt/presentation.xml': '16508356e684882c698d5fef1a4082b047d8e4fe20a07acab1d2154d116080eb', 'ppt/slideLayouts/_rels/slideLayout1.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout10.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout11.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout2.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout3.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout4.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout5.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout6.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout7.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout8.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/_rels/slideLayout9.xml.rels': '8246d333bf3764cd35563e3df1828c26bbc28890815a2987caf3e592791ba60d', 'ppt/slideLayouts/slideLayout1.xml': '34d3f04548f15599456032b04d59f7de963df223e0895e1c3c97567a3b437a67', 'ppt/slideLayouts/slideLayout10.xml': '4c7a938cec1c94895f8dcd76ef8a68efa8c892f0defa938db9805cc5f1af7d40', 'ppt/slideLayouts/slideLayout11.xml': '068e18567bb4d72f7c2647b2cf20f1a470399f7b10b5dbc495c51cab25bbe1b9', 'ppt/slideLayouts/slideLayout2.xml': '892506ec9f864e8f9f2d8b5dcb43b1c3d95bfee6b80d819aaee81c95f07b707d', 'ppt/slideLayouts/slideLayout3.xml': '6bf6a2521fb71ea825b21a68634db053fa66fce09e99e469fec229ca8291dfac', 'ppt/slideLayouts/slideLayout4.xml': 'cdbdd8ee98d2c56b16bf4311d983da33aebcd45518bb558b9df3ed57b3e7529e', 'ppt/slideLayouts/slideLayout5.xml': '7e4d7cbeb9b240adfe9272cbe0b4367b35a842010c95f26f8b6c7df2646c86f0', 'ppt/slideLayouts/slideLayout6.xml': '874eff0965a4e992feb8e34c30abf38eca89956b414357cf78835ad0ebbd6a5b', 'ppt/slideLayouts/slideLayout7.xml': '3d8797b1b1b592e4f42cd9431008f1e54ddcd9f8aa2e0e7455f047504bbd4348', 'ppt/slideLayouts/slideLayout8.xml': 'e6ccab7800e506f8b1c8742143ca0ecb506d925e17889b35d771d757e3722c6d', 'ppt/slideLayouts/slideLayout9.xml': '72d77a3d15d60b8ca7373f19935814f7c6ab6ddcd72f36848b5a1db450eda87d', 'ppt/slideMasters/_rels/slideMaster1.xml.rels': 'e9e503158ddaff4d9afa825a3d1048ffa1c1275291d9ab818812ff8e061ea8fd', 'ppt/slideMasters/slideMaster1.xml': 'b2b6bcf3cd43fbfe011adb080745ce55a4f8a2133d20f44479ecd859c32d9e11', 'ppt/slides/_rels/slide1.xml.rels': 'e125c916ff3118a8767f5a2303bd9c0b3068a0e7476556f56fbe2f41943c26a9', 'ppt/slides/slide1.xml': '9889b9e48d77e8c2e37972b15355a6878dbb590d7e72e6091bf7ae2813cd306b', 'ppt/tableStyles.xml': '0e7ac03251337ecbaf6c8ca13619db1caeda5c90c4e3210d45d6c3f5df4de103', 'ppt/theme/theme1.xml': '4c3412087e8fa20cf5642f42e69f1e733881c28611a2bdd4622654ee313d214e', 'ppt/viewProps.xml': '0dd9e6966af2b7baae65c67e106052babe84d6f4eda2946f07c69888cab51c8e'}}"
           },
           "markers": [
             "parametrize"
@@ -20999,7 +21134,7 @@
           "nodeid": "tests/test_shared_contract_inventory.py::test_fixture_and_member_hashes[present-placeholder.docx]",
           "originalname": "test_fixture_and_member_hashes",
           "parameters": {
-            "fixture": "{'id': 'present-placeholder.docx', 'path': 'fixtures/docx/mutation-safety/present-placeholder-535910216e35.docx', 'sha256': '535910216e3531e4f70959cccf83038f1c51febbf4a149f9f46abfbfa8667d90', 'bytes': 377049, 'origin': {'repository': 'https://github.com/rcarmo/python-office-mcp-server', 'revision': '36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943', 'path': 'tests/_templates/testdata/word/single_paragraph.docx', 'sha256': 'dfca453a4b60629ec859b7e224040148b1e2fb92aa3a32b28a6ad9c6f4cc3526'}, 'transformation': 'See build_fixtures.py; generated acceptance text, sentinel, deterministic packaging', 'facts': {'bodyText': '<Present>', 'absentText': '<Missing>'}, 'allowedChangedPartsForSuccess': ['word/document.xml', 'word/settings.xml'], 'mustPreservePayloads': {'[Content_Types].xml': '2df32f34112e2bb1d6cd7e78777a813c21adfb3c08036301c3856eb87e63c9e9', '_rels/.rels': 'e6a262fba21a1de765b7bf06c30dadb26aef76c14cde97ad23ed1926ee56f9db', 'customXml/_rels/item1.xml.rels': '80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0', 'customXml/item1.xml': 'fd38bf9d14299ec0909557ff8b08b38816a6860d488f11a7c53dc63eb13ee44f', 'customXml/itemProps1.xml': '4c998dc0bc6eb6f38ecc20856255fff6891d5b6345a7260698c53063da4bc5f2', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '938ecd7d22e43ae7ba5f169cd98f911dbf3919f1f7ad7c76d31906daddc73817', 'docProps/core.xml': 'c303f140e713efda344235c649c4e4611c96aee1ac0f0fbc924b870d40d5e6ff', 'word/_rels/document.xml.rels': '14e2469320c6c093096066505e35f3c94b2eb61b47eecb47ef2585ae3dc64222', 'word/fontTable.xml': '80afe49c53877d33b6047ff8675986a50411b025dc09721369b573151c58ab63', 'word/numbering.xml': 'ce80cea09e284909636cb1d5a5da259e33a5122d6b03797536cc437746f613f7', 'word/styles.xml': '70dd2f9b81a34e12bffca926c1e53fb9f10ef156bc7d2e003502e0c919326332', 'word/theme/theme1.xml': 'b2295d3198893d2c03f5e584c749a15751b798aefdcd9bee2889f13903d68cb2', 'word/webSettings.xml': 'ee07406206c299bd15efc79295c9a223911089ff30b81b89c17dd93064d33d58'}, 'memberSha256': {'[Content_Types].xml': '2df32f34112e2bb1d6cd7e78777a813c21adfb3c08036301c3856eb87e63c9e9', '_rels/.rels': 'e6a262fba21a1de765b7bf06c30dadb26aef76c14cde97ad23ed1926ee56f9db', 'customXml/_rels/item1.xml.rels': '80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0', 'customXml/item1.xml': 'fd38bf9d14299ec0909557ff8b08b38816a6860d488f11a7c53dc63eb13ee44f', 'customXml/itemProps1.xml': '4c998dc0bc6eb6f38ecc20856255fff6891d5b6345a7260698c53063da4bc5f2', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '938ecd7d22e43ae7ba5f169cd98f911dbf3919f1f7ad7c76d31906daddc73817', 'docProps/core.xml': 'c303f140e713efda344235c649c4e4611c96aee1ac0f0fbc924b870d40d5e6ff', 'word/_rels/document.xml.rels': '14e2469320c6c093096066505e35f3c94b2eb61b47eecb47ef2585ae3dc64222', 'word/document.xml': '2c749ca2c670373ac74381d5a470ae0c86c0f53c4597b10be89d369743300fb5', 'word/fontTable.xml': '80afe49c53877d33b6047ff8675986a50411b025dc09721369b573151c58ab63', 'word/numbering.xml': 'ce80cea09e284909636cb1d5a5da259e33a5122d6b03797536cc437746f613f7', 'word/settings.xml': 'e3f4bb26cde8be1b7729c2a86fbc4392c50a9ec47b1f88e205dda0ddd960520b', 'word/styles.xml': '70dd2f9b81a34e12bffca926c1e53fb9f10ef156bc7d2e003502e0c919326332', 'word/theme/theme1.xml': 'b2295d3198893d2c03f5e584c749a15751b798aefdcd9bee2889f13903d68cb2', 'word/webSettings.xml': 'ee07406206c299bd15efc79295c9a223911089ff30b81b89c17dd93064d33d58'}, 'assetId': 'fixture-535910216e3531e4f70959cccf83038f1c51febbf4a149f9f46abfbfa8667d90'}"
+            "fixture": "{'id': 'present-placeholder.docx', 'assetId': 'fixture-535910216e3531e4f70959cccf83038f1c51febbf4a149f9f46abfbfa8667d90', 'facts': {'bodyText': '<Present>', 'absentText': '<Missing>'}, 'allowedChangedPartsForSuccess': ['word/document.xml', 'word/settings.xml'], 'memberSha256': {'[Content_Types].xml': '2df32f34112e2bb1d6cd7e78777a813c21adfb3c08036301c3856eb87e63c9e9', '_rels/.rels': 'e6a262fba21a1de765b7bf06c30dadb26aef76c14cde97ad23ed1926ee56f9db', 'customXml/_rels/item1.xml.rels': '80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0', 'customXml/item1.xml': 'fd38bf9d14299ec0909557ff8b08b38816a6860d488f11a7c53dc63eb13ee44f', 'customXml/itemProps1.xml': '4c998dc0bc6eb6f38ecc20856255fff6891d5b6345a7260698c53063da4bc5f2', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '938ecd7d22e43ae7ba5f169cd98f911dbf3919f1f7ad7c76d31906daddc73817', 'docProps/core.xml': 'c303f140e713efda344235c649c4e4611c96aee1ac0f0fbc924b870d40d5e6ff', 'word/_rels/document.xml.rels': '14e2469320c6c093096066505e35f3c94b2eb61b47eecb47ef2585ae3dc64222', 'word/document.xml': '2c749ca2c670373ac74381d5a470ae0c86c0f53c4597b10be89d369743300fb5', 'word/fontTable.xml': '80afe49c53877d33b6047ff8675986a50411b025dc09721369b573151c58ab63', 'word/numbering.xml': 'ce80cea09e284909636cb1d5a5da259e33a5122d6b03797536cc437746f613f7', 'word/settings.xml': 'e3f4bb26cde8be1b7729c2a86fbc4392c50a9ec47b1f88e205dda0ddd960520b', 'word/styles.xml': '70dd2f9b81a34e12bffca926c1e53fb9f10ef156bc7d2e003502e0c919326332', 'word/theme/theme1.xml': 'b2295d3198893d2c03f5e584c749a15751b798aefdcd9bee2889f13903d68cb2', 'word/webSettings.xml': 'ee07406206c299bd15efc79295c9a223911089ff30b81b89c17dd93064d33d58'}}"
           },
           "markers": [
             "parametrize"
@@ -21012,7 +21147,7 @@
           "nodeid": "tests/test_shared_contract_inventory.py::test_fixture_and_member_hashes[default-style.xlsx]",
           "originalname": "test_fixture_and_member_hashes",
           "parameters": {
-            "fixture": "{'id': 'default-style.xlsx', 'path': 'fixtures/xlsx/mutation-safety/default-style-38c2ed936696.xlsx', 'sha256': '38c2ed936696179d3b2359e9107ad2b8d62d71d69296f8f60bdfe1fe8f7f2439', 'bytes': 18860, 'origin': {'repository': 'https://github.com/rcarmo/python-office-mcp-server', 'revision': '36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943', 'path': 'tests/_templates/testdata/excel/minimal.xlsx', 'sha256': '9145d25de350a3da09ac8f1976811464525a4eeaa9947baa17057ae85056c377'}, 'transformation': 'See build_fixtures.py; generated acceptance text, sentinel, deterministic packaging', 'facts': {'activeSheetCellA1': 'before', 'cellXfsCount': 1, 'absentSheet': 'Missing'}, 'allowedChangedPartsForSuccess': ['xl/worksheets/sheet1.xml', 'xl/styles.xml', 'xl/workbook.xml'], 'mustPreservePayloads': {'[Content_Types].xml': 'c231f8ec622013ad13c7e2dee7358ad6852c35a2723d5a7d11666251bdd1a136', '_rels/.rels': 'dde81334e088a6877ef0b11b338377be774d944080e380b1bc105147683b2da6', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '209fca6b00afe72a5029754b94be5953d8f16d96f67130325566b9366ad4ccc5', 'docProps/core.xml': '8ce052385c2e46ba3da46c9c9c36e6d0fae2cee04e98605e04466db4dce2dc0c', 'xl/_rels/workbook.xml.rels': '26ad8fcc38d41229833e624496df364492772697ad2e5d6696e1738f05ba225f', 'xl/theme/theme1.xml': 'd15e8ebf78ef7b9720839d7ae8fdc81a7df5bc24706d8e137df61a5683c358d9'}, 'memberSha256': {'[Content_Types].xml': 'c231f8ec622013ad13c7e2dee7358ad6852c35a2723d5a7d11666251bdd1a136', '_rels/.rels': 'dde81334e088a6877ef0b11b338377be774d944080e380b1bc105147683b2da6', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '209fca6b00afe72a5029754b94be5953d8f16d96f67130325566b9366ad4ccc5', 'docProps/core.xml': '8ce052385c2e46ba3da46c9c9c36e6d0fae2cee04e98605e04466db4dce2dc0c', 'xl/_rels/workbook.xml.rels': '26ad8fcc38d41229833e624496df364492772697ad2e5d6696e1738f05ba225f', 'xl/styles.xml': 'ceabc26839ae8c5285c667366bffa538562f76e219eb4f2f5188626232d96900', 'xl/theme/theme1.xml': 'd15e8ebf78ef7b9720839d7ae8fdc81a7df5bc24706d8e137df61a5683c358d9', 'xl/workbook.xml': '0118136ea9ff4b7a8178fc79b6a9a5fa285927dc238c79c67b418fdb505dd400', 'xl/worksheets/sheet1.xml': 'a3e06f53409c8176305d5fcfa9a7870d69fc52a04de629a93f5227d8db110a8c'}, 'assetId': 'fixture-38c2ed936696179d3b2359e9107ad2b8d62d71d69296f8f60bdfe1fe8f7f2439'}"
+            "fixture": "{'id': 'default-style.xlsx', 'assetId': 'fixture-38c2ed936696179d3b2359e9107ad2b8d62d71d69296f8f60bdfe1fe8f7f2439', 'facts': {'activeSheetCellA1': 'before', 'cellXfsCount': 1, 'absentSheet': 'Missing'}, 'allowedChangedPartsForSuccess': ['xl/worksheets/sheet1.xml', 'xl/styles.xml', 'xl/workbook.xml'], 'memberSha256': {'[Content_Types].xml': 'c231f8ec622013ad13c7e2dee7358ad6852c35a2723d5a7d11666251bdd1a136', '_rels/.rels': 'dde81334e088a6877ef0b11b338377be774d944080e380b1bc105147683b2da6', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '209fca6b00afe72a5029754b94be5953d8f16d96f67130325566b9366ad4ccc5', 'docProps/core.xml': '8ce052385c2e46ba3da46c9c9c36e6d0fae2cee04e98605e04466db4dce2dc0c', 'xl/_rels/workbook.xml.rels': '26ad8fcc38d41229833e624496df364492772697ad2e5d6696e1738f05ba225f', 'xl/styles.xml': 'ceabc26839ae8c5285c667366bffa538562f76e219eb4f2f5188626232d96900', 'xl/theme/theme1.xml': 'd15e8ebf78ef7b9720839d7ae8fdc81a7df5bc24706d8e137df61a5683c358d9', 'xl/workbook.xml': '0118136ea9ff4b7a8178fc79b6a9a5fa285927dc238c79c67b418fdb505dd400', 'xl/worksheets/sheet1.xml': 'a3e06f53409c8176305d5fcfa9a7870d69fc52a04de629a93f5227d8db110a8c'}}"
           },
           "markers": [
             "parametrize"
@@ -21025,7 +21160,7 @@
           "nodeid": "tests/test_shared_contract_inventory.py::test_fixture_and_member_hashes[cross-sheet-cache.xlsx]",
           "originalname": "test_fixture_and_member_hashes",
           "parameters": {
-            "fixture": "{'id': 'cross-sheet-cache.xlsx', 'path': 'fixtures/xlsx/mutation-safety/cross-sheet-cache-8ba5708d5030.xlsx', 'sha256': '8ba5708d5030adf93a4f7e4ae466563a1b66341067a200a6cb9b782484dcb5b1', 'bytes': 20055, 'origin': {'repository': 'https://github.com/rcarmo/python-office-mcp-server', 'revision': '36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943', 'path': 'tests/_templates/testdata/excel/minimal.xlsx', 'sha256': '9145d25de350a3da09ac8f1976811464525a4eeaa9947baa17057ae85056c377'}, 'transformation': 'See build_fixtures.py; generated acceptance text, sentinel, deterministic packaging', 'facts': {'Input!A1': 1, 'Calc!A1': {'formula': '=Input!A1*2', 'cachedValue': 2}, 'calcChainPresent': False}, 'allowedChangedPartsForSuccess': ['xl/worksheets/sheet1.xml', 'xl/worksheets/sheet2.xml', 'xl/workbook.xml'], 'mustPreservePayloads': {'[Content_Types].xml': 'ceee553956c95720ede66de6d0ac43a3f434e35da3e924d4f42c737f86ae92d6', '_rels/.rels': 'dde81334e088a6877ef0b11b338377be774d944080e380b1bc105147683b2da6', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '209fca6b00afe72a5029754b94be5953d8f16d96f67130325566b9366ad4ccc5', 'docProps/core.xml': '8ce052385c2e46ba3da46c9c9c36e6d0fae2cee04e98605e04466db4dce2dc0c', 'xl/_rels/workbook.xml.rels': 'c92b03d81aff7421c86461ec82da1607d7ba670630d84fa849992a31fd68e06b', 'xl/styles.xml': 'ceabc26839ae8c5285c667366bffa538562f76e219eb4f2f5188626232d96900', 'xl/theme/theme1.xml': 'd15e8ebf78ef7b9720839d7ae8fdc81a7df5bc24706d8e137df61a5683c358d9'}, 'memberSha256': {'[Content_Types].xml': 'ceee553956c95720ede66de6d0ac43a3f434e35da3e924d4f42c737f86ae92d6', '_rels/.rels': 'dde81334e088a6877ef0b11b338377be774d944080e380b1bc105147683b2da6', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '209fca6b00afe72a5029754b94be5953d8f16d96f67130325566b9366ad4ccc5', 'docProps/core.xml': '8ce052385c2e46ba3da46c9c9c36e6d0fae2cee04e98605e04466db4dce2dc0c', 'xl/_rels/workbook.xml.rels': 'c92b03d81aff7421c86461ec82da1607d7ba670630d84fa849992a31fd68e06b', 'xl/styles.xml': 'ceabc26839ae8c5285c667366bffa538562f76e219eb4f2f5188626232d96900', 'xl/theme/theme1.xml': 'd15e8ebf78ef7b9720839d7ae8fdc81a7df5bc24706d8e137df61a5683c358d9', 'xl/workbook.xml': '3fac8ac4c7ec6c13cfc1660513c3315145ef20d0fee37f5e17e1eb5e1f927b6e', 'xl/worksheets/sheet1.xml': '63841d43a2b6686e56b50601bed72c1d007ad52d5d844a0ddc56bac7ba8b3a97', 'xl/worksheets/sheet2.xml': '636912335c42b3ee0516632ffdf446441a650942364b3786ea125d41ecd0aa64'}, 'assetId': 'fixture-8ba5708d5030adf93a4f7e4ae466563a1b66341067a200a6cb9b782484dcb5b1'}"
+            "fixture": "{'id': 'cross-sheet-cache.xlsx', 'assetId': 'fixture-8ba5708d5030adf93a4f7e4ae466563a1b66341067a200a6cb9b782484dcb5b1', 'facts': {'Input!A1': 1, 'Calc!A1': {'formula': '=Input!A1*2', 'cachedValue': 2}, 'calcChainPresent': False}, 'allowedChangedPartsForSuccess': ['xl/worksheets/sheet1.xml', 'xl/worksheets/sheet2.xml', 'xl/workbook.xml'], 'memberSha256': {'[Content_Types].xml': 'ceee553956c95720ede66de6d0ac43a3f434e35da3e924d4f42c737f86ae92d6', '_rels/.rels': 'dde81334e088a6877ef0b11b338377be774d944080e380b1bc105147683b2da6', 'customXml/preservation-sentinel.xml': 'b80f825e167d3ef176f2c0d96d33ce045352ca23e1272cf848433113eff8664d', 'docMetadata/LabelInfo.xml': '857642758c87cdc181e6e757e887e84ef5b1fa7889bbfb28d7313f06150e7df7', 'docProps/app.xml': '209fca6b00afe72a5029754b94be5953d8f16d96f67130325566b9366ad4ccc5', 'docProps/core.xml': '8ce052385c2e46ba3da46c9c9c36e6d0fae2cee04e98605e04466db4dce2dc0c', 'xl/_rels/workbook.xml.rels': 'c92b03d81aff7421c86461ec82da1607d7ba670630d84fa849992a31fd68e06b', 'xl/styles.xml': 'ceabc26839ae8c5285c667366bffa538562f76e219eb4f2f5188626232d96900', 'xl/theme/theme1.xml': 'd15e8ebf78ef7b9720839d7ae8fdc81a7df5bc24706d8e137df61a5683c358d9', 'xl/workbook.xml': '3fac8ac4c7ec6c13cfc1660513c3315145ef20d0fee37f5e17e1eb5e1f927b6e', 'xl/worksheets/sheet1.xml': '63841d43a2b6686e56b50601bed72c1d007ad52d5d844a0ddc56bac7ba8b3a97', 'xl/worksheets/sheet2.xml': '636912335c42b3ee0516632ffdf446441a650942364b3786ea125d41ecd0aa64'}}"
           },
           "markers": [
             "parametrize"
@@ -21044,8 +21179,8 @@
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-ca6f9e6c3f",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_pinned_word_and_slide_facts",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 91,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 81,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: pinned word and slide facts",
       "parameterGroups": [],
@@ -21070,8 +21205,8 @@
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-af21552e25",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_pinned_workbook_style_and_cache_facts",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 100,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 90,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: pinned workbook style and cache facts",
       "parameterGroups": [],
@@ -21093,8 +21228,8 @@
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-4df58a8169",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_central_fixture_manifest_matches_python_inputs",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 122,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 112,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: central fixture manifest matches python inputs",
       "parameterGroups": [],
@@ -21116,8 +21251,8 @@
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-06d276c54d",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_python_constants_match_selected_shared_facts",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 139,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 129,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: python constants match selected shared facts",
       "parameterGroups": [],
@@ -21139,8 +21274,8 @@
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-e3956cda42",
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_fixture_submodule_matches_common_tag_and_seals",
       "sourcePath": "tests/test_shared_contract_inventory.py",
-      "sourceLine": 163,
-      "sourceSha256": "c299d04b71a8db58e79ccce36deb8978dcda737d837e5d5b88af1a0aa8f50071",
+      "sourceLine": 153,
+      "sourceSha256": "472550b560354f2ca16acfd76da343de906f44238b9b50c30862dcf723509427",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: fixture submodule matches common tag and seals",
       "parameterGroups": [],
@@ -30019,6 +30154,13 @@
       "candidateScenarioId": "@candidate-python-pptx-tools-2bc9f4dcce",
       "gaps": [
         "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly"
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_shared_contract_inventory.py::test_shared_pack_matches_pinned_manifest",
+      "candidateScenarioId": "@candidate-python-shared-contract-inventory-b71c520b86",
+      "gaps": [
+        "Operation requires manual semantic reconciliation"
       ]
     },
     {

@@ -92,7 +92,7 @@ def test_shared_mapping_selects_cases_without_awarding_passes(tmp_path):
     path.write_text(FEATURE.replace('@implemented @python', '@planned'))
     cases = inventory([path])
     mapping = {'schemaVersion': 1, 'consumer': 'python', 'contractRevision': 'ooxml-shared-contracts-v2',
-               'feature': 'shared/v2/pack/features/mutation-safety.feature',
+               'feature': 'workflows/mutation-safety.feature',
                'featureSha256': hashlib.sha256(path.read_bytes()).hexdigest(),
                'implementedCaseKeys': [cases[0]['stableCaseKey']]}
     apply_implementation_mapping(cases, mapping, feature_path=path)

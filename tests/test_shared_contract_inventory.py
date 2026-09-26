@@ -11,16 +11,22 @@ from docx import Document
 from openpyxl import load_workbook
 from pptx import Presentation
 
+from tests.acceptance.ledger import inventory
 from tests.fixture_paths import (
+    CONTRACT,
+    FEATURE,
     FIXTURE_SOURCE,
+    REPOSITORY,
     fixture_path,
     load_fixture_assets,
+    mutation_contract,
+    preserved_members,
     shared_fixture,
     template_asset_ids,
+    verified_metadata,
 )
-from tests.fixture_paths import SHARED as ROOT
 
-MANIFEST = json.loads((ROOT / "fixture-manifest.json").read_text())
+POLICY = mutation_contract()
 
 
 def digest(data):
@@ -28,56 +34,39 @@ def digest(data):
 
 
 def test_shared_pack_matches_pinned_manifest():
-    manifest = json.loads((ROOT / "pack-manifest.json").read_text())
-    assert manifest["schemaVersion"] == 2
-    assert manifest["distributionRevision"] == "fixtures-ooxml-v0.2.0"
-    assert manifest["fixturePathBase"] == "repository-root"
-    assert manifest["sourcePackManifestSha256"] == "4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de"
-    assert manifest["lifecycle"] == "planned"
-    assert manifest["bindingsImplemented"] is False
-    expected = manifest["files"]
-    actual = {
-        p.relative_to(ROOT).as_posix()
-        for p in ROOT.rglob("*")
-        if p.is_file() and p.name != "pack-manifest.json"
-    }
-    assert actual == set(expected)
-    for name, sha256 in expected.items():
-        assert digest((ROOT / name).read_bytes()) == sha256, name
+    assert not (FIXTURE_SOURCE / "shared").exists()
+    assert verified_metadata("contracts/mutation-safety.json", "workflow-contract") == CONTRACT.read_bytes()
+    assert verified_metadata("workflows/mutation-safety.feature", "workflow") == FEATURE.read_bytes()
+    assert POLICY["fixturePolicy"] == {"membership": "exact", "preserve": "all-except-allowed"}
 
 
 def test_expanded_inventory_has_unique_ids_and_exact_fixture_pins():
-    source = (ROOT / "features" / "mutation-safety.feature").read_bytes()
+    source = FEATURE.read_bytes()
     scenarios = re.findall(rb"^  (@id-[a-z0-9-]+)$", source, re.MULTILINE)
     assert len(scenarios) == len(set(scenarios)) == 8
-    compiled = json.loads((ROOT / "expanded-contracts.json").read_text())
-    assert compiled["validation"] == "parsed-compiled-and-typed-inputs-validated"
-    assert compiled["bindingsImplemented"] is False
-    assert compiled["cases"] == len(compiled["inventory"]) == 19
-    assert len({c["stableCaseKey"] for c in compiled["inventory"]}) == 19
-    fixtures = {f["id"]: f for f in MANIFEST["fixtures"]}
-    assert {c["scenarioId"] for c in compiled["inventory"]} == {
-        s.decode() for s in scenarios
-    }
-    for case in compiled["inventory"]:
-        assert case["execution"] == "not-run"
+    compiled = inventory([FEATURE])  # Official Gherkin parser/compiler, strict typed JSON.
+    assert len(compiled) == POLICY["expandedCaseCount"] == 19
+    assert {c["scenarioId"] for c in compiled} == set(POLICY["scenarioIds"]) == {s.decode() for s in scenarios}
+    mapping = json.loads((REPOSITORY / "tests/acceptance/shared-mapping.json").read_text())
+    assert {c["stableCaseKey"] for c in compiled} == set(mapping["implementedCaseKeys"])
+    fixtures = {f["id"]: f for f in POLICY["fixtures"]}
+    for case in compiled:
+        assert case["outcome"] == "planned"
         assert case["featureSha256"] == digest(source)
-        assert case["fixture"]["sha256"] == fixtures[case["fixture"]["id"]]["sha256"]
-        assert any(step["keyword"].strip() == "Then" for step in case["expandedSteps"])
-        for step in case["expandedSteps"]:
-            table = (step.get("argument") or {}).get("dataTable", [])
-            if table and "value_json" in table[0]:
-                column = table[0].index("value_json")
-                for row in table[1:]:
-                    json.loads(row[column])
+        assert any(step["type"] == "Outcome" for step in case["steps"])
+        fixture_id = next(re.fullmatch(r'fixture "([^"]+)" verified against the fixture manifest', s["text"])[1]
+                          for s in case["steps"] if s["text"].startswith('fixture "'))
+        record = fixtures[fixture_id]
+        assert "fixture-" + digest(shared_fixture(fixture_id).read_bytes()) == record["assetId"]
 
 
-@pytest.mark.parametrize("fixture", MANIFEST["fixtures"], ids=lambda f: f["id"])
+@pytest.mark.parametrize("fixture", POLICY["fixtures"], ids=lambda f: f["id"])
 def test_fixture_and_member_hashes(fixture):
     path = shared_fixture(fixture["id"])
-    assert path == FIXTURE_SOURCE / fixture["path"]
-    assert digest(path.read_bytes()) == fixture["sha256"]
-    assert fixture["origin"]["revision"] == "36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943"
+    asset = load_fixture_assets(FIXTURE_SOURCE)[fixture["assetId"]]
+    assert path == FIXTURE_SOURCE / asset["path"]
+    assert digest(path.read_bytes()) == asset["sha256"]
+    assert any(origin.get("revision") == "36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943" for origin in asset["origins"])
     with zipfile.ZipFile(path) as archive:
         names = archive.namelist()
         assert len(names) == len(set(names))
@@ -85,7 +74,8 @@ def test_fixture_and_member_hashes(fixture):
         assert set(names) == set(fixture["memberSha256"])
         for name in names:
             assert digest(archive.read(name)) == fixture["memberSha256"][name]
-        assert "customXml/preservation-sentinel.xml" in fixture["mustPreservePayloads"]
+        assert "customXml/preservation-sentinel.xml" in preserved_members(fixture)
+        assert set(preserved_members(fixture)) == set(names) - set(fixture["allowedChangedPartsForSuccess"])
 
 
 def test_pinned_word_and_slide_facts():

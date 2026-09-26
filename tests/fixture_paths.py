@@ -7,8 +7,8 @@ from pathlib import Path, PurePosixPath
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 FIXTURE_SOURCE = REPOSITORY / "references" / "fixtures-ooxml"
-SHARED = FIXTURE_SOURCE / "shared" / "v2" / "pack"
-FEATURE = SHARED / "features" / "mutation-safety.feature"
+CONTRACT = FIXTURE_SOURCE / "contracts" / "mutation-safety.json"
+FEATURE = FIXTURE_SOURCE / "workflows" / "mutation-safety.feature"
 
 
 def load_fixture_assets(source):
@@ -86,18 +86,57 @@ def template_fixture(logical_name):
     return fixture_path(template_asset_ids()[logical_name])
 
 
+def verified_metadata(relative, role, *, source=FIXTURE_SOURCE):
+    """Read the exact workflow/contract payload sealed by the root manifest."""
+    records = json.loads((source / "manifest.json").read_text())["files"]
+    matches = [r for r in records if r.get("path") == relative and r.get("role") == role]
+    if len(matches) != 1:
+        raise RuntimeError("Missing or ambiguous sealed metadata: " + relative)
+    data = (source / relative).read_bytes()
+    record = matches[0]
+    if len(data) != record["bytes"] or hashlib.sha256(data).hexdigest() != record["sha256"]:
+        raise RuntimeError("Shared metadata differs from root manifest: " + relative)
+    return data
+
+
+def validate_mutation_contract(contract, assets):
+    if (contract.get("schemaVersion") != 1 or contract.get("contractRevision") != "ooxml-shared-contracts-v2"
+            or contract.get("feature") != "workflows/mutation-safety.feature"
+            or contract.get("fixturePolicy") != {"membership": "exact", "preserve": "all-except-allowed"}):
+        raise RuntimeError("Unsupported mutation contract or preservation policy")
+    scenario_ids = contract.get("scenarioIds", [])
+    if len(scenario_ids) != 8 or len(set(scenario_ids)) != 8 or contract.get("expandedCaseCount") != 19:
+        raise RuntimeError("Unexpected mutation scenario inventory")
+    fixtures = contract.get("fixtures", [])
+    if len(fixtures) != 4 or len({r["id"] for r in fixtures}) != 4:
+        raise RuntimeError("Missing or duplicate mutation fixture identities")
+    for fixture in fixtures:
+        if fixture.get("assetId") not in assets:
+            raise RuntimeError("Unknown mutation fixture asset ID")
+        members = fixture.get("memberSha256", {})
+        allowed = fixture.get("allowedChangedPartsForSuccess", [])
+        if not members or len(allowed) != len(set(allowed)) or not set(allowed).issubset(members):
+            raise RuntimeError("Invalid mutation member preservation allowance")
+
+
+def mutation_contract(*, source=FIXTURE_SOURCE):
+    contract = json.loads(verified_metadata("contracts/mutation-safety.json", "workflow-contract", source=source))
+    verified_metadata("workflows/mutation-safety.feature", "workflow", source=source)
+    validate_mutation_contract(contract, load_fixture_assets(source))
+    return contract
+
+
+def preserved_members(fixture):
+    """Derive the complete unchanged set rather than storing a second hash map."""
+    return {name: digest for name, digest in fixture["memberSha256"].items()
+            if name not in fixture["allowedChangedPartsForSuccess"]}
+
+
 def shared_fixture(fixture_id):
-    manifest = json.loads((SHARED / "fixture-manifest.json").read_text())
-    if manifest.get("schemaVersion") != 2 or manifest.get("pathBase") != "repository-root":
-        raise RuntimeError("Expected repository-root shared fixture references")
-    records = [r for r in manifest["fixtures"] if r["id"] == fixture_id]
+    records = [r for r in mutation_contract()["fixtures"] if r["id"] == fixture_id]
     if len(records) != 1:
         raise RuntimeError("Missing or ambiguous shared fixture identity: " + fixture_id)
-    record = records[0]
-    path = fixture_path(record["assetId"])
-    if path != FIXTURE_SOURCE / record["path"] or record["assetId"] != "fixture-" + record["sha256"]:
-        raise RuntimeError("Shared fixture and asset manifest disagree")
-    return path
+    return fixture_path(records[0]["assetId"])
 
 
 def verify_fixture_source(source, pin):
@@ -119,14 +158,12 @@ def verify_fixture_source(source, pin):
         raise RuntimeError("Shared fixture tag differs from the consumer pin")
     if git("status", "--porcelain", "--untracked-files=all", "--ignore-submodules=none"):
         raise RuntimeError("Shared fixture checkout is dirty; restore the pinned release before testing")
-    for relative, expected in (("manifest.json", pin["manifestSha256"]),
-                               ("shared/v2/pack/pack-manifest.json", pin["sharedPackManifestSha256"])):
-        if hashlib.sha256((source / relative).read_bytes()).hexdigest() != expected:
-            raise RuntimeError("Shared fixture seal mismatch: " + relative)
+    if hashlib.sha256((source / "manifest.json").read_bytes()).hexdigest() != pin["manifestSha256"]:
+        raise RuntimeError("Shared fixture seal mismatch: manifest.json")
 
 
 def require_fixtures():
-    required = [FIXTURE_SOURCE / "manifest.json", SHARED / "pack-manifest.json", FEATURE]
+    required = [FIXTURE_SOURCE / "manifest.json", CONTRACT, FEATURE]
     missing = [str(path.relative_to(REPOSITORY)) for path in required if not path.is_file()]
     if missing:
         raise RuntimeError("Shared fixtures are missing; run git submodule update --init --recursive. "
@@ -134,5 +171,5 @@ def require_fixtures():
     verify_fixture_source(FIXTURE_SOURCE, json.loads((REPOSITORY / "tests/fixtures-pin.json").read_text()))
     for asset_id in template_asset_ids().values():
         fixture_path(asset_id)
-    for record in json.loads((SHARED / "fixture-manifest.json").read_text())["fixtures"]:
+    for record in mutation_contract()["fixtures"]:
         shared_fixture(record["id"])

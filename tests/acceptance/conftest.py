@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.fixture_paths import FEATURE, FIXTURE_SOURCE, SHARED
+from tests.fixture_paths import CONTRACT, FEATURE, FIXTURE_SOURCE
 
 from .ledger import Ledger, apply_implementation_mapping, binding_matches, inventory
 
@@ -26,8 +26,8 @@ def pytest_configure(config):
         apply_implementation_mapping(ledger.report["inventory"], json.loads(mapping_path.read_text()), feature_path=FEATURE)
         ledger.report["consumer"] = "python"
         ledger.report["implementationMappingSha256"] = hashlib.sha256(mapping_path.read_bytes()).hexdigest()
-        ledger.report["fixtureDistributionRevision"] = json.loads((SHARED / "pack-manifest.json").read_text())["distributionRevision"]
-        ledger.report["fixtureDistributionManifestSha256"] = hashlib.sha256((SHARED / "pack-manifest.json").read_bytes()).hexdigest()
+        ledger.report["fixtureManifestSha256"] = hashlib.sha256((FIXTURE_SOURCE / "manifest.json").read_bytes()).hexdigest()
+        ledger.report["mutationContractSha256"] = hashlib.sha256(CONTRACT.read_bytes()).hexdigest()
         source_head = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=FIXTURE_SOURCE, text=True, capture_output=True)
         ledger.report["fixtureSourceCommit"] = source_head.stdout.strip() if source_head.returncode == 0 else None
         ledger.report["fixtureSourceStatus"] = subprocess.check_output(["git", "status", "--porcelain"], cwd=FIXTURE_SOURCE, text=True).splitlines()
@@ -43,8 +43,6 @@ def pytest_configure(config):
             for path in sorted(directory.rglob("*.py"))
         }
         ledger.report["dependencies"] = {n: version(n) for n in ("python-docx", "python-pptx", "openpyxl", "pytest-bdd", "gherkin-official")}
-        manifest = SHARED / "fixture-manifest.json"
-        ledger.report["fixtureManifestSha256"] = hashlib.sha256(manifest.read_bytes()).hexdigest()
         ledger.write()
     except Exception as exc:
         ledger.report["failures"].append(str(exc))

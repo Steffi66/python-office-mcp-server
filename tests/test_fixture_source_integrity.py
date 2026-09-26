@@ -22,7 +22,7 @@ def release(tmp_path):
     git(root, "config", "commit.gpgsign", "false")
     files = {
         "manifest.json": '{"schemaVersion":2}',
-        "shared/v2/pack/pack-manifest.json": '{"schemaVersion":1}',
+        "contracts/mutation-safety.json": '{"schemaVersion":1}',
         "facts/constants.json": '{"values":[]}',
         "ledgers/workflows.json": '{"workflows":[]}',
         "contracts/workflow.feature": "Feature: An immutable behaviour reference\n",
@@ -35,8 +35,7 @@ def release(tmp_path):
     git(root, "commit", "-qm", "Create synthetic release for integrity checks")
     git(root, "-c", "tag.gpgSign=false", "tag", "-a", "v-test", "-m", "Synthetic fixture release")
     pin = {"commit": git(root, "rev-parse", "HEAD"), "tag": "v-test",
-           "manifestSha256": hashlib.sha256((root / "manifest.json").read_bytes()).hexdigest(),
-           "sharedPackManifestSha256": hashlib.sha256((root / "shared/v2/pack/pack-manifest.json").read_bytes()).hexdigest()}
+           "manifestSha256": hashlib.sha256((root / "manifest.json").read_bytes()).hexdigest()}
     return root, pin
 
 
@@ -54,7 +53,7 @@ def test_clean_annotated_release_is_accepted(release):
 ])
 def test_changes_outside_asset_manifest_refuse(release, path, stage):
     root, pin = release
-    # Both sealed manifest payloads remain unchanged; whole-checkout integrity
+    # The root manifest payload remains unchanged; whole-checkout integrity
     # must still reject facts/workflows or newly introduced files.
     (root / path).write_text("changed")
     if stage:
@@ -86,7 +85,7 @@ def test_tag_must_point_to_pinned_head(release):
         verify_fixture_source(root, pin)
 
 
-@pytest.mark.parametrize("field", ["manifestSha256", "sharedPackManifestSha256"])
+@pytest.mark.parametrize("field", ["manifestSha256"])
 def test_wrong_seal_refuses_even_clean_release(release, field):
     root, pin = release
     with pytest.raises(RuntimeError, match="seal mismatch"):

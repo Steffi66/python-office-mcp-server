@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "scope": "Canonical workflow/minimal-contract normal consumer update; no history rewrite",
+  "consumerParentCommit": "2f5b97e95148ea57c5ccf98a1fd4c0fc7b1ccaa9",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.3.0",
+    "commit": "a3048639f5b9c521852b9d126b83639c08eae056",
+    "manifestSha256": "8dd07f4483ba00a848727945a7409b59ad64745573b091696410aaaf4afcae29"
+  },
+  "annotatedTagObject": "b607bc08aa5017f0ece2b8c8fbe31a86887c902e",
+  "candidateMatrix": {
+    "fixtureCommit": "29af4014a1fc5b3e8978e07c259cbf7a36a8d8d7",
+    "runtimes": [
+      {
+        "python": "3.10",
+        "passed": 1163,
+        "skipped": 3,
+        "seconds": 36.222,
+        "junitSha256": "5e4110f9ebcd0332e3d39170fbf7a1513138ed07786e51ce1eead6e250ad9e74"
+      },
+      {
+        "python": "3.12",
+        "passed": 1163,
+        "skipped": 3,
+        "seconds": 36.086,
+        "junitSha256": "75005f98cb5023179c3a310d02763e9a1715cdba20a611b4e41915f0987a8026"
+      },
+      {
+        "python": "3.13",
+        "passed": 1163,
+        "skipped": 3,
+        "seconds": 47.773,
+        "junitSha256": "a8e64022c1bda6b5c0e648804fc6d97abfd6f888e4fd26dedf056388a693237f"
+      }
+    ],
+    "qualification": "Before final descriptive filenames/docs; fixture bytes, feature and contract policies unchanged"
+  },
+  "finalCandidate": {
+    "fixtureCommit": "a3048639f5b9c521852b9d126b83639c08eae056",
+    "adapterChecksPassed": 128
+  },
+  "officialRelease": {
+    "python": "3.12",
+    "committedPassed": 1163,
+    "localOnlyPassed": 4,
+    "optionalLibreOfficeSkipped": 3,
+    "seconds": 36.892,
+    "junitSha256": "9cbb3e94985938c448895435a69618e592346edb471c1e71ff83216c240af9ed",
+    "installedWheelChecksPassed": 13
+  },
+  "acceptance": {
+    "runId": "b7d8dd66-44c8-4dbd-b754-c67a69ad4c25",
+    "cases": 19,
+    "steps": 159,
+    "outcome": "passed",
+    "featureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3",
+    "rootManifestSha256": "8dd07f4483ba00a848727945a7409b59ad64745573b091696410aaaf4afcae29",
+    "mutationContractSha256": "49539a13efb2cce1697e9a9ffdeccd69ce98d79a930aba8757e4f2b017e6118a",
+    "pythonMappingSha256": "58439c23a703daaea38efeb82493ea58de58fd40b239c861d9eac4f8638561e5"
+  },
+  "preservationEquivalence": {
+    "method": "Exact old member sets, read-back facts, asset IDs and allowed changes matched; complement equals every previous preserve map",
+    "preservedMemberCounts": {
+      "title-and-subtitle.pptx": 38,
+      "present-placeholder.docx": 15,
+      "default-style.xlsx": 8,
+      "cross-sheet-cache.xlsx": 9
+    },
+    "originalDerivedLineageChecked": true
+  },
+  "catalogue": {
+    "candidateDefinitions": 1022,
+    "nativeInstances": 1147,
+    "sharedCases": 19,
+    "features": 67,
+    "manualOverrides": 66,
+    "gapEntries": 140,
+    "status": "staging; semantic reconciliation and generated-seed inventory incomplete; no execution credit"
+  },
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "Three optional LibreOffice skips",
+    "Windows/native Office rendering not tested",
+    "No production deployment",
+    "Candidate matrix and official-release scopes kept distinct"
+  ]
+}

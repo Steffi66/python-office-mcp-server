@@ -202,7 +202,7 @@ Feature: word advanced tools native behavior capture
     And template path is prepared as temp dir under "missing_staffing_table.docx"
     And output is prepared as temp dir under "missing_staffing_out.docx"
     When word advanced tools.tool word generate sow using str representation of temp dir under "missing_staffing_table.docx"; str representation of temp dir under "missing_staffing_out.docx"; {"staffing": [{"role": "Architect", "hours": "40"}]}
-    Then result field "success" is false or result field "status" occurs in "{'failed', 'partial_success'}"
+    Then result field "success" is false or result field "status" occurs in "{'partial_success', 'failed'}"
     And at least one item satisfies item field "purpose" equals "staffing" and item field "reason" equals "no_matching_table_found" for each item in result field "table_diagnostics", defaulting to []
 
   @candidate-python-word-advanced-tools-0804226cdb

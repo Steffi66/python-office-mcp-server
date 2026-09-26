@@ -32,7 +32,7 @@ Feature: xlsx dependency preservation native behavior capture
     And result at "preservation" at "cache_policy" equals "invalidate-all-formula-caches"
     And the result of load workbook with tmp path under "out.xlsx"; data only data only at "Input" at "A1" value equals 10
     And the result of load workbook with tmp path under "out.xlsx"; data only data only at "Calc" at "A1" value equals expected
-    And when name does not occur in "{'xl/workbook.xml', 'xl/worksheets/sheet1.xml', 'xl/worksheets/sheet2.xml'}", the result of parts with tmp path under "source.xlsx" at name equals the result of parts with tmp path under "out.xlsx" at name
+    And when name does not occur in "{'xl/worksheets/sheet2.xml', 'xl/workbook.xml', 'xl/worksheets/sheet1.xml'}", the result of parts with tmp path under "source.xlsx" at name equals the result of parts with tmp path under "out.xlsx" at name
     And the result of ET.fromstring with the result of parts with tmp path under "out.xlsx" at "xl/workbook.xml" first match for S joined with "calcPr" field "forceFullCalc" equals "1"
 
   @candidate-python-xlsx-dependency-preservation-232a6f4854
