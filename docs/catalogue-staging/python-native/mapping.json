@@ -16547,7 +16547,7 @@
       "sourceLine": 42,
       "sourceSha256": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45",
       "feature": "features/test_patch_transactions.feature",
-      "scenario": "Native check: preview never modifies source or destination",
+      "scenario": "Dry-run plans one change and preserves saved files and directory entries",
       "parameterGroups": [
         {
           "arguments": "\"suffix,target\"",
@@ -16740,10 +16740,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Snapshot compares immediate regular-file names/bytes and entry names only; no metadata/timestamps, external paths, response completeness or semantic matched-value assertion."
+      ],
+      "semanticReviewCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+      "semanticReviewNotes": "patch-transactions-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-patch-transactions-d45a22b5f7",
@@ -16752,7 +16756,7 @@
       "sourceLine": 66,
       "sourceSha256": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45",
       "feature": "features/test_patch_transactions.feature",
-      "scenario": "Native check: strict refusal is atomic",
+      "scenario": "Strict batches refuse a later unmatched target without changing saved files",
       "parameterGroups": [
         {
           "arguments": "\"destination\"",
@@ -16963,10 +16967,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Per-result all(not applied) permits a missing/empty results list; no exact diagnostics/cardinality/error-code assertion. Snapshot and no-directory checks are end-of-call observations, not crash/concurrency safety."
+      ],
+      "semanticReviewCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+      "semanticReviewNotes": "patch-transactions-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-patch-transactions-69c7d57f18",
@@ -16975,7 +16983,7 @@
       "sourceLine": 83,
       "sourceSha256": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45",
       "feature": "features/test_patch_transactions.feature",
-      "scenario": "Native check: presentation batch accumulates at distinct output",
+      "scenario": "A safe PPTX batch saves both edits to a distinct output and preserves source bytes",
       "parameterGroups": [
         {
           "arguments": "\"destination\"",
@@ -17016,10 +17024,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks changes_applied=2, reopened title/subtitle and source byte equality; no success/status/per-result assertion or unrelated output-member preservation check."
+      ],
+      "semanticReviewCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+      "semanticReviewNotes": "patch-transactions-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-patch-transactions-86b17c8885",
@@ -17028,7 +17040,7 @@
       "sourceLine": 101,
       "sourceSha256": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45",
       "feature": "features/test_patch_transactions.feature",
-      "scenario": "Native check: word best effort counts each placeholder",
+      "scenario": "Default-mode Word patch reports one applied placeholder and saves changed text",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -17043,10 +17055,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Mode and output_path are omitted; saved text uses _get_text_with_track_changes, with no revision XML, author/date or unrelated-member assertion."
+      ],
+      "semanticReviewCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+      "semanticReviewNotes": "patch-transactions-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-patch-transactions-6a9d778173",
@@ -17055,7 +17071,7 @@
       "sourceLine": 115,
       "sourceSha256": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45",
       "feature": "features/test_patch_transactions.feature",
-      "scenario": "Native check: invalid range does not leak partial rows in best effort",
+      "scenario": "Invalid range inputs leave observed first-row cells intact while a separate edit saves",
       "parameterGroups": [
         {
           "arguments": "\"value\"",
@@ -17112,10 +17128,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Only A1, B1 and D1 are inspected after invalid A1:B2 input; A2/B2 and all other cells are not checked. No status/per-result diagnostics or whole-package preservation assertion."
+      ],
+      "semanticReviewCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+      "semanticReviewNotes": "patch-transactions-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-patch-transactions-b2522e469b",
@@ -17124,7 +17144,7 @@
       "sourceLine": 132,
       "sourceSha256": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45",
       "feature": "features/test_patch_transactions.feature",
-      "scenario": "Native check: missing pptx placeholder is not applied",
+      "scenario": "An absent PPTX target applies nothing and preserves source bytes",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -17139,10 +17159,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks zero applied count and unchanged source bytes for target absent; no success/status, refusal reason or result-cardinality assertion."
+      ],
+      "semanticReviewCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+      "semanticReviewNotes": "patch-transactions-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-patch-transactions-ccdfa52bb0",
@@ -17151,7 +17175,7 @@
       "sourceLine": 142,
       "sourceSha256": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45",
       "feature": "features/test_patch_transactions.feature",
-      "scenario": "Native check: invalid excel address preserves source",
+      "scenario": "Five invalid Excel addresses apply nothing and preserve source bytes",
       "parameterGroups": [
         {
           "arguments": "\"bad_target\"",
@@ -17240,10 +17264,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks zero applied count and unchanged bytes for five explicit invalid addresses; no complete address grammar, success/status or diagnostic-code assertion."
+      ],
+      "semanticReviewCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+      "semanticReviewNotes": "patch-transactions-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-path-variations-74c3fa7ca4",
@@ -30930,6 +30958,55 @@
       "candidateScenarioId": "@candidate-python-word-pptx-advanced-ops-d7e13faae4",
       "gaps": [
         "Response-shape assertion accepts an error dictionary; no analysis field/value, formatting or blue-guidance detection, style mutation, source preservation or inheritance assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_patch_transactions.py::test_preview_never_modifies_source_or_destination",
+      "candidateScenarioId": "@candidate-python-patch-transactions-ae7eee373d",
+      "gaps": [
+        "Snapshot compares immediate regular-file names/bytes and entry names only; no metadata/timestamps, external paths, response completeness or semantic matched-value assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_patch_transactions.py::test_strict_refusal_is_atomic",
+      "candidateScenarioId": "@candidate-python-patch-transactions-d45a22b5f7",
+      "gaps": [
+        "Per-result all(not applied) permits a missing/empty results list; no exact diagnostics/cardinality/error-code assertion. Snapshot and no-directory checks are end-of-call observations, not crash/concurrency safety."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_patch_transactions.py::test_presentation_batch_accumulates_at_distinct_output",
+      "candidateScenarioId": "@candidate-python-patch-transactions-69c7d57f18",
+      "gaps": [
+        "Checks changes_applied=2, reopened title/subtitle and source byte equality; no success/status/per-result assertion or unrelated output-member preservation check."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_patch_transactions.py::test_word_best_effort_counts_each_placeholder",
+      "candidateScenarioId": "@candidate-python-patch-transactions-86b17c8885",
+      "gaps": [
+        "Mode and output_path are omitted; saved text uses _get_text_with_track_changes, with no revision XML, author/date or unrelated-member assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_patch_transactions.py::test_invalid_range_does_not_leak_partial_rows_in_best_effort",
+      "candidateScenarioId": "@candidate-python-patch-transactions-6a9d778173",
+      "gaps": [
+        "Only A1, B1 and D1 are inspected after invalid A1:B2 input; A2/B2 and all other cells are not checked. No status/per-result diagnostics or whole-package preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_patch_transactions.py::test_missing_pptx_placeholder_is_not_applied",
+      "candidateScenarioId": "@candidate-python-patch-transactions-b2522e469b",
+      "gaps": [
+        "Checks zero applied count and unchanged source bytes for target absent; no success/status, refusal reason or result-cardinality assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_patch_transactions.py::test_invalid_excel_address_preserves_source",
+      "candidateScenarioId": "@candidate-python-patch-transactions-ccdfa52bb0",
+      "gaps": [
+        "Checks zero applied count and unchanged bytes for five explicit invalid addresses; no complete address grammar, success/status or diagnostic-code assertion."
       ]
     }
   ],

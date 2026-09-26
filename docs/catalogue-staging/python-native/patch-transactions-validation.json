@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "scope": "Seven patch transaction descriptions with 30 recorded native cases; parser and inventory validation only",
+  "reviewedSourceCommit": "7aaa45b0197c00679ae6e178f02bce4ab8f2c7dc",
+  "sourceSha256": {
+    "tests/test_patch_transactions.py": "5a7bd24409fd3c4dd05659a961f108e2c4760c5166a330ac05fdce11e760ef45"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 7,
+    "recordedCases": 30,
+    "compiledCases": 7,
+    "parameterTableRowsUnchanged": true,
+    "features": [
+      {
+        "feature": "docs/catalogue-staging/python-native/features/test_patch_transactions.feature",
+        "cases": 7,
+        "compiledStepsIncludingBackground": 54
+      }
+    ],
+    "changedMappingRows": 7,
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 168,
+    "newAssertionLimitEntries": 7,
+    "totalEntries": 175
+  },
+  "localDocumentationLinks": 8,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "171f1b4371b5cb1136aba48a9afe375d8693c24a7c4d904130efa11fc2ae30c7",
+    "docs/catalogue-staging/python-native/features/test_patch_transactions.feature": "d5367cafbf97e21990bb98f32693b3b0789ad4835fb4eeefd743dd0f0bceb9c2",
+    "docs/catalogue-staging/python-native/mapping.json": "c41ea26f2b25ea304de2dbaa93a6a75c4dfa5917c548219acd380b10c8e8a704",
+    "docs/catalogue-staging/python-native/patch-transactions-review.md": "d42c3494509f780e21b18081bad9033c5431d6b5e2f314318077979bc7e325d3"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "Central reconciliation and generated-seed inventory incomplete",
+    "Parsing Gherkin does not execute native tests or Office operations"
+  ]
+}

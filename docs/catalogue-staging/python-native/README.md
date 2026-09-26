@@ -42,9 +42,13 @@ The [cross-format comment review](comment-tools-e2e-review.md) checks six direct
 
 The [formatting-analysis review](formatting-analysis-review.md) checks three definitions at `bf56bf9`. All accept error dictionaries; two assert only dictionary type and one has a weaker alternative-outcome expression. Their blue guidance and placeholder inputs receive no detection assertions. These response-shape tests provide no paragraph-style authoring or inheritance coverage.
 
+## Patch transaction source review
+
+The [transaction review](patch-transactions-review.md) checks seven definitions and retains all 30 recorded parameter cases at `7aaa45b`. It restores before/after snapshot meanings, exact destination setup and saved-document observations. The range-refusal test checks only A1/B1/D1, strict result flags permit an empty list, and default-mode calls stay distinct from explicit mode arguments. No native execution or shared-lane binding was added.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 168 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries and two new formatting-analysis entries. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 175 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries and seven transaction entries. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 
