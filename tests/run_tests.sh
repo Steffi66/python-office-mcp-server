@@ -1,27 +1,13 @@
 #!/bin/bash
-# Run tests for MCP tools
-# Usage: ./run_tests.sh [pytest args]
-
-set -e
+# Run verification without formatting or fixing source files.
+# Usage: PYTHON=/path/to/python bash tests/run_tests.sh [pytest paths/options]
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MCP_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$(dirname "$SCRIPT_DIR")"
 
-cd "$MCP_DIR"
-
-echo "=========================================="
-echo "Running ruff linter..."
-echo "=========================================="
-python -m ruff check tools/ tests/ --fix || true
-python -m ruff format tools/ tests/ || true
-
-echo ""
-echo "=========================================="
-echo "Running pytest..."
-echo "=========================================="
-python -m pytest tests/ "$@"
-
-echo ""
-echo "=========================================="
-echo "Tests complete!"
-echo "=========================================="
+# Explicit paths replace the full-suite default, allowing efficient focused batches.
+if [ "$#" -eq 0 ]; then
+    set -- tests/
+fi
+exec "${PYTHON:-python}" -m pytest "$@"
