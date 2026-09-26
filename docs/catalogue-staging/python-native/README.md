@@ -20,6 +20,10 @@ Descriptions were extracted from native fixture documentation, concrete calls, a
 
 An independent bounded review found lost intermediate-value meanings, conditional guards and weak tests whose names overstate their assertions. The capture now includes derived expressions and branch qualifications, and records weak assertions as gaps. For example, a formatted-Markdown test asserts only a success result; it does not prove preserved bold/italic formatting. Bullet-list text assertions do not prove numbering definitions.
 
+## XML-family source review
+
+The [XML-family review](xml-family-review.md) separates Boolean XML equivalence, package admission and package diffing. Nine native definitions were checked directly; two staging prose values were corrected without changing tests. The mapping marks these entries `native-source-reviewed`; this is semantic review status, not central acceptance or new execution credit.
+
 ## Remaining reconciliation
 
 `mapping.json` lists 140 entries with explicit gaps. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.

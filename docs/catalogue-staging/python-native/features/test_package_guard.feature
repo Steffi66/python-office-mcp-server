@@ -26,7 +26,7 @@ Feature: package guard native behavior capture
   # Native: tests/test_package_guard.py::test_limits_refuse_before_large_allocations
   Scenario: Native check: limits refuse before large allocations
     Given A DEFLATED ZIP contains a.xml with ten thousand spaces enclosed in an XML element
-    And Each configured limit is tested independently: max_members=1, max_member_bytes=4, max_total_bytes=8 or max_ratio=2
+    And Each configured limit is tested independently: max_members=0, max_member_bytes=2, max_total_bytes=2 or max_ratio=1
     And each of these native parameter variants is exercised independently
       | variant | parameter values |
       | [limit0] | {"limit": "{'max_members': 0}"} |
@@ -47,8 +47,8 @@ Feature: package guard native behavior capture
   @candidate-python-package-guard-004ca93762
   # Native: tests/test_package_guard.py::test_package_diff_distinguishes_real_and_equivalent_changes
   Scenario: Native check: package diff distinguishes real and equivalent changes
-    Given The old ZIP contains a.xml=<a xmlns="urn:a"/> and b.bin=old
-    And The new ZIP contains the equivalent prefix spelling <p:a xmlns:p="urn:a"/>, b.bin=new and added c.bin=added
+    Given The old ZIP contains a.xml=<a xmlns="urn:x"/> and b.bin=old
+    And The new ZIP contains the equivalent prefix spelling <p:a xmlns:p="urn:x"/>, b.bin=new and added c.bin=added
     When Compare the original and changed ZIP package payloads
     Then a.xml is reported as equivalent XML
     And b.bin is reported changed

@@ -16232,9 +16232,10 @@
         }
       ],
       "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-guard-6a549316ed",
@@ -16317,11 +16318,12 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "manual-override",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
         "Allocation size is not measured directly; refusal is the tested effect"
-      ]
+      ],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-guard-803565567d",
@@ -16346,9 +16348,10 @@
         }
       ],
       "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-guard-004ca93762",
@@ -16373,9 +16376,10 @@
         }
       ],
       "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "manual-override",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-preservation-00a43c0f38",
@@ -16396,12 +16400,13 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "manual-override",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
         "It does not probe duplicate IDs, extra attributes, or mixed equivalent and non-equivalent relationship sets.",
         "It only covers two relationship entries under the OPC relationships namespace."
-      ]
+      ],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-preservation-4d465caaa9",
@@ -16422,12 +16427,13 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "manual-override",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
         "It checks only one example each for text whitespace, sibling order, and attribute value differences.",
         "It does not distinguish whether failure comes from normalization policy, parser behavior, or explicit comparison rules."
-      ]
+      ],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-preservation-4bf31dfbf9",
@@ -16448,12 +16454,13 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "manual-override",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
         "It checks only one prefix-valued attribute named `value`.",
         "It does not cover multiple prefixes, default namespaces, or QName-like values in element text."
-      ]
+      ],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-preservation-9babfbd455",
@@ -16474,12 +16481,13 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "manual-override",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
         "It does not show behavior for one-valid/one-invalid comparisons or differentiate parse-error categories.",
         "It only covers same-input rejection cases."
-      ]
+      ],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-package-preservation-59db595b9c",
@@ -16500,12 +16508,13 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "manual-override",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
         "It covers only target/content differences, not position changes or repeated instructions.",
         "It does not test whitespace-only comment changes or processing-instruction data changes with the same target."
-      ]
+      ],
+      "semanticReviewSourceCommit": "de17e86d9f71d5915a10de4557aefeb6a5465a41"
     },
     {
       "candidateScenarioId": "@candidate-python-patch-transactions-ae7eee373d",
