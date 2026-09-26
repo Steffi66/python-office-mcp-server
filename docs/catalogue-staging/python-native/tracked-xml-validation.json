@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "scope": "Six tracked-change helper XML structure descriptions; syntax/inventory only",
+  "reviewedSourceCommit": "a90503dd5473fa427d8a713cb353ce7a8e82ff79",
+  "sourceSha256": {
+    "tests/conftest.py": "1f3f8d173438c11be5a467004ac4504707d03f9e552c92ae3216b25adebd9e56",
+    "tests/test_track_changes.py": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 6,
+    "recordedCases": 6,
+    "changedMappingRows": 6,
+    "scenarios": [
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-ef6e5bd3a7",
+        "steps": 8
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-12023074dc",
+        "steps": 8
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-095d85b1f1",
+        "steps": 7
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-9f6d5aa0cf",
+        "steps": 9
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-c8394a6706",
+        "steps": 7
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-68da4f2809",
+        "steps": 9
+      }
+    ],
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 186,
+    "existingEntriesExtended": 0,
+    "newEntries": 6,
+    "totalEntries": 192
+  },
+  "localDocumentationLinks": 13,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "033163827c01765f59ee4ad37ac2f09eb8182eaf72f305b68b6053ecb20a5b0b",
+    "docs/catalogue-staging/python-native/features/test_track_changes.feature": "85248830137acd30f3e291814a6fe4b2ad2b6cb32e80546cceaf6f774776a59b",
+    "docs/catalogue-staging/python-native/mapping.json": "8e1651abf4e4707acc2a51ba224a18979d1abdbe303a0e482b6d05dd72cbd590",
+    "docs/catalogue-staging/python-native/tracked-xml-review.md": "dbf579d42e2ed007ad62c81a5151a676ae12a051ce33f0612eaa723698ff1e85"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "No full schema, date validity, complete revision identity or Word rendering execution credit",
+    "Central reconciliation and generated-seed inventory incomplete"
+  ]
+}

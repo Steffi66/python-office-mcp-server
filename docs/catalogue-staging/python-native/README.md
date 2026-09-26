@@ -58,9 +58,13 @@ The [XLSX dependency review](xlsx-dependencies-review.md) checks five definition
 
 The [text and clone review](text-and-clone-review.md) checks five definitions at `b87134b`. It restores Word revision observations before accept-all, the cloned-chart data edit and save/reopen sequence, and named pre-call byte snapshots. Two replaced PPTX occurrences remain distinct from one reported applied patch entry; explicit notes import does not establish default or exclusion policy.
 
+## Tracked-change XML structure source review
+
+The [tracked XML review](tracked-xml-review.md) checks six helper-level definitions at `a90503d`. It limits structure claims to the selected insertion/deletion and first run, preserves metadata presence versus exact-value distinctions, and records date-prefix and empty-ID-list weaknesses. The other ten scenarios in that feature are unchanged; no schema or Word rendering credit is added.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 186 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries, three new XLSX dependency entries and five text/clone entries. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 192 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries, three new XLSX dependency entries, five text/clone entries and six tracked-XML entries. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 

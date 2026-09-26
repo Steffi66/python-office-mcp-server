@@ -23049,7 +23049,7 @@
       "sourceLine": 39,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: insertion has required attributes [TestTrackChangesXMLStructure]",
+      "scenario": "Saved insertion exposes non-null metadata and the requested author",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23063,10 +23063,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks last insertion attributes for non-null presence and exact author only; no numeric ID, date validity, total count, schema or rendered Word assertion."
+      ],
+      "semanticReviewCommit": "a90503dd5473fa427d8a713cb353ce7a8e82ff79",
+      "semanticReviewNotes": "tracked-xml-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-12023074dc",
@@ -23075,7 +23079,7 @@
       "sourceLine": 66,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: insertion contains run with text [TestTrackChangesXMLStructure]",
+      "scenario": "The first run of the last saved insertion contains the expected text",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23089,10 +23093,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks only first text of first run in last insertion; no all-run structure, exact child/revision count, full schema or rendered Word assertion."
+      ],
+      "semanticReviewCommit": "a90503dd5473fa427d8a713cb353ce7a8e82ff79",
+      "semanticReviewNotes": "tracked-xml-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-095d85b1f1",
@@ -23101,7 +23109,7 @@
       "sourceLine": 91,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: deletion has required attributes [TestTrackChangesXMLStructure]",
+      "scenario": "Saved deletion exposes non-null metadata attributes",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23115,10 +23123,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Deletion author is presence-only despite supplied Test Author; no exact author value, numeric ID/date validity, full schema or rendered Word assertion."
+      ],
+      "semanticReviewCommit": "a90503dd5473fa427d8a713cb353ce7a8e82ff79",
+      "semanticReviewNotes": "tracked-xml-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-9f6d5aa0cf",
@@ -23127,7 +23139,7 @@
       "sourceLine": 113,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: deletion uses delText not text [TestTrackChangesXMLStructure]",
+      "scenario": "The first run of the last saved deletion uses delText and has no direct t child",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23141,10 +23153,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "delText/no-t checks apply only to first run of last deletion; no all-run or nested-content validation, exact counts, full schema or rendering assertion."
+      ],
+      "semanticReviewCommit": "a90503dd5473fa427d8a713cb353ce7a8e82ff79",
+      "semanticReviewNotes": "tracked-xml-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-c8394a6706",
@@ -23153,7 +23169,7 @@
       "sourceLine": 142,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: date format is iso8601 [TestTrackChangesXMLStructure]",
+      "scenario": "The last insertion date matches a numeric date-time prefix",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23167,10 +23183,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Regex checks a prefix only: no end anchor, timezone/Z requirement, valid calendar or time ranges; not complete ISO8601 validation."
+      ],
+      "semanticReviewCommit": "a90503dd5473fa427d8a713cb353ce7a8e82ff79",
+      "semanticReviewNotes": "tracked-xml-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-68da4f2809",
@@ -23179,7 +23199,7 @@
       "sourceLine": 162,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: unique ids across document [TestTrackChangesXMLStructure]",
+      "scenario": "Collected insertion and deletion IDs contain no duplicate values",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23193,10 +23213,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Uniqueness has no expected count, non-null or numeric-ID assertion; an empty list or one missing ID among distinct values can pass. Only word/document.xml is scanned."
+      ],
+      "semanticReviewCommit": "a90503dd5473fa427d8a713cb353ce7a8e82ff79",
+      "semanticReviewNotes": "tracked-xml-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-c3917b3be8",
@@ -31136,6 +31160,48 @@
       "candidateScenarioId": "@candidate-python-preserving-text-and-clone-f60f9a0596",
       "gaps": [
         "Explicit include_notes=True checks truthy success, donor byte identity and imported note substring; no default/false policy, exact notes, slide count/title or receiver/notes-master graph assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesXMLStructure::test_insertion_has_required_attributes",
+      "candidateScenarioId": "@candidate-python-track-changes-ef6e5bd3a7",
+      "gaps": [
+        "Checks last insertion attributes for non-null presence and exact author only; no numeric ID, date validity, total count, schema or rendered Word assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesXMLStructure::test_insertion_contains_run_with_text",
+      "candidateScenarioId": "@candidate-python-track-changes-12023074dc",
+      "gaps": [
+        "Checks only first text of first run in last insertion; no all-run structure, exact child/revision count, full schema or rendered Word assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesXMLStructure::test_deletion_has_required_attributes",
+      "candidateScenarioId": "@candidate-python-track-changes-095d85b1f1",
+      "gaps": [
+        "Deletion author is presence-only despite supplied Test Author; no exact author value, numeric ID/date validity, full schema or rendered Word assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesXMLStructure::test_deletion_uses_delText_not_text",
+      "candidateScenarioId": "@candidate-python-track-changes-9f6d5aa0cf",
+      "gaps": [
+        "delText/no-t checks apply only to first run of last deletion; no all-run or nested-content validation, exact counts, full schema or rendering assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesXMLStructure::test_date_format_is_iso8601",
+      "candidateScenarioId": "@candidate-python-track-changes-c8394a6706",
+      "gaps": [
+        "Regex checks a prefix only: no end anchor, timezone/Z requirement, valid calendar or time ranges; not complete ISO8601 validation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesXMLStructure::test_unique_ids_across_document",
+      "candidateScenarioId": "@candidate-python-track-changes-68da4f2809",
+      "gaps": [
+        "Uniqueness has no expected count, non-null or numeric-ID assertion; an empty list or one missing ID among distinct values can pass. Only word/document.xml is scanned."
       ]
     }
   ],
