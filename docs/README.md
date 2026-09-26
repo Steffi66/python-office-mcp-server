@@ -7,7 +7,8 @@ Start with the repository [README](../README.md) to install the server and confi
 | [Operating limits](operations.md) | File paths, permissions, previews, receipts, package bounds and handling sensitive files |
 | [uMCP core and transports](umcp-core.md) | Dependency pin, structured results, prompts/resources, cancellation, authenticated HTTP sessions and update procedure |
 | [Staged writer scope](writer-scope.md) | Which mutations commit atomically and which preservation guarantees apply |
-| [Testing](testing.md) | Development setup, Gherkin, installed-wheel checks and recorded results |
+| [Testing](testing.md) | Schema-2 fixture IDs and releases, development setup, Gherkin, wheel checks and scoped results |
+| [Native catalogue staging](catalogue-staging/python-native/README.md) | Candidate behaviour capture, source mappings and unresolved semantic gaps; no execution credit |
 | [XLSX adoption decision](xlsx-adoption-decision.md) | Why upstream openpyxl is retained and what a structural-edit engine would need |
 | [Package adoption](provenance/package-adoption.md) | ZIP/XML admission, diff semantics and refusal boundaries |
 | [Selected text and slide improvements](provenance/selected-enhancements.md) | Run-span replacement, clone independence and supported boundaries |

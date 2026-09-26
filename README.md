@@ -241,9 +241,9 @@ Start with `office_help`, then inspect, preview, patch to a new output, and reop
 
 Install the development dependencies before running `bash tests/run_tests.sh`, or select related test paths as arguments. Set `PYTHON=/path/to/python` to choose the environment. The [testing guide](docs/testing.md) covers setup, focused batches, Gherkin reports and the optional LibreOffice checks. Verification never auto-formats or fixes source.
 
-Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. Fixtures and shared requirements come from the tagged `references/fixtures-ooxml` submodule. Python reads the shared Gherkin directly and uses `tests/acceptance/shared-mapping.json` for local implementation status; no duplicate feature copy is maintained.
+Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. Fixtures and shared requirements come from the tagged `references/fixtures-ooxml` submodule. Python reads the shared Gherkin directly and uses `tests/acceptance/shared-mapping.json` for local implementation status; no duplicate executable feature copy is maintained. Schema-2 document inputs have stable content IDs and one physical payload under central `fixtures/<format>/<scenario-group>/`; tests obtain paths from the manifest. The separate native-test catalogue staging directory is incomplete reconciliation input, not additional executable coverage.
 
-The committed suite passed on Python 3.10, 3.12 and 3.13; a clean wheel also passed stdio and authenticated Streamable HTTP workflow tests. The [uMCP upgrade report](validation/umcp-upgrade.json) records the pinned core, scope-separated test counts and official-SDK smoke result. LibreOffice checks were skipped locally because the executable was unavailable. Native Microsoft Office rendering and Windows executable behaviour have not been verified locally.
+The [testing guide](docs/testing.md) separates historical runtime results, fixture-migration measurements and current release checks. The [uMCP integration report](validation/umcp-upgrade.json) records its original source pin, scope-separated test counts and official-SDK smoke result; it is not the current fixture-release report. LibreOffice checks were skipped locally because the executable was unavailable. Native Microsoft Office rendering and Windows executable behaviour have not been verified locally.
 
 The [test results](docs/testing.md#recorded-results) distinguish committed tests from local-only tests. The [implementation checklist](docs/checklists/preservation-safety.md) records the completed merge into `main`; the [XLSX adoption decision](docs/xlsx-adoption-decision.md) explains why the server retains upstream openpyxl.
 
@@ -494,7 +494,7 @@ python -m venv .venv
 python -m pip install "git+https://github.com/rcarmo/python-office-mcp-server.git"
 ```
 
-This installs the `office-mcp-server` command. Requires Python >=3.10; locally tested on 3.10, 3.12 and 3.13. If a GUI client cannot find the command, configure the absolute executable path; its environment may not inherit your shell's `PATH`.
+This installs the `office-mcp-server` command and the exact Git-pinned transport dependency. Git must be available during installation. The public PyPI package named `umcp` is unrelated; use the repository's dependency declaration. Requires Python >=3.10; locally tested on 3.10, 3.12 and 3.13. If a GUI client cannot find the command, configure the absolute executable path; its environment may not inherit your shell's `PATH`.
 
 ### Install from local clone
 
@@ -507,7 +507,7 @@ uv run office-mcp-server
 # In an activated pip environment: python -m pip install -e '.[dev]'
 ```
 
-### Run without installing
+### Run the source script after installing dependencies
 
 ```bash
 git clone --recurse-submodules https://github.com/rcarmo/python-office-mcp-server.git

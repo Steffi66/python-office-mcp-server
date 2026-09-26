@@ -16,7 +16,7 @@ from xml.etree import ElementTree as ET
 
 import pytest
 
-from tests.fixture_paths import TEMPLATES
+from tests.fixture_paths import template_fixture
 from pptx import Presentation
 from pptx.util import Inches, Mm
 
@@ -283,7 +283,7 @@ class TestComments:
 
     def test_get_comments_from_fixture_comments_pptx(self, pptx_advanced_tools, temp_dir):
         """Should read comments from the real comments.pptx test fixture."""
-        fixture_path = TEMPLATES / "testdata/pptx/comments.pptx"
+        fixture_path = template_fixture("testdata/pptx/comments.pptx")
         test_file = temp_dir / "fixture_comments.pptx"
         test_file.write_bytes(fixture_path.read_bytes())
 

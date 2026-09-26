@@ -11,7 +11,13 @@ from docx import Document
 from openpyxl import load_workbook
 from pptx import Presentation
 
-from tests.fixture_paths import FIXTURE_SOURCE
+from tests.fixture_paths import (
+    FIXTURE_SOURCE,
+    fixture_path,
+    load_fixture_assets,
+    shared_fixture,
+    template_asset_ids,
+)
 from tests.fixture_paths import SHARED as ROOT
 
 MANIFEST = json.loads((ROOT / "fixture-manifest.json").read_text())
@@ -23,8 +29,9 @@ def digest(data):
 
 def test_shared_pack_matches_pinned_manifest():
     manifest = json.loads((ROOT / "pack-manifest.json").read_text())
-    assert manifest["schemaVersion"] == 1
-    assert manifest["distributionRevision"] == "fixtures-ooxml-v0.1.0"
+    assert manifest["schemaVersion"] == 2
+    assert manifest["distributionRevision"] == "fixtures-ooxml-v0.2.0"
+    assert manifest["fixturePathBase"] == "repository-root"
     assert manifest["sourcePackManifestSha256"] == "4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de"
     assert manifest["lifecycle"] == "planned"
     assert manifest["bindingsImplemented"] is False
@@ -67,7 +74,8 @@ def test_expanded_inventory_has_unique_ids_and_exact_fixture_pins():
 
 @pytest.mark.parametrize("fixture", MANIFEST["fixtures"], ids=lambda f: f["id"])
 def test_fixture_and_member_hashes(fixture):
-    path = ROOT / fixture["path"]
+    path = shared_fixture(fixture["id"])
+    assert path == FIXTURE_SOURCE / fixture["path"]
     assert digest(path.read_bytes()) == fixture["sha256"]
     assert fixture["origin"]["revision"] == "36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943"
     with zipfile.ZipFile(path) as archive:
@@ -81,16 +89,16 @@ def test_fixture_and_member_hashes(fixture):
 
 
 def test_pinned_word_and_slide_facts():
-    document = Document(ROOT / "fixtures" / "present-placeholder.docx")
+    document = Document(shared_fixture("present-placeholder.docx"))
     assert [p.text for p in document.paragraphs] == ["<Present>"]
-    presentation = Presentation(ROOT / "fixtures" / "title-and-subtitle.pptx")
+    presentation = Presentation(shared_fixture("title-and-subtitle.pptx"))
     assert len(presentation.slides) == 1
     assert presentation.slides[0].shapes.title.text == "Original title"
     assert presentation.slides[0].placeholders[1].text == "Original subtitle"
 
 
 def test_pinned_workbook_style_and_cache_facts():
-    path = ROOT / "fixtures" / "default-style.xlsx"
+    path = shared_fixture("default-style.xlsx")
     workbook = load_workbook(path)
     try:
         assert workbook.active["A1"].value == "before"
@@ -103,7 +111,7 @@ def test_pinned_workbook_style_and_cache_facts():
         assert len(styles.find(ns + "cellXfs")) == 1
 
     for data_only, expected in ((True, 2), (False, "=Input!A1*2")):
-        workbook = load_workbook(ROOT / "fixtures" / "cross-sheet-cache.xlsx", data_only=data_only)
+        workbook = load_workbook(shared_fixture("cross-sheet-cache.xlsx"), data_only=data_only)
         try:
             assert workbook["Input"]["A1"].value == 1
             assert workbook["Calc"]["A1"].value == expected
@@ -112,19 +120,20 @@ def test_pinned_workbook_style_and_cache_facts():
 
 
 def test_central_fixture_manifest_matches_python_inputs():
-    from tests.fixture_paths import TEMPLATES
-
-    records = json.loads((FIXTURE_SOURCE / "manifest.json").read_text())["files"]
+    records = load_fixture_assets(FIXTURE_SOURCE)
+    mapping = template_asset_ids()
+    assert len(mapping) == 37  # Two defaults and 35 document fixtures; notices stay metadata.
     prefix = "fixtures/python-office-mcp-server/tests/_templates/"
-    inputs = [record for record in records if record["path"].startswith(prefix)]
-    assert len(inputs) == 38
-    assert {record["path"][len(prefix):] for record in inputs} == {
-        path.relative_to(TEMPLATES).as_posix() for path in TEMPLATES.rglob("*") if path.is_file()
-    }
-    for record in inputs:
-        data = (FIXTURE_SOURCE / record["path"]).read_bytes()
-        assert len(data) == record["bytes"]
-        assert digest(data) == record["sha256"]
+    expected = {alias[len(prefix):]: record["id"] for record in records.values()
+                for alias in record["aliases"] if alias.startswith(prefix)}
+    assert mapping == expected
+    for asset_id in mapping.values():
+        assert fixture_path(asset_id).is_file()
+    actual_files = {p.relative_to(FIXTURE_SOURCE).as_posix()
+                    for p in (FIXTURE_SOURCE / "fixtures").rglob("*") if p.is_file()}
+    assert actual_files == {record["path"] for record in records.values()}
+    for asset_id in records:
+        fixture_path(asset_id)  # Verify one physical payload per unique ID/hash.
 
 
 def test_python_constants_match_selected_shared_facts():

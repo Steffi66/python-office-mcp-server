@@ -41,4 +41,4 @@ Feature: azure pricing tools native behavior capture
     And AzurePricingTools price cache at the result of cache key with "Key Vault"; "westeurope"; "USD" is set to [{"serviceName": "Key Vault"}]
     When tools.tool azure list services using region "westeurope"; currency "USD"; from cache only true
     Then result field "source" equals "cache"
-    And set representation of result field "services", defaulting to [] is at least "{'Key Vault', 'Service Bus'}"
+    And set representation of result field "services", defaulting to [] is at least "{'Service Bus', 'Key Vault'}"

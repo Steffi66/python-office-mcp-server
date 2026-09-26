@@ -11,7 +11,7 @@ from openpyxl import load_workbook
 from pptx import Presentation
 
 from office_server import OfficeServer
-from tests.fixture_paths import SHARED
+from tests.fixture_paths import shared_fixture
 
 SOFFICE = shutil.which("soffice") or shutil.which("libreoffice")
 pytestmark = [pytest.mark.oracle, pytest.mark.skipif(not SOFFICE, reason="LibreOffice unavailable: calculation/rendering unverified")]
@@ -35,7 +35,7 @@ def convert(tmp_path, source, fmt):
 
 def test_libreoffice_recalculates_invalidated_cross_sheet_cache(tmp_path):
     source = tmp_path / "calculation.xlsx"
-    shutil.copy2(SHARED / "fixtures/cross-sheet-cache.xlsx", source)
+    shutil.copy2(shared_fixture("cross-sheet-cache.xlsx"), source)
     result = OfficeServer().tool_office_patch(str(source), [{"target": "Input!A1", "value": 10}])
     assert result["calculation_state"] == "recalculation-required"
     output = convert(tmp_path, source, "xlsx")

@@ -6,7 +6,7 @@ Use unencrypted `.docx`, `.xlsx`, `.xlsm` and `.pptx` inputs. Extension dispatch
 
 ## Transports
 
-The bundled `aioumcp.py` recognises these optional modes:
+The installed transport dependency recognises these optional modes:
 
 | Invocation | Behaviour |
 |---|---|

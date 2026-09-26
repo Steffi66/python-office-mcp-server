@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.fixture_paths import TEMPLATES
+from tests.fixture_paths import template_fixture
 
 # Check for openpyxl availability
 try:
@@ -968,7 +968,7 @@ class TestOfficePatchExcel:
 
     def test_patch_preserves_shared_strings_and_sheet_relationships(self, tools, temp_dir):
         """Fixture with comments/shared strings should keep related OOXML parts after a cell patch."""
-        source = TEMPLATES / "testdata/excel/comments.xlsx"
+        source = template_fixture("testdata/excel/comments.xlsx")
         original_path = temp_dir / "comments.xlsx"
         shutil.copy2(source, original_path)
         output_path = temp_dir / "comments_patched.xlsx"
@@ -1011,7 +1011,7 @@ class TestOfficePatchExcel:
 
     def test_patch_preserves_content_types_for_related_excel_parts(self, tools, temp_dir):
         """[Content_Types].xml should remain consistent for preserved comment/shared-string parts."""
-        source = TEMPLATES / "testdata/excel/comments.xlsx"
+        source = template_fixture("testdata/excel/comments.xlsx")
         original_path = temp_dir / "comments_types.xlsx"
         shutil.copy2(source, original_path)
         output_path = temp_dir / "comments_types_patched.xlsx"

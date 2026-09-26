@@ -5,17 +5,13 @@ from pathlib import Path
 
 import pytest
 
-from tests.fixture_paths import TEMPLATES
+from tests.fixture_paths import fixture_path, template_asset_ids
 
 
 def _office_fixture_files() -> list[Path]:
     """Return all Office Open XML fixture files under testdata."""
-    testdata_root = TEMPLATES / "testdata"
-    suffixes = {".docx", ".xlsx", ".pptx"}
-    files = [
-        path for path in testdata_root.rglob("*")
-        if path.is_file() and path.suffix.lower() in suffixes
-    ]
+    files = [fixture_path(asset_id) for name, asset_id in template_asset_ids().items()
+             if name.startswith("testdata/")]
     return sorted(files)
 
 

@@ -9,10 +9,9 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment
 
 from office_server import OfficeServer
-from tests.fixture_paths import SHARED
+from tests.fixture_paths import shared_fixture
 from tools.xlsx_preservation import merge_styles
 
-FIXTURES = SHARED / "fixtures"
 S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
 
@@ -24,7 +23,7 @@ def parts(path):
 def test_multiline_edit_saves_style_dependency_and_retains_opaque_parts(tmp_path):
     source = tmp_path / "source.xlsx"
     output = tmp_path / "out.xlsx"
-    shutil.copy2(FIXTURES / "default-style.xlsx", source)
+    shutil.copy2(shared_fixture("default-style.xlsx"), source)
     before = parts(source)
     result = OfficeServer().tool_office_patch(
         str(source), [{"target": "A1", "value": "first\nsecond"}],
@@ -51,7 +50,7 @@ def test_multiline_edit_saves_style_dependency_and_retains_opaque_parts(tmp_path
 def test_cross_sheet_formula_cache_is_invalidated_without_calculation(tmp_path):
     source = tmp_path / "source.xlsx"
     output = tmp_path / "out.xlsx"
-    shutil.copy2(FIXTURES / "cross-sheet-cache.xlsx", source)
+    shutil.copy2(shared_fixture("cross-sheet-cache.xlsx"), source)
     before = parts(source)
     result = OfficeServer().tool_office_patch(
         str(source), [{"target": "Input!A1", "value": 10}],
@@ -102,7 +101,7 @@ def test_style_reindexing_is_refused():
 
 def test_calculation_chain_relationship_and_content_type_are_removed(tmp_path):
     source = tmp_path / "source.xlsx"
-    entries = parts(FIXTURES / "cross-sheet-cache.xlsx")
+    entries = parts(shared_fixture("cross-sheet-cache.xlsx"))
     rel_ns = "{http://schemas.openxmlformats.org/package/2006/relationships}"
     rels = ET.fromstring(entries["xl/_rels/workbook.xml.rels"])
     ET.SubElement(rels, rel_ns + "Relationship", {

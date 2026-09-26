@@ -507,7 +507,7 @@ Feature: office unified tools native behavior capture
   Scenario: Native check: patch preserves shared strings and sheet relationships [TestOfficePatchExcel]
     Given tools
     And an isolated writable temporary directory
-    And source is prepared as TEMPLATES under "testdata/excel/comments.xlsx"
+    And source is prepared as the result of template fixture with "testdata/excel/comments.xlsx"
     And original path is prepared as temp dir under "comments.xlsx"
     And output path is prepared as temp dir under "comments_patched.xlsx"
     When tools.tool office patch using file path str representation of temp dir under "comments.xlsx"; output path str representation of temp dir under "comments_patched.xlsx"; changes [{"target": "A1", "value": "Patched comment fixture"}]
@@ -524,7 +524,7 @@ Feature: office unified tools native behavior capture
   Scenario: Native check: patch preserves content types for related excel parts [TestOfficePatchExcel]
     Given tools
     And an isolated writable temporary directory
-    And source is prepared as TEMPLATES under "testdata/excel/comments.xlsx"
+    And source is prepared as the result of template fixture with "testdata/excel/comments.xlsx"
     And original path is prepared as temp dir under "comments_types.xlsx"
     And output path is prepared as temp dir under "comments_types_patched.xlsx"
     When tools.tool office patch using file path str representation of temp dir under "comments_types.xlsx"; output path str representation of temp dir under "comments_types_patched.xlsx"; changes [{"target": "A1", "value": "Content types patch"}]

@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from docx import Document
 
-from tests.fixture_paths import TEMPLATES, require_fixtures
+from tests.fixture_paths import require_fixtures, template_fixture
 
 # Check for openpyxl availability
 try:
@@ -24,14 +24,14 @@ except ImportError:
     HAS_PPTX = False
 
 
-def _ensure_default_docx_template(templates_dir: Path) -> None:
+def _ensure_default_docx_template() -> None:
     """Ensure a usable default.docx exists for python-docx."""
     try:
         import docx.api
     except ImportError:
         return
 
-    default_path = templates_dir / "default.docx"
+    default_path = template_fixture("default.docx")
     if default_path.exists():
         docx.api._default_docx_path = lambda: str(default_path)
         return
@@ -39,7 +39,7 @@ def _ensure_default_docx_template(templates_dir: Path) -> None:
     raise RuntimeError(f"Missing shared template: {default_path}; initialise the fixture submodule")
 
 
-def _ensure_default_pptx_template(templates_dir: Path) -> None:
+def _ensure_default_pptx_template() -> None:
     """Ensure a usable default.pptx exists for python-pptx."""
     if not HAS_PPTX:
         return
@@ -49,7 +49,7 @@ def _ensure_default_pptx_template(templates_dir: Path) -> None:
     except ImportError:
         return
 
-    default_path = templates_dir / "default.pptx"
+    default_path = template_fixture("default.pptx")
     if default_path.exists():
         pptx.api._default_pptx_path = lambda: str(default_path)
         return
@@ -60,8 +60,8 @@ def _ensure_default_pptx_template(templates_dir: Path) -> None:
 def pytest_configure():
     """Configure fallback templates for Office libraries."""
     require_fixtures()
-    _ensure_default_docx_template(TEMPLATES)
-    _ensure_default_pptx_template(TEMPLATES)
+    _ensure_default_docx_template()
+    _ensure_default_pptx_template()
 
 
 # =============================================================================

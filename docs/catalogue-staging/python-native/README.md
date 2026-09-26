@@ -4,25 +4,25 @@ This directory stages Python test descriptions for import and reconciliation in 
 
 ## Scope
 
-- 1,013 native test definitions across 65 test modules.
-- 1,126 collected native cases, including parameter variants.
+- 1,019 native test definitions across 66 test modules.
+- 1,140 collected native cases, including parameter variants.
 - 19 existing shared Gherkin cases reused by their original stable keys; no copied feature.
-- 29 parametrisation decorators; dynamic fixture variants are retained in collected-case mappings.
+- 31 parametrisation decorators; dynamic fixture variants are retained in collected-case mappings.
 - Four user-local untracked tests are excluded.
 
 Every definition has a candidate scenario ID, source path/line/hash, native node IDs and parameter values in `mapping.json`. The shared cases use the same tagged submodule as the executable Python suite. Candidate IDs are reconciliation handles; the central repository assigns or reuses canonical behaviour IDs. Language mappings must not introduce divergent expected outcomes.
 
 ## What was checked
 
-The official Gherkin parser/compiler accepts all 65 feature files and finds 1,013 unique candidate scenarios. Each scenario has context, action and outcome steps. Mappings cover every collected native definition and parameter instance. These checks establish inventory and syntax, not semantic equivalence or execution.
+The official Gherkin parser/compiler accepts all 66 feature files and finds 1,019 unique candidate scenarios. Each scenario has context, action and outcome steps. Mappings cover every collected native definition and parameter instance. These checks establish inventory and syntax, not semantic equivalence or execution.
 
-Descriptions were extracted from native fixture documentation, concrete calls, assertions and collected parameters. Fifty-seven definitions have manually authored semantic overrides, covering manual Word inspection, LibreOffice, HTTP, mutation faults, pure helpers and selected Markdown/package cases. Other entries are explicitly marked `unreviewed-extraction` in the mapping.
+Descriptions were extracted from native fixture documentation, concrete calls, assertions and collected parameters. Sixty-three definitions have manually authored semantic overrides, covering manual Word inspection, LibreOffice, HTTP, mutation faults, pure helpers and selected Markdown/package cases. Other entries are explicitly marked `unreviewed-extraction` in the mapping.
 
 An independent bounded review found lost intermediate-value meanings, conditional guards and weak tests whose names overstate their assertions. The capture now includes derived expressions and branch qualifications, and records weak assertions as gaps. For example, a formatted-Markdown test asserts only a success result; it does not prove preserved bold/italic formatting. Bullet-list text assertions do not prove numbering definitions.
 
 ## Remaining reconciliation
 
-`mapping.json` lists 138 entries with explicit gaps. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 139 entries with explicit gaps. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 

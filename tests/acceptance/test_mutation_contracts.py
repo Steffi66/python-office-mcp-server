@@ -15,7 +15,7 @@ from pptx import Presentation
 from pytest_bdd import given, parsers, scenarios, then, when
 
 from office_server import OfficeServer
-from tests.fixture_paths import FEATURE, SHARED
+from tests.fixture_paths import FEATURE, SHARED, shared_fixture
 from tools.word_advanced_tools import _get_text_with_track_changes
 
 MANIFEST = json.loads((SHARED / "fixture-manifest.json").read_text())
@@ -47,7 +47,7 @@ def workbook_value(path, target, data_only=False):
 @given(parsers.parse('fixture "{name}" verified against the fixture manifest'))
 def fixture(ctx, name):
     record = next(f for f in MANIFEST["fixtures"] if f["id"] == name)
-    data = (SHARED / record["path"]).read_bytes()
+    data = shared_fixture(name).read_bytes()
     assert hashlib.sha256(data).hexdigest() == record["sha256"]
     ctx["fixture"] = record
     ctx["source"] = ctx["root"] / name

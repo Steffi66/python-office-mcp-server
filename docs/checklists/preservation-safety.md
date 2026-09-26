@@ -4,7 +4,7 @@ The preservation-safety work was merged and pushed to `main` as `7f4552d3bf221e6
 
 The implementation was based on `36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943`; the audited source at `774ee72` differs only in two CI files. Work ran in an isolated worktree before the merge. The original lockfile's quickjs removal is included in the merged lock. Two untracked standalone import files remain unchanged and uncommitted in the main checkout.
 
-See [testing](../testing.md) for current commands and result scopes. Historical measurements below retain their original counts and limitations.
+See [testing](../testing.md) for current commands, fixture IDs and result scopes. Historical measurements below retain their original counts and limitations. References to copied features or an intact local pack describe the old implementation; current tests read central Gherkin and content-addressed fixtures directly. Historical source IDs remain evidence identifiers after history cleanup, not fresh test results at rewritten commits.
 
 ## Completed research
 
@@ -73,7 +73,7 @@ Verification: **1,040 passed in 17.21s**. Source/destination fingerprint changes
 - [x] Restore byte-original semantically unchanged PPTX XML payloads before publication (acceptance exposed this prerequisite ahead of Batch 8).
 - [x] Run all 19 cases plus runner self-tests as one batch; review and commit.
 
-Verification: **66 tests passed in 1.36s**, including **19 acceptance cases / 159 executed steps**. Runtime feature copy is tagged `@implemented @python`; original shared pack remains immutable/planned evidence. This checkpoint used a temporary JSON tolerance workaround; the v2 correction below removed it. Current bindings consume official-compiler table values with strict JSON decoding. Conservative OPC-equivalence restores unchanged PPTX payloads without relaxing fixture hashes. Independent regressions cover whitespace, child order, prefix-valued attributes and DTD rejection. The worktree lockfile was refreshed for pytest-bdd; original checkout lockfile is untouched.
+Verification: **66 tests passed in 1.36s**, including **19 acceptance cases / 159 executed steps**. At that checkpoint the runtime feature copy was tagged `@implemented @python`; current bindings instead select cases through a local mapping without copying Gherkin. This checkpoint used a temporary JSON tolerance workaround; the v2 correction below removed it. Current bindings consume official-compiler table values with strict JSON decoding. Conservative OPC-equivalence restores unchanged PPTX payloads without relaxing fixture hashes. Independent regressions cover whitespace, child order, prefix-valued attributes and DTD rejection. The worktree lockfile was refreshed for pytest-bdd; original checkout lockfile is untouched.
 
 ## Batch 6: MCP and packaging
 
@@ -137,7 +137,7 @@ Verification: **5 passed, 3 skipped in 0.18s**. LibreOffice is absent locally; s
 
 ## Test execution policy
 
-Use `PYTHON=/path/to/python bash tests/run_tests.sh tests/test_a.py tests/test_b.py -q -o addopts=''` for focused batches. Calling without arguments runs the full suite. Do not run a full suite once per file, or parallelise multiple full-suite processes against the same checkout. New fixtures use isolated temporary document directories.
+Use `PYTHON=/path/to/python bash tests/run_tests.sh tests/test_a.py tests/test_b.py -q -o addopts=''` for focused batches. Calling without arguments runs the full suite. Do not run a full suite once per file, or parallelise multiple full-suite processes against the same checkout. Reusable input documents belong in the shared fixture registry. Tests write mutable working copies and outputs to isolated temporary directories. Existing synthetic constructor and fault-injection setup still has to be reconciled with the central workflow catalogue; moving the committed inputs does not complete that inventory.
 
 Run formatting/lint checks explicitly on touched files. Verification must not auto-fix source. Preserve JUnit and resolved dependency versions for CI. Repeat the full suite at transaction and transport integration boundaries, then before final delivery. A failing batch is fixed and rerun before its implementation commit; confirmed red regression seeds may be committed only if explicitly separated and labelled, never hidden as passing acceptance.
 
@@ -148,4 +148,4 @@ Run formatting/lint checks explicitly on touched files. Verification must not au
 - [x] Python reads the official compiler's decoded table rather than pytest-bdd's raw escape form; remove `strict=False` workaround.
 - [x] Verify 36 inventory/ledger/acceptance tests, including all 19 cases / 159 steps.
 
-v2 seal SHA-256: `4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de`. Four fixture hashes and stable scenario/case identities are unchanged. The earlier Batch5 note about accepting literal control characters is superseded by this strict compiled-input contract.
+Historical v2 source-pack seal SHA-256: `4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de`. Current distribution seals are in `tests/fixtures-pin.json`; this historical seal must not be used as the current pin. Four fixture hashes and stable scenario/case identities are unchanged. The earlier Batch5 note about accepting literal control characters is superseded by this strict compiled-input contract.

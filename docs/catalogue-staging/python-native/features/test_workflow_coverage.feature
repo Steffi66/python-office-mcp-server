@@ -21,7 +21,7 @@ Feature: workflow coverage native behavior capture
     And tools.tool word cleanup sow using str representation of temp dir under "workflow_generated.docx"; output path str representation of temp dir under "workflow_cleaned.docx"
     And tools.tool word audit completion using str representation of temp dir under "workflow_cleaned.docx"
     Then generation field "success" is true
-    And generation field "status" occurs in "{'success', 'partial_success'}"
+    And generation field "status" occurs in "{'partial_success', 'success'}"
     And cleanup field "success" is true
     And audit field "success" is true
     And audit field "score", defaulting to 0 is at least 95

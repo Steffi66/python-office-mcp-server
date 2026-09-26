@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "scope": "Official grouped schema2 release verification; working-tree tests before coordinated history publication",
+  "originalParentCommit": "89bccc191ba6ba6aa5d8ab05c08bde4176804604",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.2.0",
+    "commit": "631b1136c9d65451d21746db2ae2635866902cb4",
+    "manifestSha256": "9262a572e6fed0314fbe1fc957ba283d530b651a27649e902a3d47183940736a",
+    "sharedPackManifestSha256": "a718444dfd2c88c03f10e07d0f0c18dcb8234425535f563ac125916ddce50848",
+    "distributionRevision": "fixtures-ooxml-v0.2.0"
+  },
+  "runtimes": [
+    {
+      "runtime": "3.10",
+      "committedPassed": 1156,
+      "localOnlyPassed": 4,
+      "skipped": 3,
+      "seconds": 39.299,
+      "junitSha256": "8ba71c264903e4b45160ba89c28ff426ad17ba9d439011252a637865b0121181"
+    },
+    {
+      "runtime": "3.12",
+      "committedPassed": 1156,
+      "localOnlyPassed": 4,
+      "skipped": 3,
+      "seconds": 38.833,
+      "junitSha256": "d0e727a395a6de211a7fb075e4b7baf0ca3dab754e61270d91b7a61fc8b1513d"
+    },
+    {
+      "runtime": "3.13",
+      "committedPassed": 1156,
+      "localOnlyPassed": 4,
+      "skipped": 3,
+      "seconds": 36.76,
+      "junitSha256": "1c632cb3132f1ba2258cb9c3ee5e15f1909be0f68677e71ed9e46ec3702d66c8"
+    }
+  ],
+  "acceptance": {
+    "cases": 19,
+    "steps": 159,
+    "runId": "04c104b7-b8bc-4bc6-8498-6857351290ec",
+    "outcome": "passed",
+    "fixtureTag": "v0.2.0",
+    "fixtureCommit": "631b1136c9d65451d21746db2ae2635866902cb4",
+    "featureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3",
+    "mappingSha256": "a7e1a1e0432e9b0b6b8d3ac933796f999566330b18062fe02ba4aa4a0b0fce4a"
+  },
+  "wheel": {
+    "checksPassed": 13,
+    "sha256": "eb55bac741c7d350c485ab661b358dd7f990abbcc1b41bc04a88e430f4ad16b3",
+    "fixtureCopiesBundled": false,
+    "transportSourceBundled": false
+  },
+  "dependency": {
+    "url": "git+https://github.com/rcarmo/umcp.git@30cce7dfe08c6ee63de235f7d81754ba286dafbb",
+    "version": "0.2.2",
+    "licenceIncluded": true
+  },
+  "docs": {
+    "markdownFiles": 16,
+    "localLinksAndAnchors": 60,
+    "pythonJsonSnippets": 40,
+    "independentReview": "timed out; not counted"
+  },
+  "catalogue": {
+    "candidateDefinitions": 1019,
+    "nativeInstances": 1140,
+    "reusedSharedCases": 19,
+    "features": 66,
+    "manualOverrides": 63,
+    "explicitGapEntries": 139,
+    "status": "staging; central semantic reconciliation incomplete; no execution credit"
+  },
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "Three LibreOffice skips per runtime",
+    "Native Office/Windows runtime not validated",
+    "Reusable generated seed inventory incomplete",
+    "Candidate catalogue semantic reconciliation incomplete",
+    "No production deployment"
+  ]
+}

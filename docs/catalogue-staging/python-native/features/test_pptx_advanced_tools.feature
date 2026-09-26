@@ -215,8 +215,8 @@ Feature: pptx advanced tools native behavior capture
   Scenario: Native check: get comments from fixture comments pptx [TestComments]
     Given Create an instance of PresentationAdvancedTools.
     And an isolated writable temporary directory
-    And file.write bytes with saved bytes of TEMPLATES under "testdata/pptx/comments.pptx"
-    And fixture path is prepared as TEMPLATES under "testdata/pptx/comments.pptx"
+    And file.write bytes with saved bytes of the result of template fixture with "testdata/pptx/comments.pptx"
+    And fixture path is prepared as the result of template fixture with "testdata/pptx/comments.pptx"
     And file is prepared as temp dir under "fixture_comments.pptx"
     When pptx advanced tools.tool pptx get comments using str representation of temp dir under "fixture_comments.pptx"; 1
     Then "error" does not occur in result

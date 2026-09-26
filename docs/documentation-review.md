@@ -1,5 +1,15 @@
 ## Documentation review, 2026-09-26
 
+### Grouped fixture and dependency migration
+
+The current review covers all 16 tracked Markdown documents. Setup now requires recursive submodule initialisation and Git for the exact transport dependency. Tests resolve schema-2 fixture IDs through the manifest, preserve one physical payload per digest, and refuse dirty facts/workflows before collection. The grouped layout is `fixtures/<format>/<scenario-group>/`; aliases are metadata, not compatibility directories.
+
+Current instructions distinguish candidate checks in an isolated clone from verification of a published annotated release. Historical counts, source IDs and source-pack seals are labelled as historical evidence. Native catalogue staging retains explicit semantic gaps and grants no execution credit; reusable generated-input inventory is separate unfinished work.
+
+The direct review checked 60 local links/anchors and parsed 40 Python/JSON snippets across the 16 documents. Snippet parsing checks syntax, not native Office rendering or every example workflow. The additional independent documentation review timed out and is not counted as a pass. [Testing](testing.md) and the source-pinned migration report give current runtime scopes.
+
+### Earlier documentation-only review
+
 The review checked the README, operating/testing guidance, writer scope and OOXML research notes against the Python source at `7bcd040`. Corrections in this batch change documentation only. Shared contract bytes, recorded validation results and runtime code are unchanged.
 
 | Finding | Correction |

@@ -17,6 +17,8 @@ PYTHON=.venv/bin/python bash tests/run_tests.sh \
   -q -o addopts=''
 ```
 
+Install Git as well as Python: the exact transport dependency is installed from its Git revision. An unqualified package named `umcp` from PyPI is unrelated and must not replace the declared dependency.
+
 Use full-suite runs at integration boundaries. Running several full suites concurrently against the same checkout duplicates work and can overwrite test reports. Fixtures use temporary document directories; test reports and caches are separate from source files. Default templates and committed reference documents come from `references/fixtures-ooxml`. Missing inputs fail with submodule initialisation instructions; tests never generate replacement files in the shared checkout. Before collection, setup verifies the pinned HEAD, annotated release tag, both manifest seals and whole-submodule `git status --porcelain`. Dirty facts, workflow definitions, staged changes and untracked files refuse even when every document hash still matches. Isolated synthetic-repository tests cover those refusals without modifying shared inputs.
 
 ## Gherkin and typed inputs
@@ -40,7 +42,7 @@ Shared v2 uses strict JSON after Gherkin compilation. In a data table, write two
 
 The decoded JSON value contains a newline. Step text outside a table has a different escaping layer. Python consumes the official compiler's decoded table rather than pytest-bdd 8's raw table representation, then calls strict `json.loads`; Bun calls strict `JSON.parse`. Neither runner needs relaxed JSON or another unescape pass.
 
-The central distribution revision is `fixtures-ooxml-v0.1.0`. Its pack manifest seals the redistributed files; the earlier source seal is retained as provenance. Original fixture bytes, feature bytes and stable case identities are unchanged. New revisions need an explicit submodule update and local verification. Shared fact/consumer ledgers are reference metadata, not a substitute for local assertions.
+The schema-2 distribution revision is `fixtures-ooxml-v0.2.0`. Its pack manifest seals the shared metadata; document bytes live once under the central `fixtures/` directory, organised by format and scenario group. `tests/fixture-assets.json` maps Python's logical fixture names to content-addressed IDs. The resolver reads physical paths from the central manifest, verifies metadata and hashes, and rejects unsafe paths or symlinks. Historical aliases are metadata only; the consumer creates no compatibility directories or fixture copies. The earlier source seal is retained as provenance. Original fixture bytes, feature bytes and stable case identities are unchanged. New revisions need an explicit submodule update and local verification. Shared fact/consumer ledgers are reference metadata, not a substitute for local assertions.
 
 ## Real MCP and wheel installation
 
@@ -59,7 +61,7 @@ uv venv .wheel-venv
 uv pip install --python .wheel-venv/bin/python dist/*.whl
 OFFICE_MCP_TEST_PYTHON="$PWD/.wheel-venv/bin/python" \
   PYTHON=.venv/bin/python bash tests/run_tests.sh \
-  tests/test_stdio_mutation_workflows.py -q -o addopts=''
+  tests/test_stdio_mutation_workflows.py tests/test_office_http.py -q -o addopts=''
 ```
 
 Use a fresh wheel environment and a `dist/` containing only the intended wheel. The test client runs the installed server from a temporary working directory. Request/response transcripts are saved under `test-results/stdio/`. These tests cover stdio. `tests/test_office_http.py` separately starts authenticated loopback Streamable HTTP servers and checks sessions, persistent connections, progress streams, deletion, framing/auth limits and Office writes. It also checks legacy SSE selection and raw TCP startup. Run that file with `OFFICE_MCP_TEST_PYTHON` to target the same clean installed wheel.
@@ -92,9 +94,23 @@ The [manual oracle workflow](../.github/workflows/oracle.yml) provisions Writer,
 
 Native Microsoft Office rendering and the Windows executable runtime have not been verified locally. The implementation review delegations timed out; a later documentation-only review checked setup and test instructions, not implementation correctness.
 
+## Shared fixture releases
+
+The consumer's `tests/fixtures-pin.json` records the release tag, exact Git commit and both seals. `references/fixtures-ooxml` is an ordinary Git submodule at that commit. All OOXML consumers must use the same coordinated release; do not track its moving default branch or update only one consumer silently.
+
+The central manifest is schema 2. Fixture IDs are `fixture-<full SHA-256>`; physical files are grouped under `fixtures/<format>/<scenario-group>/`. A record supplies its repository-relative path, byte count, digest, format, scenario group, origins and historical aliases. Resolve the ID through that record, never by rebuilding a path from an alias. The shared acceptance manifest also uses repository-root paths and an `assetId` for each of its four named inputs. Thirty-seven Python mappings select two defaults and 35 test documents; the fixture-description notice is metadata rather than an Office package.
+
+Before adopting a release, verify its annotated tag and expected commit, update the gitlink and pin record, and run input-integrity, full native and installed-wheel tests. Dirty shared facts or workflows must fail even when document hashes match. Run candidate checks in a separate clone with an explicitly local test pin; never disable the release guard or publish that local tag. Candidate results must identify their draft source and cannot be reported as final-release verification.
+
+## Catalogue capture and remaining work
+
+`docs/catalogue-staging/python-native/` is temporary reconciliation input. Its README and mapping describe the captured source revision, denominator, manual reviews and gaps. Parsing candidate Gherkin grants no execution credit. The central repository owns canonical behaviour IDs and expected outcomes; Python keeps runner mappings and locally measured evidence. New resolver tests require a catalogue delta, and reusable generated input seeds still need inventory. Neither task is completed by moving committed fixture files.
+
 ## Fixture migration verification
 
-[Fixture migration results](../validation/fixture-migration.json) record the tested fixture tag and seals, exact transport dependency, three-runtime results and local-only file hashes. This report distinguishes pre-cutover working-tree verification from later clean-clone checks. Removed source inventories grant no new workflow coverage.
+[Schema-2 release verification](../validation/fixture-schema2-release.json) records official `v0.2.0` at `631b1136c9d65451d21746db2ae2635866902cb4`: **1,156 committed tests passed** on Python 3.10, 3.12 and 3.13, plus four preserved local-only tests and three optional LibreOffice skips per runtime. All 19 shared cases / 159 steps and 13 installed-wheel checks passed. These overlapping scopes are not added together. The current fixture pin and seals are in `tests/fixtures-pin.json`.
+
+Earlier [fixture migration results](../validation/fixture-migration.json) record the tested fixture tag and seals, exact transport dependency, three-runtime results and local-only file hashes. This report distinguishes pre-cutover working-tree verification from later clean-clone checks. Removed source inventories grant no new workflow coverage.
 
 ## Recorded results
 
