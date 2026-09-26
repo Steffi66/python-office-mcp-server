@@ -26,8 +26,12 @@ Batch 1 result: **1,114 passed, 3 LibreOffice skips in 24.51s**, including four 
 - [x] Batch 2: verify and commit/push.
 
 Batch 2 result: **53 passed in 3.12s** (plus the earlier 60-test run including help). A paused synchronous worker received cancellation and exited without replacing source/output. Cancellation is cooperative, cannot undo a completed commit and does not promise interruption within library code. Existing value omission keeps its clear-value compatibility semantics; only target is required in PatchChange. `office_read` advertises no invalid object/string outputSchema; mapping tools retain text plus structuredContent and signal actual failure with isError. Partial success still requires inspecting diagnostics.
-- [ ] Batch 3: environment-backed HTTP identity; real persistent session lifecycle, SSE stream, protocol/origin/header/size/error tests on loopback.
-- [ ] Batch 3: verify legacy selection and shutdown; commit/push.
+- [x] Batch 3: environment-backed bearer identity; real persistent session lifecycle, SSE stream, protocol/origin/header/size/error tests on loopback.
+- [x] Batch 3: prevent non-loopback anonymous HTTP and all non-loopback raw TCP; deny remote restart/global comment-identity mutation.
+- [x] Batch 3: namespace cancellation IDs by transport/session/principal (stateless requests also use peer); preserve byte-identical vendor files.
+- [x] Batch 3: verify legacy selection, expiry and shutdown; commit/push.
+
+Batch 3 result: **23 passed in 3.01s**. Tests use actual loopback HTTP sockets, an authenticated persistent POST connection and session SSE; expiry and cross-session cancellation are bounded in-process tests. Shared bearer credentials provide one identity, not roles/path isolation. Stdio remains local/no-token, legacy raw TCP remains loopback/no-HTTP-auth.
 - [ ] Batch 4: update setup/network/help/vendoring documentation and examples; batch-test and commit/push.
 - [ ] Final: full Python 3.10/3.12/3.13 regression, all 19 Gherkin cases, clean wheel stdio/HTTP, independent bounded review.
 - [ ] Final: publish pinned results, verify remote main/local edits and mark goal complete only after all required gates pass.

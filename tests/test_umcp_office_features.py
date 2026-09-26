@@ -120,7 +120,7 @@ def test_sync_worker_cancellation_prevents_publication(tmp_path, monkeypatch):
         try:
             assert await asyncio.to_thread(entered.wait, 5)
             notification = json.dumps({"jsonrpc": "2.0", "method": "notifications/cancelled", "params": {"requestId": 41}})
-            assert await server.process_request_async(notification) is None
+            assert await server.process_request_async(notification, context=MCPRequestContext(transport="stdio", principal="local-test")) is None
             response = await task
             assert response["error"]["code"] == -32800
         finally:
@@ -133,3 +133,36 @@ def test_sync_worker_cancellation_prevents_publication(tmp_path, monkeypatch):
     assert output.read_bytes() == b"previous destination"
     assert not mutation._path_locks
     assert not any(p.is_dir() for p in tmp_path.iterdir())
+
+
+def test_cancellation_ids_are_isolated_between_http_sessions():
+    async def check():
+        server = OfficeServer()
+        entered = [asyncio.Event(), asyncio.Event()]
+        release = asyncio.Event()
+
+        async def blocked(which: int) -> dict:
+            entered[which].set()
+            await release.wait()
+            return {"which": which}
+
+        server.register_tool("blocked", blocked)
+        contexts = [MCPRequestContext(transport="streamable-http", session_id=s, principal="same-principal") for s in ["session-a", "session-b"]]
+        tasks = [asyncio.create_task(server.process_request_async(request("tools/call", {"name": "blocked", "arguments": {"which": i}}, ident=7), context=ctx)) for i, ctx in enumerate(contexts)]
+        try:
+            await asyncio.wait_for(asyncio.gather(*(event.wait() for event in entered)), 3)
+            await server.process_request_async(json.dumps({"jsonrpc": "2.0", "method": "notifications/cancelled", "params": {"requestId": 7}}), context=contexts[0])
+            first = await asyncio.wait_for(tasks[0], 3)
+            assert first["error"]["code"] == -32800
+            assert not tasks[1].done()
+            release.set()
+            second = await asyncio.wait_for(tasks[1], 3)
+            assert second["result"]["structuredContent"] == {"which": 1}
+            assert not server._active_requests_by_id
+        finally:
+            release.set()
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks, return_exceptions=True)
+    asyncio.run(check())
