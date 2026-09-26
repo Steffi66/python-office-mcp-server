@@ -95,10 +95,13 @@ Verification: **1,083 passed in 21.06s**. Eight new tests exercise preview/commi
 
 ## Batch 8: bounded package components
 
-- [ ] Pin ZIP guard/package-diff sources, notices, dependent modules and tests.
-- [ ] Map supported inputs and refusal boundaries before copying code.
-- [ ] Adapt ZIP admission checks behind existing load/save helpers; test and commit.
-- [ ] Adapt DOCX/PPTX package diff and preservation save; test and commit each component.
+- [x] Pin ZIP guard/package-diff sources, notices, dependent modules and tests.
+- [x] Map supported inputs and refusal boundaries; implement bounded independent helpers rather than a partial verbatim port.
+- [x] Add ZIP admission checks to staged input/output paths, with resource limits and DTD rejection.
+- [x] Add package-diff receipts and DOCX/PPTX unchanged-payload restoration.
+- [x] Batch-test admission, preservation, fault injection and acceptance; commit.
+
+Verification: **54 passed in 1.76s**. Limits, duplicate/traversal names, unusual compression, UTF-16 DTD and malformed XML refusals are explicit. `docs/provenance/package-adoption.md` records the bounded package validation rules. Full OOXML schema/signature/rendering fidelity is not claimed.
 
 ## Batch 9: Word and presentation enhancements
 

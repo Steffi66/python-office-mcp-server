@@ -19,6 +19,9 @@ from typing import Any
 
 def validate_staged_document(path: Path) -> None:
     """Check archive readability and reopen through the format library before publishing."""
+    from .package_guard import admit_package
+
+    admit_package(path)
     with zipfile.ZipFile(path) as archive:
         names = archive.namelist()
         if len(names) != len(set(names)):
@@ -192,6 +195,9 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
         if source_state is None:
             raise FileNotFoundError(f"File not found: {source}")
         destination_state = fingerprint(destination)
+        from .package_guard import admit_package
+
+        admit_package(source_path)
         # Same filesystem for atomic publication; the whole private directory is removed
         # on every return, including scratch files made by legacy format writers.
         with tempfile.TemporaryDirectory(prefix=".office-patch-", dir=destination.parent) as tmp:
@@ -212,11 +218,16 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
             elif result.get("error"):
                 result.update(success=False, status="failed")
             elif planned:
-                if staged.suffix.lower() == ".pptx":
+                if fingerprint(source_path) != source_state:
+                    raise ValueError("Source changed before commit; retry with fresh inspection")
+                if staged.suffix.lower() in {".pptx", ".docx"}:
                     from .package_preservation import restore_unchanged_parts
 
                     restore_unchanged_parts(source_path, staged)
                 validate_staged_document(staged)
+                from .package_preservation import diff_package
+
+                result["package_diff"] = diff_package(source_path, staged)
                 if (Path(source).resolve() != source_path or Path(output or source).resolve() != destination
                         or fingerprint(source_path) != source_state
                         or fingerprint(destination) != destination_state):

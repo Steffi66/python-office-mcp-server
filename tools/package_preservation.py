@@ -5,6 +5,7 @@ relationship/content-type collections ignore child order. Unrecognised differenc
 remain visible; this does not equate arbitrary OOXML serialisations.
 """
 
+import hashlib
 import os
 import tempfile
 import zipfile
@@ -42,6 +43,22 @@ def equivalent_xml(left, right):
         return _tree(a) == _tree(b)
     except (ValueError, etree.XMLSyntaxError):
         return False
+
+
+def diff_package(original: Path, staged: Path) -> dict:
+    """Report payload changes; semantic-only XML differences are explicitly separate."""
+    with zipfile.ZipFile(original) as source, zipfile.ZipFile(staged) as edited:
+        old_names, new_names = set(source.namelist()), set(edited.namelist())
+        changed, equivalent = [], []
+        hashes = {}
+        for name in sorted(old_names & new_names):
+            old, new = source.read(name), edited.read(name)
+            if old == new:
+                continue
+            (equivalent if name.endswith((".xml", ".rels")) and equivalent_xml(old, new) else changed).append(name)
+            hashes[name] = {"before": hashlib.sha256(old).hexdigest(), "after": hashlib.sha256(new).hexdigest()}
+        return {"added": sorted(new_names - old_names), "removed": sorted(old_names - new_names),
+                "changed": changed, "equivalent_xml": equivalent, "changed_payload_hashes": hashes}
 
 
 def restore_unchanged_parts(original: Path, staged: Path) -> None:
