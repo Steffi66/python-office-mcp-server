@@ -152,13 +152,6 @@ def test_python_constants_match_selected_shared_facts():
 
 
 def test_fixture_submodule_matches_common_tag_and_seals():
-    import subprocess
+    from tests.fixture_paths import REPOSITORY, verify_fixture_source
 
-    from tests.fixture_paths import REPOSITORY
-
-    pin = json.loads((REPOSITORY / "tests/fixtures-pin.json").read_text())
-    assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=FIXTURE_SOURCE, text=True).strip() == pin["commit"]
-    assert subprocess.check_output(["git", "rev-parse", pin["tag"] + "^{commit}"], cwd=FIXTURE_SOURCE, text=True).strip() == pin["commit"]
-    assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=FIXTURE_SOURCE, text=True).strip()
-    assert digest((FIXTURE_SOURCE / "manifest.json").read_bytes()) == pin["manifestSha256"]
-    assert digest((ROOT / "pack-manifest.json").read_bytes()) == pin["sharedPackManifestSha256"]
+    verify_fixture_source(FIXTURE_SOURCE, json.loads((REPOSITORY / "tests/fixtures-pin.json").read_text()))

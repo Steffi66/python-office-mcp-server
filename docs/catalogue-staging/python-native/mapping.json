@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "purpose": "Central reconciliation input only; no independent authoritative behavior catalogue",
   "consumer": "python",
-  "sourceCommit": "e9783cdc453e57a2d082e5b31d3df682b753d619",
+  "sourceCommit": "4c41086820a2fb5599a9cc8dad2a9b8fdc692086",
   "sourceFileHashes": {
     "tests/test_acceptance_ledger.py": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
     "tests/test_advanced_edge_cases.py": "e56c9d4f8604fd84ca4c4f2ed74e19c35596aae277860160d1ac53ce6f3dfdf8",
@@ -22,6 +22,7 @@
     "tests/test_final_coverage.py": "9fa5ed5ba5f8618635e7d73519b0aeff06148f28fa20cced7945cba4ef8c297f",
     "tests/test_final_push.py": "68d4b594bd6cc6140ba92c774629264754b34a931c089ea60957169277dd0d7a",
     "tests/test_fixture_files_not_encrypted.py": "cba83db284f0ea03f574335346a83201cc26594d011747a094cf32078da5e416",
+    "tests/test_fixture_source_integrity.py": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
     "tests/test_high_volume.py": "59505137d72bc97fe06bad6161d62a3ed88b1cb060b3810c2b836fe4cf4d6e0a",
     "tests/test_image_insertion.py": "c220938da8d1069df41ecb3a513b5c2f75578bbd31497ad94dae77e715ab6e61",
     "tests/test_libreoffice_oracle.py": "5dfca98038710c65c36aa17f5c7c71f987ee0556c5f4f18943e75f9c7c20b202",
@@ -43,7 +44,7 @@
     "tests/test_pptx_slide_transfer_tools.py": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
     "tests/test_pptx_tools.py": "070fce88eeb2b30fc9237d768676257cd73aaf2ee9d07e62aac68eaff0ec3e5f",
     "tests/test_preserving_text_and_clone.py": "f685037696949cfbcb82227ee18ca3c28795f95149a0f5fcbebb18caed0ba5da",
-    "tests/test_shared_contract_inventory.py": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+    "tests/test_shared_contract_inventory.py": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
     "tests/test_stdio_mutation_workflows.py": "2cb749554aebfb9059bb5f9e634b61c4294a0b88d9a2b2f897f6e9bd8f82f4e9",
     "tests/test_strategic_coverage.py": "b86074725faf158f77d4b0c40cf16941800487ad92619a9c109646e9f6174ccb",
     "tests/test_targeted_coverage.py": "00776db3be0479a283f7dc3f31fdcdda785ba1c1f5fed0e3b20611a752785f2e",
@@ -69,8 +70,8 @@
     "tests/test_writer_enrolment.py": "65df9e2d378b909981d096f5e2904a0340df5fe2464261233adf2b26787bfa96",
     "tests/test_xlsx_dependency_preservation.py": "dd5ebdc5b9901b1db0d14886ded595c7979caf292004b91f967639891c2dc98e"
   },
-  "testDefinitionCount": 1006,
-  "nativeCollectedCaseCount": 1114,
+  "testDefinitionCount": 1013,
+  "nativeCollectedCaseCount": 1126,
   "sharedCaseCount": 19,
   "sharedFeature": "shared/v2/pack/features/mutation-safety.feature",
   "sharedFeatureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3",
@@ -9545,6 +9546,319 @@
       ],
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-8819fffbdd",
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_clean_annotated_release_is_accepted",
+      "sourcePath": "tests/test_fixture_source_integrity.py",
+      "sourceLine": 43,
+      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "feature": "features/test_fixture_source_integrity.feature",
+      "scenario": "Native check: clean annotated release is accepted",
+      "parameterGroups": [],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_clean_annotated_release_is_accepted",
+          "originalname": "test_clean_annotated_release_is_accepted",
+          "parameters": {},
+          "markers": [],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request"
+          ]
+        }
+      ],
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": [
+        "No machine-checked observable postcondition in the native test definition"
+      ]
+    },
+    {
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-5e151013de",
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_changes_outside_asset_manifest_refuse",
+      "sourcePath": "tests/test_fixture_source_integrity.py",
+      "sourceLine": 55,
+      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "feature": "features/test_fixture_source_integrity.feature",
+      "scenario": "Native check: changes outside asset manifest refuse",
+      "parameterGroups": [
+        {
+          "arguments": "\"path,stage\"",
+          "values": "[[\"facts/constants.json\", false], [\"facts/constants.json\", true], [\"ledgers/workflows.json\", false], [\"contracts/workflow.feature\", false], [\"unexpected.json\", false]]"
+        }
+      ],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_changes_outside_asset_manifest_refuse[facts/constants.json-False]",
+          "originalname": "test_changes_outside_asset_manifest_refuse",
+          "parameters": {
+            "path": "'facts/constants.json'",
+            "stage": "False"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request",
+            "path",
+            "stage"
+          ]
+        },
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_changes_outside_asset_manifest_refuse[facts/constants.json-True]",
+          "originalname": "test_changes_outside_asset_manifest_refuse",
+          "parameters": {
+            "path": "'facts/constants.json'",
+            "stage": "True"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request",
+            "path",
+            "stage"
+          ]
+        },
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_changes_outside_asset_manifest_refuse[ledgers/workflows.json-False]",
+          "originalname": "test_changes_outside_asset_manifest_refuse",
+          "parameters": {
+            "path": "'ledgers/workflows.json'",
+            "stage": "False"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request",
+            "path",
+            "stage"
+          ]
+        },
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_changes_outside_asset_manifest_refuse[contracts/workflow.feature-False]",
+          "originalname": "test_changes_outside_asset_manifest_refuse",
+          "parameters": {
+            "path": "'contracts/workflow.feature'",
+            "stage": "False"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request",
+            "path",
+            "stage"
+          ]
+        },
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_changes_outside_asset_manifest_refuse[unexpected.json-False]",
+          "originalname": "test_changes_outside_asset_manifest_refuse",
+          "parameters": {
+            "path": "'unexpected.json'",
+            "stage": "False"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request",
+            "path",
+            "stage"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-2f1928ccb6",
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_lightweight_tag_is_not_a_release",
+      "sourcePath": "tests/test_fixture_source_integrity.py",
+      "sourceLine": 66,
+      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "feature": "features/test_fixture_source_integrity.feature",
+      "scenario": "Native check: lightweight tag is not a release",
+      "parameterGroups": [],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_lightweight_tag_is_not_a_release",
+          "originalname": "test_lightweight_tag_is_not_a_release",
+          "parameters": {},
+          "markers": [],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-4ff44d8fbb",
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_head_must_match_pin",
+      "sourcePath": "tests/test_fixture_source_integrity.py",
+      "sourceLine": 74,
+      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "feature": "features/test_fixture_source_integrity.feature",
+      "scenario": "Native check: head must match pin",
+      "parameterGroups": [],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_head_must_match_pin",
+          "originalname": "test_head_must_match_pin",
+          "parameters": {},
+          "markers": [],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-52e383fc1e",
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_tag_must_point_to_pinned_head",
+      "sourcePath": "tests/test_fixture_source_integrity.py",
+      "sourceLine": 81,
+      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "feature": "features/test_fixture_source_integrity.feature",
+      "scenario": "Native check: tag must point to pinned head",
+      "parameterGroups": [],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_tag_must_point_to_pinned_head",
+          "originalname": "test_tag_must_point_to_pinned_head",
+          "parameters": {},
+          "markers": [],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-7db8c2c20b",
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_wrong_seal_refuses_even_clean_release",
+      "sourcePath": "tests/test_fixture_source_integrity.py",
+      "sourceLine": 90,
+      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "feature": "features/test_fixture_source_integrity.feature",
+      "scenario": "Native check: wrong seal refuses even clean release",
+      "parameterGroups": [
+        {
+          "arguments": "\"field\"",
+          "values": "[\"manifestSha256\", \"sharedPackManifestSha256\"]"
+        }
+      ],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_wrong_seal_refuses_even_clean_release[manifestSha256]",
+          "originalname": "test_wrong_seal_refuses_even_clean_release",
+          "parameters": {
+            "field": "'manifestSha256'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request",
+            "field"
+          ]
+        },
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_wrong_seal_refuses_even_clean_release[sharedPackManifestSha256]",
+          "originalname": "test_wrong_seal_refuses_even_clean_release",
+          "parameters": {
+            "field": "'sharedPackManifestSha256'"
+          },
+          "markers": [
+            "parametrize"
+          ],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request",
+            "field"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
+      "executionStatus": "not-executed-by-catalogue",
+      "gaps": []
+    },
+    {
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-f0b8987151",
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_nested_directory_is_not_mistaken_for_submodule",
+      "sourcePath": "tests/test_fixture_source_integrity.py",
+      "sourceLine": 96,
+      "sourceSha256": "a5d655eae41fd2d375ab7fb22402c882ecf9df19f28b2c229a475017e3236d97",
+      "feature": "features/test_fixture_source_integrity.feature",
+      "scenario": "Native check: nested directory is not mistaken for submodule",
+      "parameterGroups": [],
+      "collectedCases": [
+        {
+          "nodeid": "tests/test_fixture_source_integrity.py::test_nested_directory_is_not_mistaken_for_submodule",
+          "originalname": "test_nested_directory_is_not_mistaken_for_submodule",
+          "parameters": {},
+          "markers": [],
+          "fixtures": [
+            "tmp_path_factory",
+            "release",
+            "tmp_path",
+            "request"
+          ]
+        }
+      ],
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": []
     },
@@ -20291,7 +20605,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_shared_pack_matches_pinned_manifest",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 24,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: shared pack matches pinned manifest",
       "parameterGroups": [],
@@ -20314,7 +20628,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_expanded_inventory_has_unique_ids_and_exact_fixture_pins",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 42,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: expanded inventory has unique ids and exact fixture pins",
       "parameterGroups": [],
@@ -20337,7 +20651,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_fixture_and_member_hashes",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 69,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: fixture and member hashes",
       "parameterGroups": [
@@ -20410,7 +20724,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_pinned_word_and_slide_facts",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 83,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: pinned word and slide facts",
       "parameterGroups": [],
@@ -20436,7 +20750,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_pinned_workbook_style_and_cache_facts",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 92,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: pinned workbook style and cache facts",
       "parameterGroups": [],
@@ -20459,7 +20773,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_central_fixture_manifest_matches_python_inputs",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 114,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: central fixture manifest matches python inputs",
       "parameterGroups": [],
@@ -20482,7 +20796,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_python_constants_match_selected_shared_facts",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 130,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: python constants match selected shared facts",
       "parameterGroups": [],
@@ -20505,7 +20819,7 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_fixture_submodule_matches_common_tag_and_seals",
       "sourcePath": "tests/test_shared_contract_inventory.py",
       "sourceLine": 154,
-      "sourceSha256": "ccbf9acfd76225008f2e61189c90b40277ef11e35e8d6442fd45fbd1407878b8",
+      "sourceSha256": "28abc017b2f60def4ef6d436c35144356397076fa4253e25d148a33a4777e450",
       "feature": "features/test_shared_contract_inventory.feature",
       "scenario": "Native check: fixture submodule matches common tag and seals",
       "parameterGroups": [],
@@ -20518,10 +20832,12 @@
           "fixtures": []
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
+      "captureStatus": "needs-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "No machine-checked observable postcondition in the native test definition"
+      ]
     },
     {
       "candidateScenarioId": "@candidate-python-stdio-mutation-workflows-2fb0496806",
@@ -29034,6 +29350,13 @@
       ]
     },
     {
+      "nativeDefinition": "tests/test_fixture_source_integrity.py::test_clean_annotated_release_is_accepted",
+      "candidateScenarioId": "@candidate-python-fixture-source-integrity-8819fffbdd",
+      "gaps": [
+        "No machine-checked observable postcondition in the native test definition"
+      ]
+    },
+    {
       "nativeDefinition": "tests/test_high_volume.py::TestWordGetSection::test_get_first_section",
       "candidateScenarioId": "@candidate-python-high-volume-46f24d601c",
       "gaps": [
@@ -29376,6 +29699,13 @@
       "gaps": [
         "It does not assert formatting, placeholder types, or any additional slide and paragraph metadata.",
         "It locks behavior to two specific fixture files."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_shared_contract_inventory.py::test_fixture_submodule_matches_common_tag_and_seals",
+      "candidateScenarioId": "@candidate-python-shared-contract-inventory-e3956cda42",
+      "gaps": [
+        "No machine-checked observable postcondition in the native test definition"
       ]
     },
     {

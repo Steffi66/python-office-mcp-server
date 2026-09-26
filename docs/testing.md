@@ -17,7 +17,7 @@ PYTHON=.venv/bin/python bash tests/run_tests.sh \
   -q -o addopts=''
 ```
 
-Use full-suite runs at integration boundaries. Running several full suites concurrently against the same checkout duplicates work and can overwrite test reports. Fixtures use temporary document directories; test reports and caches are separate from source files. Default templates and committed reference documents come from `references/fixtures-ooxml`. Missing inputs fail with submodule initialisation instructions; tests never generate replacement files in the shared checkout.
+Use full-suite runs at integration boundaries. Running several full suites concurrently against the same checkout duplicates work and can overwrite test reports. Fixtures use temporary document directories; test reports and caches are separate from source files. Default templates and committed reference documents come from `references/fixtures-ooxml`. Missing inputs fail with submodule initialisation instructions; tests never generate replacement files in the shared checkout. Before collection, setup verifies the pinned HEAD, annotated release tag, both manifest seals and whole-submodule `git status --porcelain`. Dirty facts, workflow definitions, staged changes and untracked files refuse even when every document hash still matches. Isolated synthetic-repository tests cover those refusals without modifying shared inputs.
 
 ## Gherkin and typed inputs
 

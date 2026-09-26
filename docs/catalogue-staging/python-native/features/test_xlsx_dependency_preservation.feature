@@ -14,7 +14,7 @@ Feature: xlsx dependency preservation native behavior capture
     When OfficeServer().tool office patch using str representation of tmp path under "source.xlsx"; [{"target": "A1", "value": "first\nsecond"}]; mode "safe"; output path str representation of tmp path under "out.xlsx"
     Then result at "changes_applied" equals 1
     And the result of parts with tmp path under "out.xlsx" keys equals the result of parts with tmp path under "source.xlsx" keys
-    And when name does not occur in "{'xl/styles.xml', 'xl/worksheets/sheet1.xml'}", the result of parts with tmp path under "out.xlsx" at name equals the result of parts with tmp path under "source.xlsx" at name
+    And when name does not occur in "{'xl/worksheets/sheet1.xml', 'xl/styles.xml'}", the result of parts with tmp path under "out.xlsx" at name equals the result of parts with tmp path under "source.xlsx" at name
     And the result of load workbook with tmp path under "out.xlsx" active at "A1" value equals "first\nsecond"
     And the result of load workbook with tmp path under "out.xlsx" active at "A1" alignment wrap text is non-empty or true
     And 0 is at most int representation of c field "s", defaulting to "0" and int representation of c field "s", defaulting to "0" is below the number of entries in the result of ET.fromstring with the result of parts with tmp path under "out.xlsx" at "xl/styles.xml" first match for S joined with "cellXfs"
@@ -32,7 +32,7 @@ Feature: xlsx dependency preservation native behavior capture
     And result at "preservation" at "cache_policy" equals "invalidate-all-formula-caches"
     And the result of load workbook with tmp path under "out.xlsx"; data only data only at "Input" at "A1" value equals 10
     And the result of load workbook with tmp path under "out.xlsx"; data only data only at "Calc" at "A1" value equals expected
-    And when name does not occur in "{'xl/worksheets/sheet2.xml', 'xl/worksheets/sheet1.xml', 'xl/workbook.xml'}", the result of parts with tmp path under "source.xlsx" at name equals the result of parts with tmp path under "out.xlsx" at name
+    And when name does not occur in "{'xl/worksheets/sheet2.xml', 'xl/workbook.xml', 'xl/worksheets/sheet1.xml'}", the result of parts with tmp path under "source.xlsx" at name equals the result of parts with tmp path under "out.xlsx" at name
     And the result of ET.fromstring with the result of parts with tmp path under "out.xlsx" at "xl/workbook.xml" first match for S joined with "calcPr" field "forceFullCalc" equals "1"
 
   @candidate-python-xlsx-dependency-preservation-232a6f4854
