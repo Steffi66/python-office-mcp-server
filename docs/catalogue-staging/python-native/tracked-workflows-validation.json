@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "scope": "Ten tracked-change workflow and compatibility descriptions; syntax/inventory only",
+  "reviewedSourceCommit": "eae39da51b6c6585385efc995967028803e1328b",
+  "sourceSha256": {
+    "tests/conftest.py": "1f3f8d173438c11be5a467004ac4504707d03f9e552c92ae3216b25adebd9e56",
+    "tests/test_track_changes.py": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 10,
+    "recordedCases": 10,
+    "changedMappingRows": 10,
+    "scenarios": [
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-c3917b3be8",
+        "steps": 6
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-a26bfce76d",
+        "steps": 4
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-28bf7b827a",
+        "steps": 4
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-88c3d25f1c",
+        "steps": 5
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-54c2ca5d3c",
+        "steps": 7
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-19f5e586ed",
+        "steps": 6
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-d650cc1bac",
+        "steps": 7
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-81b9044a8f",
+        "steps": 8
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-2c61301c0a",
+        "steps": 7
+      },
+      {
+        "candidateScenarioId": "@candidate-python-track-changes-ed6f1a7b5a",
+        "steps": 6
+      }
+    ],
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 192,
+    "existingEntriesExtended": 1,
+    "newEntries": 9,
+    "totalEntries": 201
+  },
+  "localDocumentationLinks": 15,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "0edb7a33c9fd829801c32e7ead2ad23c513af4ac22c78646538a03ba710d18d3",
+    "docs/catalogue-staging/python-native/features/test_track_changes.feature": "f723d55d19a6f5f4454cf5b2cf3cc4e87947570f4ff411412cf7d4433ee72133",
+    "docs/catalogue-staging/python-native/mapping.json": "a95855ae4a2327240edd4cdb57aa0b841d8e93127edc1b90c915fb19dc9c6b3d",
+    "docs/catalogue-staging/python-native/tracked-workflows-review.md": "aa2232b8c132fdf22401742fe3f138862e65a927c1f1f99b7c89cba7045b1112"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "No new native, full schema, parsed settings semantics or Microsoft Word execution credit",
+    "Central reconciliation and generated-seed inventory incomplete"
+  ]
+}

@@ -23229,7 +23229,7 @@
       "sourceLine": 198,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: replacement preserves surrounding text [TestTrackChangesPositioning]",
+      "scenario": "A tracked replacement output reopens with at least four paragraphs",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23244,10 +23244,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Only truthy success and reopened paragraph count >=4 are checked; no surrounding-text or replacement-content preservation, location or revision XML assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-a26bfce76d",
@@ -23256,7 +23260,7 @@
       "sourceLine": 217,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: changes appear in correct paragraph [TestTrackChangesPositioning]",
+      "scenario": "Two separated marker occurrences produce a reported count of two",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23270,10 +23274,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Reported success/count only; no output reopen or paragraph identity/content assertion despite the positioning test name."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-28bf7b827a",
@@ -23282,7 +23290,7 @@
       "sourceLine": 240,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: replacement across split runs [TestTrackChangesPositioning]",
+      "scenario": "A split-run target produces one reported change",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23296,10 +23304,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Reported success/count only; no saved replacement text, split-run formatting, XML or output reopen assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-88c3d25f1c",
@@ -23308,7 +23320,7 @@
       "sourceLine": 271,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: changes in table cells [TestTrackChangesInTables]",
+      "scenario": "A fixture with body and table placeholders produces at least two reported changes",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23323,10 +23335,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Fixture has two body hits plus one table hit; total_changes >=2 can pass for body-only changes. No table-cell readback, exact count or saved XML assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-54c2ca5d3c",
@@ -23335,7 +23351,7 @@
       "sourceLine": 290,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: accept removes del elements [TestAcceptAllChanges]",
+      "scenario": "Accept-all removes insertion and deletion wrappers from saved document XML",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23349,10 +23365,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks document.xml wrappers and itertext only; no other story parts, formatting, source-byte preservation, full schema or rendered display assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-19f5e586ed",
@@ -23361,7 +23381,7 @@
       "sourceLine": 320,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: accept preserves inserted text [TestAcceptAllChanges]",
+      "scenario": "Accept-all retains the exact nonempty paragraph text around an insertion",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23375,10 +23395,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Exact text applies only to nonempty paragraphs; no total paragraph count, XML wrapper absence, formatting or source/package preservation assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-d650cc1bac",
@@ -23387,7 +23411,7 @@
       "sourceLine": 346,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: enable sets trackRevisions [TestEnableTrackChanges]",
+      "scenario": "Enabling tracking places a literal token in saved settings",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23402,10 +23426,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Literal token presence only; no namespace-aware element or boolean-value validation, count or Word display assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-81b9044a8f",
@@ -23414,7 +23442,7 @@
       "sourceLine": 367,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: patch enables trackRevisions in settings [TestPatchWithTrackChangesEnablesRevisions]",
+      "scenario": "Tracked patch settings contain the token and omit two literal disabled spellings",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23429,10 +23457,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Lexical token/substring tests only; other prefixes, spacing, quote styles, attribute order or disabled spellings are not excluded. No parsed boolean or Word display assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-2c61301c0a",
@@ -23441,7 +23473,7 @@
       "sourceLine": 395,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: document opens without corruption [TestWordCompatibility]",
+      "scenario": "A tracked patch output opens and exposes paragraph text through python-docx",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23456,10 +23488,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Automated python-docx reopen/read smoke, not Microsoft Word compatibility or complete corruption/schema detection; returned text values are not compared."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-ed6f1a7b5a",
@@ -23468,7 +23504,7 @@
       "sourceLine": 417,
       "sourceSha256": "b5de5b1cad228655df647c0448c118d2c1c696d282cbbd4af168caf2ef8af1a0",
       "feature": "features/test_track_changes.feature",
-      "scenario": "Native check: xml is well formed [TestWordCompatibility]",
+      "scenario": "Each saved ZIP member whose name ends in .xml parses with ElementTree",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -23484,11 +23520,14 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "No machine-checked observable postcondition in the native test definition"
-      ]
+        "No machine-checked observable postcondition in the native test definition",
+        "Source-review correction: the prior no-machine-postcondition extraction flag is inaccurate; ET.fromstring plus pytest.fail is an automated check. Only .xml members are selected, not .rels; no parsed-member minimum, result.success, schema or Word-rendering assertion."
+      ],
+      "semanticReviewCommit": "eae39da51b6c6585385efc995967028803e1328b",
+      "semanticReviewNotes": "tracked-workflows-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-manual-2eaf569b22",
@@ -30497,7 +30536,8 @@
       "nativeDefinition": "tests/test_track_changes.py::TestWordCompatibility::test_xml_is_well_formed",
       "candidateScenarioId": "@candidate-python-track-changes-ed6f1a7b5a",
       "gaps": [
-        "No machine-checked observable postcondition in the native test definition"
+        "No machine-checked observable postcondition in the native test definition",
+        "Source-review correction: the prior no-machine-postcondition extraction flag is inaccurate; ET.fromstring plus pytest.fail is an automated check. Only .xml members are selected, not .rels; no parsed-member minimum, result.success, schema or Word-rendering assertion."
       ]
     },
     {
@@ -31202,6 +31242,69 @@
       "candidateScenarioId": "@candidate-python-track-changes-68da4f2809",
       "gaps": [
         "Uniqueness has no expected count, non-null or numeric-ID assertion; an empty list or one missing ID among distinct values can pass. Only word/document.xml is scanned."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesPositioning::test_replacement_preserves_surrounding_text",
+      "candidateScenarioId": "@candidate-python-track-changes-c3917b3be8",
+      "gaps": [
+        "Only truthy success and reopened paragraph count >=4 are checked; no surrounding-text or replacement-content preservation, location or revision XML assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesPositioning::test_changes_appear_in_correct_paragraph",
+      "candidateScenarioId": "@candidate-python-track-changes-a26bfce76d",
+      "gaps": [
+        "Reported success/count only; no output reopen or paragraph identity/content assertion despite the positioning test name."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesPositioning::test_replacement_across_split_runs",
+      "candidateScenarioId": "@candidate-python-track-changes-28bf7b827a",
+      "gaps": [
+        "Reported success/count only; no saved replacement text, split-run formatting, XML or output reopen assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestTrackChangesInTables::test_changes_in_table_cells",
+      "candidateScenarioId": "@candidate-python-track-changes-88c3d25f1c",
+      "gaps": [
+        "Fixture has two body hits plus one table hit; total_changes >=2 can pass for body-only changes. No table-cell readback, exact count or saved XML assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestAcceptAllChanges::test_accept_removes_del_elements",
+      "candidateScenarioId": "@candidate-python-track-changes-54c2ca5d3c",
+      "gaps": [
+        "Checks document.xml wrappers and itertext only; no other story parts, formatting, source-byte preservation, full schema or rendered display assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestAcceptAllChanges::test_accept_preserves_inserted_text",
+      "candidateScenarioId": "@candidate-python-track-changes-19f5e586ed",
+      "gaps": [
+        "Exact text applies only to nonempty paragraphs; no total paragraph count, XML wrapper absence, formatting or source/package preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestEnableTrackChanges::test_enable_sets_trackRevisions",
+      "candidateScenarioId": "@candidate-python-track-changes-d650cc1bac",
+      "gaps": [
+        "Literal token presence only; no namespace-aware element or boolean-value validation, count or Word display assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestPatchWithTrackChangesEnablesRevisions::test_patch_enables_trackRevisions_in_settings",
+      "candidateScenarioId": "@candidate-python-track-changes-81b9044a8f",
+      "gaps": [
+        "Lexical token/substring tests only; other prefixes, spacing, quote styles, attribute order or disabled spellings are not excluded. No parsed boolean or Word display assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_track_changes.py::TestWordCompatibility::test_document_opens_without_corruption",
+      "candidateScenarioId": "@candidate-python-track-changes-2c61301c0a",
+      "gaps": [
+        "Automated python-docx reopen/read smoke, not Microsoft Word compatibility or complete corruption/schema detection; returned text values are not compared."
       ]
     }
   ],

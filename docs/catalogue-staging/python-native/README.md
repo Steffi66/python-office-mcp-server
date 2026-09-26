@@ -60,11 +60,15 @@ The [text and clone review](text-and-clone-review.md) checks five definitions at
 
 ## Tracked-change XML structure source review
 
-The [tracked XML review](tracked-xml-review.md) checks six helper-level definitions at `a90503d`. It limits structure claims to the selected insertion/deletion and first run, preserves metadata presence versus exact-value distinctions, and records date-prefix and empty-ID-list weaknesses. The other ten scenarios in that feature are unchanged; no schema or Word rendering credit is added.
+The [tracked XML review](tracked-xml-review.md) checks six helper-level definitions at `a90503d`. It limits structure claims to the selected insertion/deletion and first run, preserves metadata presence versus exact-value distinctions, and records date-prefix and empty-ID-list weaknesses. That pass left the other ten scenarios unchanged; no schema or Word rendering credit was added.
+
+## Tracked-change workflow source review
+
+The [tracked workflow review](tracked-workflows-review.md) checks the other ten definitions at `eae39da`. It separates reported counts from saved XML/text evidence, identifies the body-only explanation for the table count, and restores automated python-docx/ElementTree checks lost by extraction. A historical no-machine-postcondition gap is retained with an explicit correction. All 16 definitions in this module now have source-reviewed descriptions, without execution credit.
 
 ## Remaining reconciliation
 
-`mapping.json` lists 192 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries, three new XLSX dependency entries, five text/clone entries and six tracked-XML entries. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 201 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries, three new XLSX dependency entries, five text/clone entries, six tracked-XML entries and nine new tracked-workflow entries. The tracked-workflow review also corrects one existing gap while retaining its original text. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 

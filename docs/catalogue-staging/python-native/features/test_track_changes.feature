@@ -78,126 +78,100 @@ Feature: track changes native behavior capture
 
   @candidate-python-track-changes-c3917b3be8
   # Native: tests/test_track_changes.py::TestTrackChangesPositioning::test_replacement_preserves_surrounding_text
-  Scenario: Native check: replacement preserves surrounding text [TestTrackChangesPositioning]
-    Given Create an instance of WordAdvancedTools.
-    And Create a document with multiple paragraphs for track changes testing.
-    And an isolated writable temporary directory
-    And output is prepared as temp dir under "test_positioning.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of multi paragraph docx; replacements {"PLACEHOLDER": "REPLACED"}; author "Test"; output path str representation of temp dir under "test_positioning.docx"
-    Then result field "success" is non-empty or true
-    And the number of entries in the result of Document with temp dir under "test_positioning.docx" paragraphs is at least 4
+  Scenario: A tracked replacement output reopens with at least four paragraphs
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And multi_paragraph_docx has heading "Test Document" and paragraphs "First paragraph with PLACEHOLDER text.", "Second paragraph with PLACEHOLDER and more PLACEHOLDER content.", "Third paragraph without any placeholders." and "Fourth paragraph with single PLACEHOLDER."
+    When tool_word_patch_with_track_changes replaces PLACEHOLDER with REPLACED using author "Test" and a distinct output_path
+    Then result.success is truthy
+    When python-docx opens the output
+    Then its paragraph count is at least 4
 
   @candidate-python-track-changes-a26bfce76d
   # Native: tests/test_track_changes.py::TestTrackChangesPositioning::test_changes_appear_in_correct_paragraph
-  Scenario: Native check: changes appear in correct paragraph [TestTrackChangesPositioning]
-    Given Create an instance of WordAdvancedTools.
-    And an isolated writable temporary directory
-    And doc.save with temp dir under "test_correct_para.docx"
-    And doc is prepared as the result of Document with no arguments
-    And input path is prepared as temp dir under "test_correct_para.docx"
-    And output is prepared as temp dir under "test_correct_para_out.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of temp dir under "test_correct_para.docx"; replacements {"MARKER": "CHANGED"}; author "Test"; output path str representation of temp dir under "test_correct_para_out.docx"
-    Then result field "success" is non-empty or true
-    And result field "total_changes" equals 2
+  Scenario: Two separated marker occurrences produce a reported count of two
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And a saved document has paragraphs "Paragraph ONE has MARKER here.", "Paragraph TWO is clean." and "Paragraph THREE has MARKER too."
+    When tool_word_patch_with_track_changes replaces MARKER with CHANGED using author "Test" and a distinct output_path
+    Then result.success is truthy and result.total_changes equals 2
 
   @candidate-python-track-changes-28bf7b827a
   # Native: tests/test_track_changes.py::TestTrackChangesPositioning::test_replacement_across_split_runs
-  Scenario: Native check: replacement across split runs [TestTrackChangesPositioning]
-    Given Create an instance of WordAdvancedTools.
-    And an isolated writable temporary directory
-    And doc.save with temp dir under "split_runs.docx"
-    And doc is prepared as the result of Document with no arguments
-    And para is prepared as the result of doc.add paragraph with no arguments
-    And input path is prepared as temp dir under "split_runs.docx"
-    And output is prepared as temp dir under "split_runs_out.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of temp dir under "split_runs.docx"; replacements {"Microsoft Teams Contact Center, Dynamics 365": "Unified Platform"}; author "Test"; output path str representation of temp dir under "split_runs_out.docx"
-    Then result field "success" is non-empty or true
-    And result field "total_changes" equals 1
+  Scenario: A split-run target produces one reported change
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And a saved paragraph has runs "Microsoft Teams Contact Center" and ", Dynamics 365" in sequence
+    When tool_word_patch_with_track_changes replaces "Microsoft Teams Contact Center, Dynamics 365" with "Unified Platform" using author "Test" and a distinct output_path
+    Then result.success is truthy and result.total_changes equals 1
 
   @candidate-python-track-changes-88c3d25f1c
   # Native: tests/test_track_changes.py::TestTrackChangesInTables::test_changes_in_table_cells
-  Scenario: Native check: changes in table cells [TestTrackChangesInTables]
-    Given Create an instance of WordAdvancedTools.
-    And Create a simple test document with placeholder text.
-    And an isolated writable temporary directory
-    And output is prepared as temp dir under "test_table_changes.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of simple docx; replacements {"<Customer Name>": "Contoso"}; author "Test"; output path str representation of temp dir under "test_table_changes.docx"
-    Then result field "success" is non-empty or true
-    And result field "total_changes" is at least 2
+  Scenario: A fixture with body and table placeholders produces at least two reported changes
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And simple_docx is saved with paragraphs "Hello <Customer Name>, welcome to <Project Name>." and "This is a test document for <Customer Name>."
+    And its 2-by-2 table has rows ["Header 1", "Header 2"] and ["<Customer Name>", "Value"]
+    When tool_word_patch_with_track_changes replaces <Customer Name> with Contoso using author "Test" and a distinct output_path
+    Then result.success is truthy and result.total_changes is at least 2
 
   @candidate-python-track-changes-54c2ca5d3c
   # Native: tests/test_track_changes.py::TestAcceptAllChanges::test_accept_removes_del_elements
-  Scenario: Native check: accept removes del elements [TestAcceptAllChanges]
-    Given Create an instance of WordAdvancedTools.
-    And an isolated writable temporary directory
-    And doc.save with temp dir under "test_accept_input.docx"
-    And doc is prepared as the result of Document with no arguments
-    And para is prepared as the result of doc.add paragraph with no arguments
-    And input path is prepared as temp dir under "test_accept_input.docx"
-    And output path is prepared as temp dir under "test_accept_output.docx"
-    When word advanced tools.tool word accept all changes using file path str representation of temp dir under "test_accept_input.docx"; output path str representation of temp dir under "test_accept_output.docx"
-    Then result field "success" is true
-    And result field "deletions_removed" equals 1
-    And result field "insertions_accepted" equals 1
-    And not the result of ET.fromstring with zf saved payload for "word/document.xml" matches for text .//{{WORD NS}}del
-    And not the result of ET.fromstring with zf saved payload for "word/document.xml" matches for text .//{{WORD NS}}ins
-    And "inserted text" occurs in the result of ''.join with the result of xml content.itertext with no arguments
-    And "deleted text" does not occur in the result of ''.join with the result of xml content.itertext with no arguments
+  Scenario: Accept-all removes insertion and deletion wrappers from saved document XML
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And a saved document has one initially empty paragraph containing helper-added tracked deletion "deleted text" followed by tracked insertion "inserted text", both by "Test"
+    When tool_word_accept_all_changes writes to a distinct output_path
+    Then result.success is true, deletions_removed equals 1 and insertions_accepted equals 1
+    When output word/document.xml is parsed
+    Then it has no descendant w:del or w:ins elements
+    And its concatenated itertext contains "inserted text" and does not contain "deleted text"
 
   @candidate-python-track-changes-19f5e586ed
   # Native: tests/test_track_changes.py::TestAcceptAllChanges::test_accept_preserves_inserted_text
-  Scenario: Native check: accept preserves inserted text [TestAcceptAllChanges]
-    Given Create an instance of WordAdvancedTools.
-    And an isolated writable temporary directory
-    And doc.save with temp dir under "test_preserve_ins.docx"
-    And doc is prepared as the result of Document with no arguments
-    And para is prepared as the result of doc.add paragraph with "Before "
-    And input path is prepared as temp dir under "test_preserve_ins.docx"
-    And output path is prepared as temp dir under "test_preserve_ins_out.docx"
-    When word advanced tools.tool word accept all changes using file path str representation of temp dir under "test_preserve_ins.docx"; output path str representation of temp dir under "test_preserve_ins_out.docx"
-    Then result field "success" is true
-    And p text for each p in the result of Document with temp dir under "test_preserve_ins_out.docx" paragraphs where p text equals ["Before INSERTED After"]
+  Scenario: Accept-all retains the exact nonempty paragraph text around an insertion
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And a saved paragraph has ordinary text "Before ", helper-added tracked insertion "INSERTED" by "Test", then ordinary run " After"
+    When tool_word_accept_all_changes writes to a distinct output_path
+    Then result.success is true
+    When python-docx reopens the output and empty paragraph texts are filtered out
+    Then the remaining text list equals ["Before INSERTED After"]
 
   @candidate-python-track-changes-d650cc1bac
   # Native: tests/test_track_changes.py::TestEnableTrackChanges::test_enable_sets_trackRevisions
-  Scenario: Native check: enable sets trackRevisions [TestEnableTrackChanges]
-    Given Create an instance of WordAdvancedTools.
-    And Create a simple test document with placeholder text.
-    And an isolated writable temporary directory
-    And output is prepared as temp dir under "test_enabled.docx"
-    When word advanced tools.tool word enable track changes using file path str representation of simple docx; output path str representation of temp dir under "test_enabled.docx"
-    Then result field "success" is non-empty or true
-    And "trackRevisions" occurs in the result of zf.read('word/settings.xml').decode with no arguments
+  Scenario: Enabling tracking places a literal token in saved settings
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And simple_docx is saved with paragraphs "Hello <Customer Name>, welcome to <Project Name>." and "This is a test document for <Customer Name>."
+    And its 2-by-2 table has rows ["Header 1", "Header 2"] and ["<Customer Name>", "Value"]
+    When tool_word_enable_track_changes writes to a distinct output_path
+    Then result.success is truthy
+    When word/settings.xml is read from the output ZIP and decoded
+    Then the text contains "trackRevisions"
 
   @candidate-python-track-changes-81b9044a8f
   # Native: tests/test_track_changes.py::TestPatchWithTrackChangesEnablesRevisions::test_patch_enables_trackRevisions_in_settings
-  Scenario: Native check: patch enables trackRevisions in settings [TestPatchWithTrackChangesEnablesRevisions]
-    Given Create an instance of WordAdvancedTools.
-    And Create a simple test document with placeholder text.
-    And an isolated writable temporary directory
-    And output is prepared as temp dir under "test_patch_enables.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of simple docx; replacements {"<Customer Name>": "Test Corp"}; author "Test Author"; output path str representation of temp dir under "test_patch_enables.docx"
-    Then result field "success" is non-empty or true
-    And "trackRevisions" occurs in the result of zf.read('word/settings.xml').decode with no arguments
-    And "trackRevisions w:val=\"false\"" does not occur in the result of zf.read('word/settings.xml').decode with no arguments
-    And "trackRevisions w:val=\"0\"" does not occur in the result of zf.read('word/settings.xml').decode with no arguments
+  Scenario: Tracked patch settings contain the token and omit two literal disabled spellings
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And simple_docx is saved with paragraphs "Hello <Customer Name>, welcome to <Project Name>." and "This is a test document for <Customer Name>."
+    And its 2-by-2 table has rows ["Header 1", "Header 2"] and ["<Customer Name>", "Value"]
+    When tool_word_patch_with_track_changes replaces <Customer Name> with "Test Corp" using author "Test Author" and a distinct output_path
+    Then result.success is truthy
+    When word/settings.xml is read from the output ZIP and decoded
+    Then the text contains "trackRevisions"
+    And it contains neither the literal trackRevisions w:val="false" nor the literal trackRevisions w:val="0"
 
   @candidate-python-track-changes-2c61301c0a
   # Native: tests/test_track_changes.py::TestWordCompatibility::test_document_opens_without_corruption
-  Scenario: Native check: document opens without corruption [TestWordCompatibility]
-    Given Create an instance of WordAdvancedTools.
-    And Create a simple test document with placeholder text.
-    And an isolated writable temporary directory
-    And output is prepared as temp dir under "test_word_compat.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of simple docx; replacements {"<Customer Name>": "Test Corp"}; author "Automated Test"; output path str representation of temp dir under "test_word_compat.docx"
-    Then result field "success" is non-empty or true
+  Scenario: A tracked patch output opens and exposes paragraph text through python-docx
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And simple_docx is saved with paragraphs "Hello <Customer Name>, welcome to <Project Name>." and "This is a test document for <Customer Name>."
+    And its 2-by-2 table has rows ["Header 1", "Header 2"] and ["<Customer Name>", "Value"]
+    When tool_word_patch_with_track_changes replaces <Customer Name> with "Test Corp" using author "Automated Test" and a distinct output_path
+    Then result.success is truthy
+    When python-docx opens the output and reads every paragraph text
+    Then those operations finish without an exception
 
   @candidate-python-track-changes-ed6f1a7b5a
   # Native: tests/test_track_changes.py::TestWordCompatibility::test_xml_is_well_formed
-  Scenario: Native check: xml is well formed [TestWordCompatibility]
-    Given Create an instance of WordAdvancedTools.
-    And Create a simple test document with placeholder text.
-    And an isolated writable temporary directory
-    And output is prepared as temp dir under "test_xml_wellformed.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of simple docx; replacements {"<Customer Name>": "Test"}; author "Test"; output path str representation of temp dir under "test_xml_wellformed.docx"
-    Then the resulting document or diagnostic output is available for manual inspection
+  Scenario: Each saved ZIP member whose name ends in .xml parses with ElementTree
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And simple_docx is saved with paragraphs "Hello <Customer Name>, welcome to <Project Name>." and "This is a test document for <Customer Name>."
+    And its 2-by-2 table has rows ["Header 1", "Header 2"] and ["<Customer Name>", "Value"]
+    When tool_word_patch_with_track_changes replaces <Customer Name> with "Test" using author "Test" and a distinct output_path
+    And the output ZIP is opened and every member ending in .xml is read
+    Then ElementTree.fromstring parses every such member without ParseError
