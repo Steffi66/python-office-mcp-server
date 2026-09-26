@@ -1,10 +1,6 @@
-# XLSX preservation and reference-engine decision
+# XLSX preservation and structural-edit boundaries
 
-Keep the openpyxl dependency and require saved-document compatibility tests before changing distributions.
-
-## Evidence
-
-
+The server uses openpyxl with staged publication and bounded package-preserving cell edits. Dependency changes must preserve existing comment append/delete, style and saved-output contracts. Distribution names and import namespaces are separate compatibility constraints.
 
 ## Supported guarantees now
 
@@ -24,11 +20,11 @@ A future structural-edit engine must first enumerate reference surfaces and supp
 
 ## Evaluating a structural-edit dependency
 
-A mutually exclusive, pinned worker environment remains the least expensive adoption experiment. Reconsider only after:
+Test a proposed replacement in an isolated, pinned environment. Adoption requires:
 
 1. Existing comment edit/delete compatibility has a tested path.
 2. Each proposed structural workflow has fixtures, typed refusal cases and independent saved-output assertions.
-3. The server uses a preservation API without overwriting its output with a worksheet-only merge.
+3. The server uses the dependency's preservation API without subsequently overwriting its saved package with a worksheet-only merge.
 4. Resource/latency measurements and dependency collision checks pass.
 5. Calculation evidence distinguishes LibreOffice from native Excel behaviour.
 

@@ -92,6 +92,29 @@ def inventory(paths):
     return cases
 
 
+def apply_implementation_mapping(cases, mapping, *, feature_path):
+    """Select locally implemented cases without granting credit from other runners."""
+    if mapping.get("schemaVersion") != 1 or mapping.get("consumer") != "python":
+        raise ValueError("Invalid Python implementation mapping")
+    if mapping.get("contractRevision") != "ooxml-shared-contracts-v2":
+        raise ValueError("Unexpected mapped contract revision")
+    if mapping.get("feature") != "shared/v2/pack/features/mutation-safety.feature":
+        raise ValueError("Unexpected mapped feature")
+    digest = hashlib.sha256(Path(feature_path).read_bytes()).hexdigest()
+    if mapping.get("featureSha256") != digest or any(c["featureSha256"] != digest for c in cases):
+        raise ValueError("Mapped feature hash mismatch")
+    keys = mapping.get("implementedCaseKeys")
+    if not isinstance(keys, list) or not all(isinstance(k, str) for k in keys) or len(keys) != len(set(keys)):
+        raise ValueError("Invalid or duplicate mapped case identities")
+    if not set(keys).issubset({c["stableCaseKey"] for c in cases}):
+        raise ValueError("Mapped case absent from shared inventory")
+    for case in cases:
+        if case["stableCaseKey"] in keys:
+            case["outcome"] = "not-run"
+            for step in case["steps"]:
+                step["outcome"] = "not-run"
+
+
 def binding_matches(step, contexts):
     # pytest-bdd resolves by fixture scope. For this dedicated lane ambiguous steps
     # are prohibited even if fixture precedence could choose one implicitly.

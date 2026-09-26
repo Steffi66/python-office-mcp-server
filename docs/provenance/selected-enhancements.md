@@ -1,5 +1,6 @@
 # Selected Word and PowerPoint improvements
 
+Existing APIs support bounded run-span replacement and independent slide cloning, verified through saved-document assertions.
 
 ## Implemented and tested
 
@@ -12,7 +13,8 @@ Focused validation: 106 tests pass, including shared acceptance, revision readin
 
 ## Current boundaries
 
-These helpers do not provide all-story traversal, public live Span objects, serialised structural anchors, full inherited formatting provenance, cross-document Word composition or comparison/redlining. Full Word compare needs independent accept/reject round-trip and unsupported-structure contracts. Theme-aware import policy beyond the existing layout/master-copy behaviour needs separate visual evidence.
+These helpers do not provide all-story traversal, public live span objects, serialised structural anchors, full inherited formatting provenance, cross-document Word composition or comparison/redlining. Full Word compare needs independent accept/reject round-trip and unsupported-structure contracts. Theme-aware import policy beyond the existing layout/master-copy behaviour needs separate visual evidence.
 
 Compatibility choices: shape-level PPTX patching still applies the existing clear/autofit semantics; only literal replacement gains run-span preservation. Slide duplication retains its current notes-excluded behaviour; users can request notes through explicit import. No blanket font/layout/rendering equivalence is claimed.
 
+The server's track-change, comment, import and shared Gherkin suites record local execution evidence. Fixtures and workflow requirements come from the shared tagged submodule; another consumer's result grants no Python execution credit.

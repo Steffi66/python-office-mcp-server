@@ -6,7 +6,6 @@ import posixpath
 import re
 import shutil
 import zipfile
-from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
@@ -16,13 +15,13 @@ from pptx import Presentation
 from pytest_bdd import given, parsers, scenarios, then, when
 
 from office_server import OfficeServer
+from tests.fixture_paths import FEATURE, SHARED
 from tools.word_advanced_tools import _get_text_with_track_changes
 
-SHARED = Path(__file__).parents[1] / "contracts" / "shared"
 MANIFEST = json.loads((SHARED / "fixture-manifest.json").read_text())
 S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
-scenarios("features/mutation-safety.feature")
+scenarios(str(FEATURE))
 
 
 @pytest.fixture

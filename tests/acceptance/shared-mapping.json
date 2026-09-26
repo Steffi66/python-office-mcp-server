@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "consumer": "python",
+  "contractRevision": "ooxml-shared-contracts-v2",
+  "feature": "shared/v2/pack/features/mutation-safety.feature",
+  "featureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3",
+  "implementedCaseKeys": [
+    "@id-docx-dry-run-no-mutation:{\"destination\":\"distinct-absent\"}",
+    "@id-docx-dry-run-no-mutation:{\"destination\":\"distinct-existing\"}",
+    "@id-docx-dry-run-no-mutation:{\"destination\":\"source\"}",
+    "@id-docx-strict-batch-per-target-results:{\"destination\":\"distinct-absent\"}",
+    "@id-docx-strict-batch-per-target-results:{\"destination\":\"distinct-existing\"}",
+    "@id-docx-strict-batch-per-target-results:{\"destination\":\"source\"}",
+    "@id-pptx-batch-output-accumulates:{\"destination\":\"distinct-absent\"}",
+    "@id-pptx-batch-output-accumulates:{\"destination\":\"distinct-existing\"}",
+    "@id-pptx-dry-run-no-mutation:{\"destination\":\"distinct-absent\"}",
+    "@id-pptx-dry-run-no-mutation:{\"destination\":\"distinct-existing\"}",
+    "@id-pptx-dry-run-no-mutation:{\"destination\":\"source\"}",
+    "@id-xlsx-cross-sheet-cache-invalidation:{}",
+    "@id-xlsx-dry-run-no-mutation:{\"destination\":\"distinct-absent\"}",
+    "@id-xlsx-dry-run-no-mutation:{\"destination\":\"distinct-existing\"}",
+    "@id-xlsx-dry-run-no-mutation:{\"destination\":\"source\"}",
+    "@id-xlsx-strict-batch-atomicity:{\"destination\":\"distinct-absent\"}",
+    "@id-xlsx-strict-batch-atomicity:{\"destination\":\"distinct-existing\"}",
+    "@id-xlsx-strict-batch-atomicity:{\"destination\":\"source\"}",
+    "@id-xlsx-style-dependency-closure:{}"
+  ]
+}

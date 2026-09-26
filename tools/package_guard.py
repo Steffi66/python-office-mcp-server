@@ -1,7 +1,7 @@
 """Bounded ZIP/XML admission for staged Office writes.
 
-Independent implementation of the documented rejection contracts. This is not a
-complete raw ZIP offset/overlap validator or an ECMA schema validator.
+Implements the documented rejection contracts. Complete raw ZIP offset/overlap
+validation and ECMA schema validation are outside this helper's scope.
 """
 
 import posixpath

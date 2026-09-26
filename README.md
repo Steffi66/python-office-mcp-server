@@ -1,6 +1,6 @@
 # Office Document MCP Server
 
-I developed this Python MCP server to read, edit and generate Word, Excel and PowerPoint documents. It defaults to local stdio; the bundled uMCP 0.2.2 core also supports persistent Streamable HTTP sessions and legacy HTTP/SSE or raw TCP.
+This Python MCP server reads, edits and generates Word, Excel and PowerPoint documents. It defaults to local stdio; its pinned transport dependency also supports persistent Streamable HTTP sessions and legacy HTTP/SSE or raw TCP.
 
 This standalone version has its own build workflows and can be installed with `uv`. It works with unencrypted `.docx`, `.xlsx`, `.xlsm` and `.pptx` files. Legacy binary `.doc`/`.xls`/`.ppt` files, password-encrypted packages and Information Rights Management are unsupported.
 
@@ -104,7 +104,7 @@ These were a proof-of-concept approach for managing and updating specific docume
 
 Tool results keep their legacy text content and add `structuredContent` for mappings. Failed operations set MCP `isError`; partial success still needs per-target checks. Tool lists support pagination and explicit conservative annotations. The read-only `office://guidance/workflows` resource and `review_document` prompt offer workflow guidance without opening files; the prompt's document-type argument supports completion.
 
-See [the uMCP integration](docs/umcp-core.md) for opt-in progress, cooperative cancellation, HTTP authentication/session rules and the pinned-vendor refresh procedure.
+See [the uMCP integration](docs/umcp-core.md) for opt-in progress, cooperative cancellation, HTTP authentication/session rules and the pinned dependency update procedure.
 
 ### Workflow Discovery
 
@@ -241,7 +241,7 @@ Start with `office_help`, then inspect, preview, patch to a new output, and reop
 
 Install the development dependencies before running `bash tests/run_tests.sh`, or select related test paths as arguments. Set `PYTHON=/path/to/python` to choose the environment. The [testing guide](docs/testing.md) covers setup, focused batches, Gherkin reports and the optional LibreOffice checks. Verification never auto-formats or fixes source.
 
-Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. The source fixture pack in `tests/contracts/shared/` is immutable provenance; executable Python feature copies are separate.
+Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. Fixtures and shared requirements come from the tagged `references/fixtures-ooxml` submodule. Python reads the shared Gherkin directly and uses `tests/acceptance/shared-mapping.json` for local implementation status; no duplicate feature copy is maintained.
 
 The committed suite passed on Python 3.10, 3.12 and 3.13; a clean wheel also passed stdio and authenticated Streamable HTTP workflow tests. The [uMCP upgrade report](validation/umcp-upgrade.json) records the pinned core, scope-separated test counts and official-SDK smoke result. LibreOffice checks were skipped locally because the executable was unavailable. Native Microsoft Office rendering and Windows executable behaviour have not been verified locally.
 
@@ -499,7 +499,7 @@ This installs the `office-mcp-server` command. Requires Python >=3.10; locally t
 ### Install from local clone
 
 ```bash
-git clone https://github.com/rcarmo/python-office-mcp-server.git
+git clone --recurse-submodules https://github.com/rcarmo/python-office-mcp-server.git
 cd python-office-mcp-server
 uv sync --frozen
 uv run office-mcp-server
@@ -510,7 +510,7 @@ uv run office-mcp-server
 ### Run without installing
 
 ```bash
-git clone https://github.com/rcarmo/python-office-mcp-server.git
+git clone --recurse-submodules https://github.com/rcarmo/python-office-mcp-server.git
 cd python-office-mcp-server
 python -m venv .venv
 . .venv/bin/activate  # Windows PowerShell: .venv\\Scripts\\Activate.ps1
@@ -653,7 +653,8 @@ The Windows workflow builds the executable and checks tool discovery. Mutation w
 - `python-docx` — Word document handling
 - `openpyxl` — Excel workbook handling  
 - `python-pptx` — PowerPoint presentation handling
-- `aioumcp.py` and `umcp_shared.py` — Pinned uMCP 0.2.2 async transport and request-context modules
+- `references/fixtures-ooxml` — Tagged shared fixtures, facts and behaviour contracts used by tests
+- Installed uMCP 0.2.2 dependency — Async transport and request context; exact Git revision declared in project metadata
 - `pyinstaller` — Build-time dependency for one-file Windows executable
 
 ## Architecture

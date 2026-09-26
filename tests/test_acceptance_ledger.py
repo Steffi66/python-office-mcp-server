@@ -81,3 +81,31 @@ def test_case_status_cannot_hide_unexecuted_step(tmp_path):
     ledger.report['inventory'] = [{'outcome': 'passed', 'steps': [{'outcome': 'not-run'}]}]
     ledger.finish(0)
     assert ledger.report['outcome'] == 'incomplete-or-failed'
+
+
+def test_shared_mapping_selects_cases_without_awarding_passes(tmp_path):
+    import hashlib
+
+    from tests.acceptance.ledger import apply_implementation_mapping
+
+    path = tmp_path / 'shared.feature'
+    path.write_text(FEATURE.replace('@implemented @python', '@planned'))
+    cases = inventory([path])
+    mapping = {'schemaVersion': 1, 'consumer': 'python', 'contractRevision': 'ooxml-shared-contracts-v2',
+               'feature': 'shared/v2/pack/features/mutation-safety.feature',
+               'featureSha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+               'implementedCaseKeys': [cases[0]['stableCaseKey']]}
+    apply_implementation_mapping(cases, mapping, feature_path=path)
+    assert cases[0]['outcome'] == 'not-run'
+    assert all(s['outcome'] == 'not-run' for s in cases[0]['steps'])
+    report = Ledger(tmp_path / 'evidence.json')
+    report.report['inventory'] = cases
+    report.finish(0)
+    assert report.report['outcome'] == 'incomplete-or-failed'
+    for key, value in [('consumer', 'go'), ('featureSha256', 'bad'),
+                       ('implementedCaseKeys', ['unknown']),
+                       ('implementedCaseKeys', mapping['implementedCaseKeys'] * 2)]:
+        with pytest.raises(ValueError):
+            apply_implementation_mapping(inventory([path]), {**mapping, key: value}, feature_path=path)
+    apply_implementation_mapping(cases := inventory([path]), {**mapping, 'implementedCaseKeys': []}, feature_path=path)
+    assert cases[0]['outcome'] == 'planned'

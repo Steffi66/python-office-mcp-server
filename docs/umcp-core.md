@@ -1,8 +1,10 @@
-## Vendored core and Office integration
+## Transport dependency and Office integration
 
-The server vendors uMCP 0.2.2 from `rcarmo/umcp@30cce7dfe08c6ee63de235f7d81754ba286dafbb`. `aioumcp.py` and `umcp_shared.py` are byte-identical upstream files. The synchronous `umcp.py` is unused and not shipped. [`vendor/umcp/manifest.json`](../vendor/umcp/manifest.json) records the pin and SHA-256 values; its MIT licence is included in source, wheels and standalone-build inputs.
+The server depends on uMCP 0.2.2 through the exact Git revision `30cce7dfe08c6ee63de235f7d81754ba286dafbb` declared in `pyproject.toml`, `requirements.txt` and `uv.lock`. Install the project before starting it from source. The unqualified PyPI package named `umcp` is unrelated; do not substitute it for the pinned dependency.
 
-Office behaviour lives in `tools/mcp_features.py`, the `OfficeServer` subclass and the staging helper. Do not patch the vendored files to change Office policy.
+The application imports the installed `aioumcp` and `umcp_shared` modules. Its wheel contains no copies of that source; dependency metadata installs the required distribution separately. The dependency includes its MIT licence, and standalone builds copy its distribution metadata with the modules. Necessary dependency identity and licence attribution are retained.
+
+Office behaviour lives in `tools/mcp_features.py`, the `OfficeServer` subclass and the staging helper.
 
 ## Results and discovery
 
@@ -63,11 +65,9 @@ Duplicate singleton headers and transfer encoding are rejected. Browser prefligh
 
 Plain `--port` still chooses legacy SSE (`GET /sse`, `POST /message`), now with header/media/Origin/body-limit and authentication checks. `--tcp` retains legacy raw TCP. `--transport stdio|streamable-http|sse|tcp` is the explicit alternative; conflicting aliases and missing network ports refuse startup.
 
-## Refreshing the vendor
+## Updating the dependency
 
-Review a chosen upstream commit and its required modules before changing the pin. Export committed bytes with `git show`, never an unreviewed working tree. Refresh `aioumcp.py`, `umcp_shared.py`, the licence and manifest hashes together; keep Office adaptations outside them.
-
-Run `tests/test_umcp_vendor.py`, schema/feature tests, real HTTP and stdio tests, then the full declared matrix and clean wheel. Check the wheel contains the shared module and licence, and keep PyInstaller hidden imports/data in sync. Re-review object output schemas, deprecated-tool filtering, cancellation registry keys, request-scoped notification routing and default authentication policy at every upgrade.
+Change the exact Git revision in both dependency declarations and refresh `uv.lock`. Run `tests/test_transport_dependency.py`, schema/feature tests, real HTTP and stdio tests, then the declared matrix and clean wheel. Verify the dependency's licence and provenance metadata, and keep standalone hidden imports and metadata collection in sync. Review object output schemas, deprecated-tool filtering, cancellation registry keys, request-scoped notification routing and default authentication policy at every upgrade. Do not copy the dependency's source into this repository.
 
 Do not infer Office feature support from upstream examples or prose. Record new tests and pinned results separately from historical preservation reports. The [upgrade checklist](checklists/umcp-upgrade.md) and [upgrade validation](../validation/umcp-upgrade.json) record the completed gates and explicit limits.
 

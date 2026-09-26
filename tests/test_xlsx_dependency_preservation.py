@@ -2,7 +2,6 @@
 
 import shutil
 import zipfile
-from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
@@ -10,9 +9,10 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment
 
 from office_server import OfficeServer
+from tests.fixture_paths import SHARED
 from tools.xlsx_preservation import merge_styles
 
-FIXTURES = Path(__file__).parent / "contracts" / "shared" / "fixtures"
+FIXTURES = SHARED / "fixtures"
 S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
 

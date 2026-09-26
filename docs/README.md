@@ -5,7 +5,7 @@ Start with the repository [README](../README.md) to install the server and confi
 | Document | Use it for |
 |---|---|
 | [Operating limits](operations.md) | File paths, permissions, previews, receipts, package bounds and handling sensitive files |
-| [uMCP core and transports](umcp-core.md) | Vendor pin, structured results, prompts/resources, cancellation, authenticated HTTP sessions and refresh procedure |
+| [uMCP core and transports](umcp-core.md) | Dependency pin, structured results, prompts/resources, cancellation, authenticated HTTP sessions and update procedure |
 | [Staged writer scope](writer-scope.md) | Which mutations commit atomically and which preservation guarantees apply |
 | [Testing](testing.md) | Development setup, Gherkin, installed-wheel checks and recorded results |
 | [XLSX adoption decision](xlsx-adoption-decision.md) | Why upstream openpyxl is retained and what a structural-edit engine would need |
@@ -20,4 +20,4 @@ The following format notes contain illustrative XML and library snippets. They d
 * [Word revision and comment notes](word-ooxml-track-changes-research.md)
 * [PowerPoint comment notes](pptx-ooxml-comments-research.md)
 
-Sealed shared fixtures and contracts are under [`tests/contracts/shared/`](../tests/contracts/shared/README.md). Keep their provenance separate from per-implementation test results; a fixture or scenario imported by another runtime does not prove that runtime executes it correctly.
+Shared fixtures, typed facts and behaviour contracts are in the tagged [`references/fixtures-ooxml`](../references/fixtures-ooxml/README.md) submodule. Keep their provenance separate from per-implementation test results; importing a fixture or scenario grants no execution credit.

@@ -1,5 +1,8 @@
 # MCP Document Server Dependencies
 
+# Pinned transport dependency; the unqualified PyPI name is a different project.
+umcp @ git+https://github.com/rcarmo/umcp.git@30cce7dfe08c6ee63de235f7d81754ba286dafbb
+
 # Office document processing
 python-docx>=1.1.0      # Word document handling
 openpyxl>=3.1.2         # Excel workbook handling

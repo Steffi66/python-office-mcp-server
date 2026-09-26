@@ -1,7 +1,8 @@
 # Package safety adoption
 
+The server's package helpers implement admission, payload comparison and original-byte restoration. Their tests check saved-document outcomes and explicit refusals.
 
-Package admission uses bounded ZIP member/count/inflation checks, safe names and XML/DTD rejection.
+Admission uses Python ZipFile's local-name/CRC checks plus bounded package/member counts and inflation, safe member names, compression/encryption restrictions and XML/DTD rejection. Complete raw-offset/overlap validation is outside this helper's scope.
 
 Admission defaults for staged writes: 10,000 entries, 64 MiB per inflated member, 256 MiB package/inflated total, maximum inflation ratio 1,000. Limit violations refuse before writer execution. These defaults may reject very large legitimate documents; raising them requires explicit resource review. Core mutation paths and enrolled specialised writers are guarded, not every read-only tool.
 

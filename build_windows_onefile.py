@@ -49,8 +49,8 @@ def build_windows_onefile(name: str, output_dir: str, clean: bool) -> None:
         "aioumcp",
         "--hidden-import",
         "umcp_shared",
-        "--add-data",
-        "vendor/umcp:vendor/umcp",
+        "--copy-metadata",
+        "umcp",
         # Core dependencies imported inside try/except blocks in tool modules;
         # PyInstaller may skip them during static analysis.
         "--hidden-import",

@@ -1,4 +1,4 @@
-"""Saved-document outcome contracts on the native Python APIs."""
+"""Saved-document text and clone outcomes on the native Python APIs."""
 
 from docx import Document
 from docx.oxml import OxmlElement

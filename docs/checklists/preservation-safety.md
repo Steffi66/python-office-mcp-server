@@ -97,13 +97,13 @@ Verification: **1,083 passed in 21.06s**. Eight new tests exercise preview/commi
 
 ## Batch 8: bounded package components
 
-- [x] Pin ZIP guard/package-diff sources, notices, dependent modules and tests.
+- [x] Specify ZIP admission/package-diff outcomes and refusal tests.
 - [x] Map supported inputs and refusal boundaries; implement bounded independent helpers rather than a partial verbatim port.
 - [x] Add ZIP admission checks to staged input/output paths, with resource limits and DTD rejection.
 - [x] Add package-diff receipts and DOCX/PPTX unchanged-payload restoration.
 - [x] Batch-test admission, preservation, fault injection and acceptance; commit.
 
-Verification: **54 passed in 1.76s**. Limits, duplicate/traversal names, unusual compression, UTF-16 DTD and malformed XML refusals are explicit. `docs/provenance/package-adoption.md` records the bounded package validation rules. Full OOXML schema/signature/rendering fidelity is not claimed.
+Verification: **54 passed in 1.76s**. Limits, duplicate/traversal names, unusual compression, UTF-16 DTD and malformed XML refusals are explicit. `docs/provenance/package-adoption.md` records the bounded admission and comparison rules. Full OOXML schema/signature/rendering fidelity is not claimed.
 
 ## Batch 9: Word and presentation enhancements
 
@@ -133,7 +133,7 @@ Verification: **5 passed, 3 skipped in 0.18s**. LibreOffice is absent locally; s
 - [x] Remove the extra worktree and feature/backport branches locally and on their remotes after saving a recovery bundle.
 - [x] Recheck both untracked Python files' hashes, incorporate the lockfile's quickjs removal and leave shared references unchanged.
 
-[Historical validation](../../validation/preservation-safety.json) retains the source revision and branch used for the matrix. [Merge validation](../../validation/main-merge.json) records the main merge and the local-only test distinction. Microsoft Office/Windows runtime and independent LibreOffice calculation/rendering are unverified or outside the selected server slice. External model review attempts timed out; no independent review pass is claimed. Merging source does not deploy or restart a running server.
+[Historical validation](../../validation/preservation-safety.json) retains the source revision and branch used for the matrix. [Merge validation](../../validation/main-merge.json) records the main merge and the local-only test distinction. Microsoft Office/Windows runtime and independent LibreOffice calculation/rendering are unverified. External model review attempts timed out; no independent review pass is claimed. Merging source does not deploy or restart a running server.
 
 ## Test execution policy
 

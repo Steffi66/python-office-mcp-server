@@ -25,7 +25,7 @@ An independent read-only review found the development-extra, Git-prerequisite an
 
 ## Follow-up outside this documentation change
 
-Content-type compatibility requires specification evidence and independent consumer validation.
+The Python implementation uses `application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml`. The shared content-type registry now records specification evidence for that value and a separate disputed alias. The Python constant is tested against the specified registry entry; native Office reopen validation remains separate.
 
 `office_patch(track_changes=False)` is not an untracked-edit switch in the current dispatch. `word_accept_all_changes` has a broader name than its implemented scope. Those limits are documented; API changes need separate regression cases and compatibility decisions.
 

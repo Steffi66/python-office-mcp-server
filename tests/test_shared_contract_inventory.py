@@ -4,7 +4,6 @@ import hashlib
 import json
 import re
 import zipfile
-from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
@@ -12,7 +11,9 @@ from docx import Document
 from openpyxl import load_workbook
 from pptx import Presentation
 
-ROOT = Path(__file__).parent / "contracts" / "shared"
+from tests.fixture_paths import FIXTURE_SOURCE
+from tests.fixture_paths import SHARED as ROOT
+
 MANIFEST = json.loads((ROOT / "fixture-manifest.json").read_text())
 
 
@@ -22,6 +23,9 @@ def digest(data):
 
 def test_shared_pack_matches_pinned_manifest():
     manifest = json.loads((ROOT / "pack-manifest.json").read_text())
+    assert manifest["schemaVersion"] == 1
+    assert manifest["distributionRevision"] == "fixtures-ooxml-v0.1.0"
+    assert manifest["sourcePackManifestSha256"] == "4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de"
     assert manifest["lifecycle"] == "planned"
     assert manifest["bindingsImplemented"] is False
     expected = manifest["files"]
@@ -105,3 +109,56 @@ def test_pinned_workbook_style_and_cache_facts():
             assert workbook["Calc"]["A1"].value == expected
         finally:
             workbook.close()
+
+
+def test_central_fixture_manifest_matches_python_inputs():
+    from tests.fixture_paths import TEMPLATES
+
+    records = json.loads((FIXTURE_SOURCE / "manifest.json").read_text())["files"]
+    prefix = "fixtures/python-office-mcp-server/tests/_templates/"
+    inputs = [record for record in records if record["path"].startswith(prefix)]
+    assert len(inputs) == 38
+    assert {record["path"][len(prefix):] for record in inputs} == {
+        path.relative_to(TEMPLATES).as_posix() for path in TEMPLATES.rglob("*") if path.is_file()
+    }
+    for record in inputs:
+        data = (FIXTURE_SOURCE / record["path"]).read_bytes()
+        assert len(data) == record["bytes"]
+        assert digest(data) == record["sha256"]
+
+
+def test_python_constants_match_selected_shared_facts():
+    from tools import word_tools
+
+    bindings = {
+        "namespaces": {"NSWordprocessingML": word_tools.W_NS, "NSWord14": word_tools.W14_NS,
+                       "NSContentTypes": word_tools.PKG_CT_NS, "NSRelationships": word_tools.PKG_REL_NS},
+        "relationships": {"RelTypeCommentsExtended": word_tools.REL_COMMENTS_EXTENDED},
+        "content-types": {"ContentTypeCommentsExtendedSpecified": word_tools.CT_COMMENTS_EXTENDED},
+    }
+    for group, constants in bindings.items():
+        catalog = json.loads((FIXTURE_SOURCE / "facts" / (group + ".json")).read_text())
+        assert catalog["schemaVersion"] == 1
+        values = {row["id"]: row for row in catalog["values"]}
+        assert len(values) == len(catalog["values"])
+        for name, value in constants.items():
+            assert values[name]["status"] in {"specified", "observed"}
+            assert values[name]["value"] == value
+    # A documented alias does not silently become an accepted runtime constant.
+    content_types = json.loads((FIXTURE_SOURCE / "facts/content-types.json").read_text())["values"]
+    disputed = next(row for row in content_types if row["id"] == "ContentTypeCommentsExtended")
+    assert disputed["status"] == "disputed"
+    assert disputed["value"] != word_tools.CT_COMMENTS_EXTENDED
+
+
+def test_fixture_submodule_matches_common_tag_and_seals():
+    import subprocess
+
+    from tests.fixture_paths import REPOSITORY
+
+    pin = json.loads((REPOSITORY / "tests/fixtures-pin.json").read_text())
+    assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=FIXTURE_SOURCE, text=True).strip() == pin["commit"]
+    assert subprocess.check_output(["git", "rev-parse", pin["tag"] + "^{commit}"], cwd=FIXTURE_SOURCE, text=True).strip() == pin["commit"]
+    assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=FIXTURE_SOURCE, text=True).strip()
+    assert digest((FIXTURE_SOURCE / "manifest.json").read_bytes()) == pin["manifestSha256"]
+    assert digest((ROOT / "pack-manifest.json").read_bytes()) == pin["sharedPackManifestSha256"]

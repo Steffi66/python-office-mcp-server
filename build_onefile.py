@@ -52,7 +52,7 @@ def _pyinstaller_args(name: str, dist_dir: Path, clean: bool, *, onedir: bool = 
         "--collect-submodules", "tools",
         "--hidden-import", "aioumcp",
     "--hidden-import", "umcp_shared",
-    "--add-data", "vendor/umcp:vendor/umcp",
+    "--copy-metadata", "umcp",
         # Core deps imported inside try/except in tool modules
         "--hidden-import", "lxml",
         "--hidden-import", "lxml.etree",

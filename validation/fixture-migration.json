@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "scope": "Tagged fixture/dependency migration, working-tree validation before coordinated history cutover",
+  "originalParentCommit": "6b3863ce21d3512df031fba68ce508dc7d8dfc13",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.1.1",
+    "commit": "13b34b40f9d4b79de9378b5253bb21b5ca2e2742",
+    "manifestSha256": "f2b2b1682c6d1c63118454e9ce01d6d47f765762b87b78f1c959b539af4374b7",
+    "sharedPackManifestSha256": "cf359dea9df753592b9b8ecfd0d25feafa74a4a57a6033a25ca97764816a2032",
+    "distributionRevision": "fixtures-ooxml-v0.1.0"
+  },
+  "transportDependency": {
+    "url": "git+https://github.com/rcarmo/umcp.git@30cce7dfe08c6ee63de235f7d81754ba286dafbb",
+    "version": "0.2.2",
+    "licenseIncluded": true,
+    "applicationWheelContainsSourceCopies": false
+  },
+  "runtimes": [
+    {
+      "runtime": "3.10",
+      "passedIncludingLocalOnly": 1134,
+      "committedPassed": 1130,
+      "skipped": 3,
+      "seconds": 31.88,
+      "junitSha256": "e05ec58c80444229c6ab6e049e63089117e30188750581fe410caa36a0c29f49"
+    },
+    {
+      "runtime": "3.12",
+      "passedIncludingLocalOnly": 1134,
+      "committedPassed": 1130,
+      "skipped": 3,
+      "seconds": 33.172,
+      "junitSha256": "39fade1c1ea546568092b3cdd14fb93bb0180cc7c8d0ab017739e02ea7f1e99b"
+    },
+    {
+      "runtime": "3.13",
+      "passedIncludingLocalOnly": 1134,
+      "committedPassed": 1130,
+      "skipped": 3,
+      "seconds": 29.743,
+      "junitSha256": "cecc2f43ce4992322b62705e239db8c5363e75d8c6bf4ade552b5604ba00c2af"
+    }
+  ],
+  "acceptance": {
+    "runId": "5becc9a7-0d9e-4417-84bf-539c4692209a",
+    "cases": 19,
+    "steps": 159,
+    "outcome": "passed",
+    "featureSha256": "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3",
+    "mappingSha256": "a7e1a1e0432e9b0b6b8d3ac933796f999566330b18062fe02ba4aa4a0b0fce4a",
+    "fixtureSourceTag": "v0.1.1"
+  },
+  "installedWheel": {
+    "checksPassed": 13,
+    "runtime": "3.12",
+    "sha256": "e4e30f79e170f545b3e96882afe3144c1c43b5f25c66ae72c8becca2307fa3d2"
+  },
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "Three optional LibreOffice checks skipped per runtime",
+    "No production deployment",
+    "Windows executable runtime unverified",
+    "Other consumers receive no execution credit from Python results",
+    "History rewrite does not relabel historical results as newly executed"
+  ],
+  "runtimesFixtureTag": "v0.1.0",
+  "v011Verification": {
+    "runtime": "3.12",
+    "committedPassed": 1130,
+    "localOnlyPassed": 4,
+    "skipped": 3,
+    "seconds": 30.761,
+    "junitSha256": "4758d9a97fb45b727a0650aef510dddba2b8964b33f7d883d4fedc4c3e8a69ca",
+    "installedWheelChecks": 13,
+    "cases": 19,
+    "steps": 159
+  }
+}

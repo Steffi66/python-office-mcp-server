@@ -6,6 +6,8 @@ from pathlib import Path
 import pytest
 from docx import Document
 
+from tests.fixture_paths import TEMPLATES, require_fixtures
+
 # Check for openpyxl availability
 try:
     from openpyxl import Workbook
@@ -34,12 +36,7 @@ def _ensure_default_docx_template(templates_dir: Path) -> None:
         docx.api._default_docx_path = lambda: str(default_path)
         return
 
-    # Create a minimal valid document using python-docx's built-in default
-    # This ensures standard styles (List Bullet, List Number, etc.) are available
-    templates_dir.mkdir(parents=True, exist_ok=True)
-    doc = Document()  # Uses python-docx built-in template
-    doc.save(default_path)
-    docx.api._default_docx_path = lambda: str(default_path)
+    raise RuntimeError(f"Missing shared template: {default_path}; initialise the fixture submodule")
 
 
 def _ensure_default_pptx_template(templates_dir: Path) -> None:
@@ -57,22 +54,14 @@ def _ensure_default_pptx_template(templates_dir: Path) -> None:
         pptx.api._default_pptx_path = lambda: str(default_path)
         return
 
-    # Create a minimal valid presentation using python-pptx's built-in default
-    # This ensures standard placeholder indexes (0=title, 1=subtitle)
-    templates_dir.mkdir(parents=True, exist_ok=True)
-    prs = Presentation()  # Uses python-pptx's built-in template
-    prs.save(default_path)
-    pptx.api._default_pptx_path = lambda: str(default_path)
-
-    prs.save(default_path)
-    pptx.api._default_pptx_path = lambda: str(default_path)
+    raise RuntimeError(f"Missing shared template: {default_path}; initialise the fixture submodule")
 
 
 def pytest_configure():
     """Configure fallback templates for Office libraries."""
-    templates_dir = Path(__file__).resolve().parent / "_templates"
-    _ensure_default_docx_template(templates_dir)
-    _ensure_default_pptx_template(templates_dir)
+    require_fixtures()
+    _ensure_default_docx_template(TEMPLATES)
+    _ensure_default_pptx_template(TEMPLATES)
 
 
 # =============================================================================

@@ -198,7 +198,7 @@ Comments reference text ranges using start/end markers in the document body:
 **Location:** `/word/commentsExtended.xml`  
 **Content type used by the current Python implementation:** `application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml`.
 
-Content-type compatibility requires specification evidence and independent consumer validation.
+The shared content-type registry records specification evidence for this value and keeps a disputed alias separate. Python tests compare the writer constant with the specified registry entry. Native Office reopening remains unverified.
 
 Stores additional comment metadata for threading and resolution:
 

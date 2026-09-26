@@ -5,10 +5,12 @@ from pathlib import Path
 
 import pytest
 
+from tests.fixture_paths import TEMPLATES
+
 
 def _office_fixture_files() -> list[Path]:
     """Return all Office Open XML fixture files under testdata."""
-    testdata_root = Path(__file__).resolve().parent / "_templates" / "testdata"
+    testdata_root = TEMPLATES / "testdata"
     suffixes = {".docx", ".xlsx", ".pptx"}
     files = [
         path for path in testdata_root.rglob("*")
@@ -40,4 +42,4 @@ def test_fixture_file_is_not_encrypted(fixture_path: Path):
 def test_office_fixture_inventory_not_empty():
     """Sanity-check fixture discovery so encryption validation always has coverage."""
     files = _office_fixture_files()
-    assert files, "No Office fixture files found under tests/_templates/testdata"
+    assert len(files) == 35, "Expected 35 shared Office testdata fixtures"

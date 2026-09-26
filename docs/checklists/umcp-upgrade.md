@@ -1,49 +1,22 @@
-# Vendored uMCP upgrade
+# Transport integration verification
 
-Upgrade the asynchronous core to `rcarmo/umcp@30cce7dfe08c6ee63de235f7d81754ba286dafbb` (package version 0.2.2). Keep vendored runtime files byte-identical; integrate Office-specific behaviour in the subclass and helpers. Work on `main`, preserving the two existing untracked files.
+The server uses the exact uMCP 0.2.2 Git dependency declared in project metadata. Application policy lives in the Office adapter; transport source is not kept in this repository. Dependency licence attribution is supplied by its installed distribution and standalone metadata collection.
 
-## Scope and decisions
+## Completed integration gates
 
-The server keeps Python >=3.10 and its existing public document tool signatures. The core needs `aioumcp.py` plus `umcp_shared.py`; the unused synchronous `umcp.py` is not shipped. Include the upstream MIT notice and exact hashes in the wheel and source repository.
+- [x] Preserve Python 3.10 support, public tool signatures and legacy text results.
+- [x] Add structured results, object-compatible schemas, conservative annotations and explicit failure flags.
+- [x] Expose guidance resources, prompts and document-type completion without opening user documents.
+- [x] Add cooperative cancellation checkpoints before staged publication.
+- [x] Scope cancellation IDs and progress/log notifications to the originating session.
+- [x] Exercise authenticated persistent Streamable HTTP, session SSE, deletion, expiry and framing limits.
+- [x] Retain legacy SSE selection and loopback-only raw TCP.
+- [x] Verify stdio and HTTP through an installed wheel and the optional official SDK smoke script.
 
-Adopt structured tool responses while preserving legacy text content; correct misleading static annotations; keep deprecated tools hidden in discovery and available to explicit legacy callers. Add useful read-only workflow prompts/resources with bounded completion rather than exposing arbitrary filesystem resources. Cooperative cancellation must reach staged writers before publication; long library calls cannot be interrupted safely in the middle and completed commits cannot be undone.
+The historical integration report in `validation/umcp-upgrade.json` records 1,126 committed passes per supported Python runtime, four additional local-only tests, three optional LibreOffice skips, 19 Gherkin cases / 159 steps and 13 installed-wheel checks. Those measurements retain their original source/run identifiers. They are not new executions at a rewritten commit.
 
-Enable explicit Streamable HTTP selection with upstream negotiation/session handling. Preserve `--port` legacy SSE and `--tcp` compatibility, default to loopback, and provide environment-backed HTTP authentication instead of treating session IDs as credentials. No roles database, new document engine, TLS listener or broad permission framework is in scope. Network access still needs OS/path isolation and TLS at a trusted proxy.
+## Fixture and dependency cutover
 
-Upstream documents some broader guarantees and examples than its code or this Office server supports. Tests and the actual pinned implementation decide adopted behaviour. Full JSON Schema, durable event replay, arbitrary synchronous thread interruption and HTTP guarantees for raw TCP are not assumed.
+The shared fixture submodule replaces local fixture/feature copies. A fresh pinned dependency installation replaces repository-local transport files without changing server APIs. Current commands and dependency checks are in [testing](../testing.md), and the protocol contract is in [transport integration](../umcp-core.md).
 
-## Batches
-
-- [x] Inspect the old vendor, Office integration and local edits; verify current upstream HEAD.
-- [x] Read upstream README, architecture, chaining, prompts and Streamable HTTP contract; obtain bounded independent integration review.
-- [x] Record source pin, licence and applicable upgrade decisions.
-- [x] Batch 1: vendor async/shared files, licence and provenance; update wheel/PyInstaller inputs.
-- [x] Batch 1: run baseline core/Office regressions and commit/push; existing discovery filtering remains compatible.
-
-Batch 1 result: **1,114 passed, 3 LibreOffice skips in 24.51s**, including four local-only CLI tests. Built wheel contains both exact upstream modules, licence and manifest. New tests cover vendor hashes, filtered pagination, negotiated versions and structured/text result agreement. Application-specific schemas, errors and cancellation follow in Batch 2.
-- [x] Batch 2: explicit conservative annotations, object-compatible output schemas/error flags, required patch target schema and workflow guidance resources/prompts/completions.
-- [x] Batch 2: cancellation checkpoints in fingerprint/lock waits and before staged publication; opt-in start/finish progress; request-context isolation/stdio checks.
-- [x] Batch 2: verify and commit/push.
-
-Batch 2 result: **53 passed in 3.12s** (plus the earlier 60-test run including help). A paused synchronous worker received cancellation and exited without replacing source/output. Cancellation is cooperative, cannot undo a completed commit and does not promise interruption within library code. Existing value omission keeps its clear-value compatibility semantics; only target is required in PatchChange. `office_read` advertises no invalid object/string outputSchema; mapping tools retain text plus structuredContent and signal actual failure with isError. Partial success still requires inspecting diagnostics.
-- [x] Batch 3: environment-backed bearer identity; real persistent session lifecycle, SSE stream, protocol/origin/header/size/error tests on loopback.
-- [x] Batch 3: prevent non-loopback anonymous HTTP and all non-loopback raw TCP; deny remote restart/global comment-identity mutation.
-- [x] Batch 3: namespace cancellation IDs by transport/session/principal (stateless requests also use peer); preserve byte-identical vendor files.
-- [x] Batch 3: verify legacy selection, expiry and shutdown; commit/push.
-
-Batch 3 result: **23 passed in 3.01s**. Tests use actual loopback HTTP sockets, an authenticated persistent POST connection and session SSE; expiry and cross-session cancellation are bounded in-process tests. Shared bearer credentials provide one identity, not roles/path isolation. Stdio remains local/no-token, legacy raw TCP remains loopback/no-HTTP-auth.
-- [x] Batch 4: update setup/network/help/vendoring documentation and examples; include HTTP in clean-wheel CI.
-- [x] Batch 4: test and commit/push (**31 passed in 3.66s**; documentation examples/51 local links checked).
-
-Session follow-up `bb6b5d1`: upstream notifications broadcast without targets, so the Office adapter routes progress/logging only to the originating session and suppresses unavailable stateless/TCP channels. **24 focused tests passed**. The independent longer review timed out; this issue was found by direct source inspection and covered by a two-session regression.
-- [x] Final: Python 3.10/3.12/3.13 each **1,130 passed, 3 optional LibreOffice skips**; four passes per run are local-only CLI tests, so committed suite is **1,126 passed**.
-- [x] Final: all 19 Gherkin cases / 159 steps pass; installed-wheel batch **13 passed** (10 socket workflows plus three in-process checks).
-- [x] Final: official MCP SDK 1.29.0 authenticated Streamable HTTP smoke passes, with tools, structured result, resource, prompt and session termination.
-- [x] Final: initial independent integration review incorporated; longer review timed out; final bounded principal-serialization concern checked against the string-valued transport context and socket tests (not reproduced).
-- [x] Final: publish pinned results and delivery checks; preserve byte-identical upstream files and both local-only file hashes.
-
-Final measurements are in `validation/umcp-upgrade.json`. No running production service was deployed. Optional render/calculate tests, Windows runtime and production proxy configuration remain unverified. The final documentation/result batch was checked with **31 tests passed in 4.28s**.
-
-## Verification policy
-
-Run related tests in one process, avoiding repeated full-suite runs per file. Commit each verified batch as Rui Carmo, then push without rebasing. Preserve original test counts and source pins in historical reports; write a new upgrade report. Keep optional LibreOffice skips explicit. Tests bind temporary loopback ports, use synthetic credentials and private temporary files, and clean subprocesses in `finally` blocks.
+Native Office rendering, Windows executable mutation workflows and production proxy deployment remain unverified. No production service is deployed by this source migration.

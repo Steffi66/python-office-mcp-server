@@ -3,6 +3,7 @@
 Run tests from a Git checkout with Git on `PATH`. Acceptance configuration calls `git rev-parse`, `git diff HEAD` and `git status`; a source archive without `.git` cannot produce its revision report. The test runner does not format or fix source files. Install development dependencies from the repository root, then run the suite in one process:
 
 ```sh
+git submodule update --init --recursive
 uv sync --frozen --extra dev
 PYTHON=.venv/bin/python bash tests/run_tests.sh
 ```
@@ -16,7 +17,7 @@ PYTHON=.venv/bin/python bash tests/run_tests.sh \
   -q -o addopts=''
 ```
 
-Use full-suite runs at integration boundaries. Running several full suites concurrently against the same checkout duplicates work and can overwrite test reports. Fixtures use temporary document directories; test reports and caches are separate from source files. The fixture setup expects the committed default DOCX/PPTX templates; if they are absent it can generate replacements under `tests/_templates/`, so use a complete checkout.
+Use full-suite runs at integration boundaries. Running several full suites concurrently against the same checkout duplicates work and can overwrite test reports. Fixtures use temporary document directories; test reports and caches are separate from source files. Default templates and committed reference documents come from `references/fixtures-ooxml`. Missing inputs fail with submodule initialisation instructions; tests never generate replacement files in the shared checkout.
 
 ## Gherkin and typed inputs
 
@@ -26,9 +27,9 @@ PYTHON=.venv/bin/python bash tests/run_tests.sh \
   tests/test_shared_contract_inventory.py -q -o addopts=''
 ```
 
-The inventory/ledger runs under `tests/acceptance/conftest.py`; unit-only runs outside that directory do not refresh its report. Read the report's run ID and source hashes before citing it. The Python feature under `tests/acceptance/features/` is tagged `@implemented @python`. Its 8 scenarios expand to 19 cases and 159 executed steps. The sealed source pack under `tests/contracts/shared/` keeps its original `@planned` tags; those describe shared requirements, not every implementation's execution status. Do not modify the sealed pack in place to change coverage claims.
+The inventory/ledger runs under `tests/acceptance/conftest.py`; unit-only runs outside that directory do not refresh its report. Read the report's run ID and source hashes before citing it. The runner reads `references/fixtures-ooxml/shared/v2/pack/features/mutation-safety.feature` directly. Its 8 scenarios expand to 19 cases and 159 steps. The shared feature retains `@planned`; `tests/acceptance/shared-mapping.json` selects Python's implemented stable case keys without copying or editing the Gherkin. Mapping changes a case to `not-run`, never `passed`. Only this runner's actual outcome assertions earn execution credit.
 
-`test-results/acceptance.json` is replaced before collection, then records each step's outcome, the run ID, stable case key, feature/fixture hashes, source revision, source-file hashes and dependency versions. Undefined or ambiguous bindings fail. Planned, skipped and unexecuted cases never count as passes. Running only a subset of the acceptance cases leaves the full inventory incomplete and fails its gate; use ordinary unit tests for narrow development checks.
+`test-results/acceptance.json` is replaced before collection, then records each step's outcome, the run ID, stable case key, feature/fixture hashes, source revision, source-file hashes and dependency versions. It also records the fixture submodule revision/tag/status, distribution seal and Python mapping hash. Undefined or ambiguous bindings fail. Planned, skipped and unexecuted cases never count as passes. Running only a subset of the acceptance cases leaves the full inventory incomplete and fails its gate; use ordinary unit tests for narrow development checks.
 
 Shared v2 uses strict JSON after Gherkin compilation. In a data table, write two backslashes before `n` so the compiler leaves one JSON escape:
 
@@ -39,7 +40,7 @@ Shared v2 uses strict JSON after Gherkin compilation. In a data table, write two
 
 The decoded JSON value contains a newline. Step text outside a table has a different escaping layer. Python consumes the official compiler's decoded table rather than pytest-bdd 8's raw table representation, then calls strict `json.loads`; Bun calls strict `JSON.parse`. Neither runner needs relaxed JSON or another unescape pass.
 
-The shared v2 manifest SHA-256 is `4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de`. Fixture hashes and scenario identities are pinned in the pack. New contract revisions need a new seal and explicit migration; the original audit's six `@id-office-*` IDs are historical aliases, not additional coverage.
+The central distribution revision is `fixtures-ooxml-v0.1.0`. Its pack manifest seals the redistributed files; the earlier source seal is retained as provenance. Original fixture bytes, feature bytes and stable case identities are unchanged. New revisions need an explicit submodule update and local verification. Shared fact/consumer ledgers are reference metadata, not a substitute for local assertions.
 
 ## Real MCP and wheel installation
 
@@ -65,16 +66,16 @@ Use a fresh wheel environment and a `dist/` containing only the intended wheel. 
 
 [Python CI](../.github/workflows/tests.yml) runs the suite and clean-wheel checks on Python 3.10, 3.12 and 3.13. It uploads JUnit and resolved dependencies for seven days. The [Windows workflow](../.github/workflows/build-windows.yml) builds an executable and checks discovery; that is narrower than the mutation suite.
 
-## uMCP upgrade checks
+## Transport dependency checks
 
 ```sh
 PYTHON=.venv/bin/python bash tests/run_tests.sh \
-  tests/test_umcp_vendor.py tests/test_umcp_office_features.py \
+  tests/test_transport_dependency.py tests/test_umcp_office_features.py \
   tests/test_office_http.py tests/test_stdio_mutation_workflows.py \
   -q -o addopts=''
 ```
 
-Vendor tests compare exact runtime/licence hashes against `vendor/umcp/manifest.json`. Office tests check object-compatible schemas, structured/text agreement, explicit annotations, guidance-only resources/prompts/completions and request-local progress/cancellation. HTTP tests use ephemeral loopback ports and synthetic tokens; they never use production credentials. Cross-session cancellation, notification isolation and expiry also have bounded in-process tests.
+Dependency tests verify the installed transport version, Git source revision, included licence and absence of repository-local module shadowing. Office tests check object-compatible schemas, structured/text agreement, explicit annotations, guidance-only resources/prompts/completions and request-local progress/cancellation. HTTP tests use ephemeral loopback ports and synthetic tokens; they never use production credentials. Cross-session cancellation, notification isolation and expiry also have bounded in-process tests.
 
 The earlier preservation reports below predate the upgrade and retain their original source pins/counts. [uMCP upgrade validation](../validation/umcp-upgrade.json) records the new matrix: 1,130 passing tests per runtime including four local-only tests (1,126 committed), three optional LibreOffice skips, and a 13-test installed-wheel batch (10 socket workflows plus three in-process policy/expiry/error checks). SDK 1.29.0 also completed the optional authenticated HTTP smoke script. Counts from different scopes are not added together.
 
@@ -90,6 +91,10 @@ PYTHON=.venv/bin/python bash tests/run_tests.sh \
 The [manual oracle workflow](../.github/workflows/oracle.yml) provisions Writer, Calc and Impress before running these checks. It verifies a recalculated cross-sheet answer and PDF production from edited DOCX/PPTX files. A PDF header and non-empty output establish that conversion ran; they do not establish pixel-level visual equivalence. LibreOffice calculation also does not prove native Excel equivalence.
 
 Native Microsoft Office rendering and the Windows executable runtime have not been verified locally. The implementation review delegations timed out; a later documentation-only review checked setup and test instructions, not implementation correctness.
+
+## Fixture migration verification
+
+[Fixture migration results](../validation/fixture-migration.json) record the tested fixture tag and seals, exact transport dependency, three-runtime results and local-only file hashes. This report distinguishes pre-cutover working-tree verification from later clean-clone checks. Removed source inventories grant no new workflow coverage.
 
 ## Recorded results
 
