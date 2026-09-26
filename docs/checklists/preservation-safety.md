@@ -41,12 +41,14 @@ Verification: **151 passed in 2.42s**; new-file Ruff and diff whitespace checks 
 
 ## Batch 3: XLSX dependency preservation
 
-- [ ] Add multiline/new-style and cross-sheet formula-cache regressions.
-- [ ] Preserve style definitions referenced by edited sheets without discarding opaque original parts.
-- [ ] Refuse unsupported dependency changes before replacing an output.
-- [ ] Invalidate affected formula caches across sheets, conservatively when dependency coverage is incomplete.
-- [ ] Keep calculation metadata consistent and report recalculation required.
-- [ ] Reopen outputs and check member hashes/style indices; batch Excel tests and commit.
+- [x] Add multiline/new-style and cross-sheet formula-cache regressions.
+- [x] Preserve style definitions referenced by edited sheets without discarding opaque original parts.
+- [x] Refuse unsupported style registry reindexing before replacing an output.
+- [x] Invalidate formula caches across all sheets conservatively; no dependency-analysis claim.
+- [x] Keep calculation metadata consistent, drop stale calculation chains and report recalculation required.
+- [x] Reopen outputs and check member hashes/style indices; batch Excel tests and commit.
+
+Verification: **219 passed in 2.47s**, including opaque-part byte checks, custom style indices, cross-sheet invalidation and calculation-chain relationships/content types. New-file Ruff and diff checks pass. Supported changes here are existing-sheet cell values and appended style registries, not arbitrary structural workbook edits.
 
 ## Batch 4: transaction hardening
 

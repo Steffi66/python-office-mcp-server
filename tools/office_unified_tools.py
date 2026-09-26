@@ -888,6 +888,7 @@ class OfficeUnifiedTools:
                 return {"error": f"Failed to load workbook: {e}"}
 
             edited_sheets: set[str] = set()
+            preservation_receipt = {}
             try:
                 any_applied = False
 
@@ -1019,7 +1020,7 @@ class OfficeUnifiedTools:
                         cleanup_path = staged_save_path
                     try:
                         wb.save(staged_save_path)
-                        merge_xlsx_preserving_package(
+                        preservation_receipt = merge_xlsx_preserving_package(
                             source_path=file_path,
                             staged_path=staged_save_path,
                             output_path=save_path,
@@ -1066,6 +1067,8 @@ class OfficeUnifiedTools:
                 **diag,
                 "mode": mode,
                 "file": file_path,
+                "preservation": preservation_receipt,
+                "calculation_state": preservation_receipt.get("calculation_state", "unchanged"),
                 "changes_applied": applied_count,
                 "errors": len(errors),
                 "results": results,
