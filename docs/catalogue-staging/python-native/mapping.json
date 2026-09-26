@@ -20991,7 +20991,7 @@
       "sourceLine": 15,
       "sourceSha256": "f685037696949cfbcb82227ee18ca3c28795f95149a0f5fcbebb18caed0ba5da",
       "feature": "features/test_preserving_text_and_clone.feature",
-      "scenario": "Native check: word split span preserves boundary fonts and revisions",
+      "scenario": "Split Word replacement retains boundary formatting and the first deletion before acceptance",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -21006,10 +21006,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Revision/boundary-font checks precede accept-all; no insertion metadata, author/date, total revision count, accept-call result or post-accept formatting assertion."
+      ],
+      "semanticReviewCommit": "b87134bc1de14e85ef077674c1811ebf82cd703a",
+      "semanticReviewNotes": "text-and-clone-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-preserving-text-and-clone-ee17cf0d07",
@@ -21018,7 +21022,7 @@
       "sourceLine": 35,
       "sourceSha256": "f685037696949cfbcb82227ee18ca3c28795f95149a0f5fcbebb18caed0ba5da",
       "feature": "features/test_preserving_text_and_clone.feature",
-      "scenario": "Native check: word span cannot cross field barrier",
+      "scenario": "A strict Word replacement across an empty simple-field barrier applies nothing",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -21033,10 +21037,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Only empty fldSimple crossing is checked in strict mode, with zero count and unchanged bytes; no status/diagnostics or populated/complex-field topology assertion."
+      ],
+      "semanticReviewCommit": "b87134bc1de14e85ef077674c1811ebf82cd703a",
+      "semanticReviewNotes": "text-and-clone-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-preserving-text-and-clone-fbd36c3e12",
@@ -21045,7 +21053,7 @@
       "sourceLine": 49,
       "sourceSha256": "f685037696949cfbcb82227ee18ca3c28795f95149a0f5fcbebb18caed0ba5da",
       "feature": "features/test_preserving_text_and_clone.feature",
-      "scenario": "Native check: slide split run replacement preserves properties",
+      "scenario": "One PPTX patch entry replaces two occurrences and retains boundary run flags",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -21060,10 +21068,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "One patch entry replaces two occurrences; only text and first/last run bold/italic are asserted, not exact run count, replacement formatting or unrelated package preservation."
+      ],
+      "semanticReviewCommit": "b87134bc1de14e85ef077674c1811ebf82cd703a",
+      "semanticReviewNotes": "text-and-clone-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-preserving-text-and-clone-eda3af4e39",
@@ -21072,7 +21084,7 @@
       "sourceLine": 65,
       "sourceSha256": "f685037696949cfbcb82227ee18ca3c28795f95149a0f5fcbebb18caed0ba5da",
       "feature": "features/test_preserving_text_and_clone.feature",
-      "scenario": "Native check: duplicate chart has independent workbook and chart part",
+      "scenario": "Editing a duplicated chart leaves the original series values unchanged",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -21087,10 +21099,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Different chart/workbook part names and reopened series values after clone edit establish bounded independence; no exhaustive relationship graph, original bytes, categories, rendering or additional series/type assertion."
+      ],
+      "semanticReviewCommit": "b87134bc1de14e85ef077674c1811ebf82cd703a",
+      "semanticReviewNotes": "text-and-clone-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-preserving-text-and-clone-f60f9a0596",
@@ -21099,7 +21115,7 @@
       "sourceLine": 90,
       "sourceSha256": "f685037696949cfbcb82227ee18ca3c28795f95149a0f5fcbebb18caed0ba5da",
       "feature": "features/test_preserving_text_and_clone.feature",
-      "scenario": "Native check: import existing notes is explicit and donor unchanged",
+      "scenario": "Explicit notes import leaves donor bytes intact and exposes the note in the receiver",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -21114,10 +21130,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Explicit include_notes=True checks truthy success, donor byte identity and imported note substring; no default/false policy, exact notes, slide count/title or receiver/notes-master graph assertion."
+      ],
+      "semanticReviewCommit": "b87134bc1de14e85ef077674c1811ebf82cd703a",
+      "semanticReviewNotes": "text-and-clone-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-b71c520b86",
@@ -31081,6 +31101,41 @@
       "candidateScenarioId": "@candidate-python-xlsx-dependency-preservation-5587a2b78e",
       "gaps": [
         "Checks calcChain member/token absence, not complete relationship/content-type graph validity, other-member preservation or formula/cache readback."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_preserving_text_and_clone.py::test_word_split_span_preserves_boundary_fonts_and_revisions",
+      "candidateScenarioId": "@candidate-python-preserving-text-and-clone-a58e306927",
+      "gaps": [
+        "Revision/boundary-font checks precede accept-all; no insertion metadata, author/date, total revision count, accept-call result or post-accept formatting assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_preserving_text_and_clone.py::test_word_span_cannot_cross_field_barrier",
+      "candidateScenarioId": "@candidate-python-preserving-text-and-clone-ee17cf0d07",
+      "gaps": [
+        "Only empty fldSimple crossing is checked in strict mode, with zero count and unchanged bytes; no status/diagnostics or populated/complex-field topology assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_preserving_text_and_clone.py::test_slide_split_run_replacement_preserves_properties",
+      "candidateScenarioId": "@candidate-python-preserving-text-and-clone-fbd36c3e12",
+      "gaps": [
+        "One patch entry replaces two occurrences; only text and first/last run bold/italic are asserted, not exact run count, replacement formatting or unrelated package preservation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_preserving_text_and_clone.py::test_duplicate_chart_has_independent_workbook_and_chart_part",
+      "candidateScenarioId": "@candidate-python-preserving-text-and-clone-eda3af4e39",
+      "gaps": [
+        "Different chart/workbook part names and reopened series values after clone edit establish bounded independence; no exhaustive relationship graph, original bytes, categories, rendering or additional series/type assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_preserving_text_and_clone.py::test_import_existing_notes_is_explicit_and_donor_unchanged",
+      "candidateScenarioId": "@candidate-python-preserving-text-and-clone-f60f9a0596",
+      "gaps": [
+        "Explicit include_notes=True checks truthy success, donor byte identity and imported note substring; no default/false policy, exact notes, slide count/title or receiver/notes-master graph assertion."
       ]
     }
   ],

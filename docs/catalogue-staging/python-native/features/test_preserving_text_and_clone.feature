@@ -1,82 +1,71 @@
 @captured @python_candidate
-Feature: preserving text and clone native behavior capture
+Feature: Native Python saved text, revision and slide-clone observations
 
-  These candidate descriptions need central reconciliation.
-  Captured text grants no execution credit.
+  Five native definitions use generated documents in writable temporary directories.
+  Candidate descriptions need central reconciliation and grant no execution credit.
+  Intermediate reopened observations remain separate from later edits and acceptance.
 
   @candidate-python-preserving-text-and-clone-a58e306927
   # Native: tests/test_preserving_text_and_clone.py::test_word_split_span_preserves_boundary_fonts_and_revisions
-  Scenario: Native check: word split span preserves boundary fonts and revisions
-    Given an isolated writable temporary directory
-    And doc.save with tmp path under "word.docx"
-    And path is prepared as tmp path under "word.docx"
-    And doc is prepared as the result of Document with no arguments
-    And the result of p.add run with "prefix <Cus" bold is set to true
-    And the result of p.add run with "tomer> suffix" italic is set to true
-    When OfficeServer().tool office patch using str representation of tmp path under "word.docx"; [{"target": "<Customer>", "value": "Acme"}]
-    And OfficeServer().tool word accept all changes using str representation of tmp path under "word.docx"
-    Then result at "changes_applied" equals 1
-    And the result of get text with track changes with p equals "prefix Acme suffix"
-    And p runs at 0 text equals "prefix " and p runs at 0 bold
-    And p runs at -1 text equals " suffix" and p runs at -1 italic
-    And the result of ''.join with n text or "" for each n in the result of deleted[0].iter with the result of qn with "w:delText" equals "<Customer>"
-    And the number of entries in p p matches for the result of qn with "w:del" at 0 matches for the result of qn with "w:r" equals 2
-    And "prefix Acme suffix" occurs in p text for each p in the result of Document with tmp path under "word.docx" paragraphs
+  Scenario: Split Word replacement retains boundary formatting and the first deletion before acceptance
+    Given a saved document with one paragraph whose first run is "prefix <Cus" with bold true
+    And its second run is "tomer> suffix" with italic true
+    When OfficeServer.tool_office_patch replaces <Customer> with "Acme", omitting mode and output_path
+    Then changes_applied equals 1
+    When the source is reopened and its first paragraph with nonempty _get_text_with_track_changes output is selected
+    Then that helper returns "prefix Acme suffix"
+    And the first ordinary run has text "prefix " and truthy bold
+    And the last ordinary run has text " suffix" and truthy italic
+    And concatenated w:delText values in the first direct w:del equal "<Customer>"
+    And that first deletion contains exactly two direct w:r children
+    When OfficeServer.tool_word_accept_all_changes is called on the same file
+    And the source is reopened again
+    Then one paragraph's ordinary text equals "prefix Acme suffix"
 
   @candidate-python-preserving-text-and-clone-ee17cf0d07
   # Native: tests/test_preserving_text_and_clone.py::test_word_span_cannot_cross_field_barrier
-  Scenario: Native check: word span cannot cross field barrier
-    Given an isolated writable temporary directory
-    And doc.save with tmp path under "word.docx"
-    And path is prepared as tmp path under "word.docx"
-    And doc is prepared as the result of Document with no arguments
-    And p is prepared as the result of doc.add paragraph with no arguments
-    And before is prepared as saved bytes of tmp path under "word.docx"
-    When OfficeServer().tool office patch using str representation of tmp path under "word.docx"; [{"target": "<Customer>", "value": "Acme"}]; mode "strict"
-    Then result at "changes_applied" equals 0
-    And saved bytes of tmp path under "word.docx" equals saved bytes of tmp path under "word.docx"
+  Scenario: A strict Word replacement across an empty simple-field barrier applies nothing
+    Given a saved paragraph containing run "<Cus", an empty w:fldSimple element and run "tomer>" in that order
+    And the saved source bytes are captured before the call
+    When OfficeServer.tool_office_patch replaces <Customer> with "Acme" in strict mode
+    Then changes_applied equals 0
+    And the post-call source bytes equal the captured pre-call bytes
 
   @candidate-python-preserving-text-and-clone-fbd36c3e12
   # Native: tests/test_preserving_text_and_clone.py::test_slide_split_run_replacement_preserves_properties
-  Scenario: Native check: slide split run replacement preserves properties
-    Given an isolated writable temporary directory
-    And prs.save with tmp path under "deck.pptx"
-    And path is prepared as tmp path under "deck.pptx"
-    And prs is prepared as the result of Presentation with no arguments
-    When OfficeServer().tool office patch using str representation of tmp path under "deck.pptx"; [{"target": "<Customer>", "value": "Acme"}]
-    Then result at "changes_applied" equals 1
-    And p text equals "pre Acme post Acme"
-    And p runs at 0 font bold and p runs at -1 font italic
+  Scenario: One PPTX patch entry replaces two occurrences and retains boundary run flags
+    Given a saved presentation with one title-layout slide and a cleared title paragraph
+    And that paragraph has run "pre <Cus" with bold true followed by run "tomer> post <Customer>" with italic true
+    When OfficeServer.tool_office_patch receives one <Customer> replacement entry with value "Acme", omitting mode and output_path
+    Then changes_applied equals 1
+    When the source is reopened and the first title paragraph is read
+    Then its text equals "pre Acme post Acme"
+    And its first run has truthy bold and its last run has truthy italic
 
   @candidate-python-preserving-text-and-clone-eda3af4e39
   # Native: tests/test_preserving_text_and_clone.py::test_duplicate_chart_has_independent_workbook_and_chart_part
-  Scenario: Native check: duplicate chart has independent workbook and chart part
-    Given an isolated writable temporary directory
-    And prs.save with tmp path under "chart.pptx"
-    And path is prepared as tmp path under "chart.pptx"
-    And slide is prepared as the result of prs.slides.add slide with prs slide layouts at 6
-    And data is prepared as the result of CategoryChartData with no arguments
-    And the result of CategoryChartData with no arguments categories is set to ["A", "B"]
-    When OfficeServer().tool pptx duplicate slide using str representation of tmp path under "chart.pptx"; 1
-    Then result at "success" is non-empty or true
-    And original part partname differs from clone part partname
-    And original part chart workbook xlsx part partname differs from clone part chart workbook xlsx part partname
-    And list representation of prs slides at 0 shapes at 0 chart series at 0 values equals [1, 2]
-    And list representation of prs slides at 1 shapes at 0 chart series at 0 values equals [9, 8]
+  Scenario: Editing a duplicated chart leaves the original series values unchanged
+    Given a saved presentation with one blank-layout slide
+    And the slide contains a clustered column chart at left 1 inch, top 1 inch, width 5 inches and height 3 inches
+    And chart categories are ["A", "B"] with series "Series" values [1, 2]
+    When OfficeServer.tool_pptx_duplicate_slide duplicates slide 1 in the file
+    Then success is truthy
+    When the file is reopened and the first shapes on slides 1 and 2 are read as charts
+    Then their chart part names differ
+    And their embedded XLSX workbook part names differ
+    When python-pptx replaces the clone's data with categories ["A", "B"] and series "Series" values [9, 8]
+    And the presentation is saved and reopened again
+    Then the first chart series on slide 1 has values [1, 2]
+    And the first chart series on slide 2 has values [9, 8]
 
   @candidate-python-preserving-text-and-clone-f60f9a0596
   # Native: tests/test_preserving_text_and_clone.py::test_import_existing_notes_is_explicit_and_donor_unchanged
-  Scenario: Native check: import existing notes is explicit and donor unchanged
-    Given an isolated writable temporary directory
-    And donor.save with source
-    And receiver.save with target
-    And donor is prepared as the result of Presentation with no arguments
-    And slide is prepared as the result of donor.slides.add slide with the result of Presentation with no arguments slide layouts at 0
-    And the result of donor.slides.add slide with the result of Presentation with no arguments slide layouts at 0 shapes title text is set to "Donor"
-    And the result of donor.slides.add slide with the result of Presentation with no arguments slide layouts at 0 notes slide notes text frame text is set to "Private note"
-    And receiver is prepared as the result of Presentation with no arguments
-    And before is prepared as saved bytes of source
-    When OfficeServer().tool pptx import slide using str representation of source; 1; str representation of target; include notes true
-    Then result at "success" is non-empty or true
-    And saved bytes of source equals saved bytes of source
-    And "Private note" occurs in the result of Presentation with target slides at -1 notes slide notes text frame text
+  Scenario: Explicit notes import leaves donor bytes intact and exposes the note in the receiver
+    Given a saved donor presentation with one title-layout slide titled "Donor" and notes text "Private note"
+    And a separate saved receiver with one title-layout slide
+    And the saved donor bytes are captured before the call
+    When OfficeServer.tool_pptx_import_slide imports donor slide 1 into the receiver with include_notes true
+    Then success is truthy
+    And the post-call donor bytes equal the captured pre-call bytes
+    When the receiver is reopened and its last slide's notes are read
+    Then its notes text contains "Private note"
