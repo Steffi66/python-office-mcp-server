@@ -11,11 +11,12 @@ The bundled `aioumcp.py` recognises these optional modes:
 | Invocation | Behaviour |
 |---|---|
 | `office-mcp-server` | Newline-delimited JSON-RPC over stdin/stdout |
+| `office-mcp-server --port 8765 --http` | Persistent Streamable HTTP sessions on `127.0.0.1`; `POST`, `GET` and `DELETE /mcp` |
 | `office-mcp-server --port 8765` | Legacy HTTP/SSE on `127.0.0.1`; `GET /sse`, `POST /message` |
 | `office-mcp-server --port 8765 --tcp` | Legacy raw TCP JSON-RPC listener |
 | `--host ADDRESS` with `--port` | Override the default loopback bind address |
 
-The network modes have no built-in authentication or TLS and should not be bound to untrusted interfaces. HTTP/SSE here is the older MCP transport, not a verified Streamable HTTP implementation. The preservation release tested stdio mutation workflows; it did not validate network sessions or security. Prefer stdio unless you deliberately provide a protected network boundary.
+Prefer stdio for local child-process clients and explicit `--http` for new network clients. Set `OFFICE_MCP_HTTP_TOKEN` in the server environment to require bearer authentication; non-loopback HTTP/SSE binds refuse without it. Raw TCP stays loopback-only and does not use HTTP authentication. TLS and path isolation are external responsibilities. See [the core/transport contract](umcp-core.md) for versions, session lifecycle, body/Origin limits, progress and cancellation. The uMCP upgrade tests actual loopback HTTP workflows; the earlier preservation-only reports remain stdio-only history.
 
 ## Files and temporary storage
 
@@ -53,10 +54,10 @@ PowerPoint whole-shape edits can clear run formatting and set autofit, matching 
 
 ## Processing untrusted or sensitive files
 
-The server has no filesystem sandbox, per-path authorisation layer or network authentication. Limit its OS account, mounts and MCP client tool permissions. Avoid exposing privileged accounts to untrusted documents or unreviewed tool arguments. These controls are the caller's responsibility.
+The server has no filesystem sandbox or per-path authorisation layer. Its optional shared HTTP bearer credential controls transport access, not which documents a client may edit. Limit its OS account, mounts and MCP client tool permissions. Avoid exposing privileged accounts to untrusted documents or unreviewed tool arguments. These controls are the caller's responsibility.
 
 Staged writes use bounded package admission: 10,000 members, 64 MiB per inflated member, 256 MiB compressed package/inflated total and an inflation ratio limit of 1,000. These are implementation defaults, not MCP arguments. See [package admission](provenance/package-adoption.md) for exactly which paths are guarded. The limits do not bound every XML-tree, library-object or temporary-copy allocation, and not every read-only or creation tool uses this guard.
 
 Macro-enabled input can retain VBA bytes. This server does not execute VBA, but a later Office application may. Admission checks are not antivirus scanning; opening a modified document in Office is a separate security decision. Editing signed packages can invalidate signatures, and signature preservation is not certified.
 
-Logs, transcripts, failure artifacts and metadata caches may contain file paths or document-derived content. `OFFICE_MCP_METADATA_CACHE_DIR` changes the Word metadata-cache location. Protect these files and inspect them before sharing reports or uploading CI artifacts. Comment attribution defaults can be set with `MCP_AUTHOR`, `MCP_AUTHOR_IDENTITY` and `MCP_AUTHOR_INITIALS`; they describe authorship metadata, not authenticated identity.
+Logs, transcripts, failure artifacts and metadata caches may contain file paths or document-derived content. MCP logging notifications redact common secret-like fields by default; local request logs are not a comprehensive redaction boundary. `OFFICE_MCP_METADATA_CACHE_DIR` changes the Word metadata-cache location. Protect these files and inspect them before sharing reports or uploading CI artifacts. Comment attribution defaults can be set with `MCP_AUTHOR`, `MCP_AUTHOR_IDENTITY` and `MCP_AUTHOR_INITIALS`; they describe authorship metadata, not authenticated identity.

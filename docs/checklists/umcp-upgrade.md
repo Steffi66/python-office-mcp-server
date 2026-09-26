@@ -32,7 +32,10 @@ Batch 2 result: **53 passed in 3.12s** (plus the earlier 60-test run including h
 - [x] Batch 3: verify legacy selection, expiry and shutdown; commit/push.
 
 Batch 3 result: **23 passed in 3.01s**. Tests use actual loopback HTTP sockets, an authenticated persistent POST connection and session SSE; expiry and cross-session cancellation are bounded in-process tests. Shared bearer credentials provide one identity, not roles/path isolation. Stdio remains local/no-token, legacy raw TCP remains loopback/no-HTTP-auth.
-- [ ] Batch 4: update setup/network/help/vendoring documentation and examples; batch-test and commit/push.
+- [x] Batch 4: update setup/network/help/vendoring documentation and examples; include HTTP in clean-wheel CI.
+- [x] Batch 4: test and commit/push (**31 passed in 3.66s**; documentation examples/51 local links checked).
+
+Session follow-up `bb6b5d1`: upstream notifications broadcast without targets, so the Office adapter routes progress/logging only to the originating session and suppresses unavailable stateless/TCP channels. **24 focused tests passed**. The independent longer review timed out; this issue was found by direct source inspection and covered by a two-session regression.
 - [ ] Final: full Python 3.10/3.12/3.13 regression, all 19 Gherkin cases, clean wheel stdio/HTTP, independent bounded review.
 - [ ] Final: publish pinned results, verify remote main/local edits and mark goal complete only after all required gates pass.
 

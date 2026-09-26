@@ -1,6 +1,6 @@
 # Office Document MCP Server
 
-I developed this Python MCP server to read, edit and generate Word, Excel and PowerPoint documents. It defaults to local stdio; the bundled transport also has opt-in legacy HTTP/SSE and raw TCP modes.
+I developed this Python MCP server to read, edit and generate Word, Excel and PowerPoint documents. It defaults to local stdio; the bundled uMCP 0.2.2 core also supports persistent Streamable HTTP sessions and legacy HTTP/SSE or raw TCP.
 
 This standalone version has its own build workflows and can be installed with `uv`. It works with unencrypted `.docx`, `.xlsx`, `.xlsm` and `.pptx` files. Legacy binary `.doc`/`.xls`/`.ppt` files, password-encrypted packages and Information Rights Management are unsupported.
 
@@ -99,6 +99,12 @@ These were a proof-of-concept approach for managing and updating specific docume
 | `list_supported_formats` | Show available document formats |
 
 ## Quick Examples
+
+### Protocol guidance and results
+
+Tool results keep their legacy text content and add `structuredContent` for mappings. Failed operations set MCP `isError`; partial success still needs per-target checks. Tool lists support pagination and explicit conservative annotations. The read-only `office://guidance/workflows` resource and `review_document` prompt offer workflow guidance without opening files; the prompt's document-type argument supports completion.
+
+See [the uMCP integration](docs/umcp-core.md) for opt-in progress, cooperative cancellation, HTTP authentication/session rules and the pinned-vendor refresh procedure.
 
 ### Workflow Discovery
 
@@ -523,7 +529,7 @@ This starts the stdio server; it waits for MCP messages rather than opening a we
 
 On Windows, use `.venv\\Scripts\\python.exe` and escape backslashes in JSON. Relative document paths depend on the server process's working directory; absolute paths avoid ambiguity.
 
-For network flags and security limits, see [transports](docs/operations.md#transports). The examples below use the tested stdio path.
+For network clients use explicit `--http`; plain `--port` retains legacy SSE. Configure `OFFICE_MCP_HTTP_TOKEN` through the server environment for bearer authentication, and keep a TLS proxy and OS/path boundary for remote access. See [transports](docs/operations.md#transports). The client examples below use stdio.
 
 ### MCP client configuration
 
@@ -647,7 +653,7 @@ The Windows workflow builds the executable and checks tool discovery. Mutation w
 - `python-docx` — Word document handling
 - `openpyxl` — Excel workbook handling  
 - `python-pptx` — PowerPoint presentation handling
-- `aioumcp.py` — Bundled asynchronous MCP transport module
+- `aioumcp.py` and `umcp_shared.py` — Pinned uMCP 0.2.2 async transport and request-context modules
 - `pyinstaller` — Build-time dependency for one-file Windows executable
 
 ## Architecture
@@ -662,7 +668,8 @@ The server dynamically loads tool modules from `tools/`:
 - `pptx_tools.py` — PowerPoint conversion tools
 - `pptx_advanced_tools.py` — Slide management tools
 - `pptx_slide_transfer_tools.py` — Relationship-aware slide import
-- `mutation.py` — Staging, writer locks, fingerprints and commit receipts
+- `mcp_features.py` — Office metadata, structured failures, guidance and HTTP/request policy
+- `mutation.py` — Staging, writer locks, fingerprints, cooperative cancellation and commit receipts
 - `package_guard.py` / `package_preservation.py` — Bounded admission and package differences
 - `xlsx_preservation.py` — Cell-edit style and calculation dependencies
 - `word_spans.py` / `pptx_text.py` — Adjacent-run text replacement

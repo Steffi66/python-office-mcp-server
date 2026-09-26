@@ -61,9 +61,22 @@ OFFICE_MCP_TEST_PYTHON="$PWD/.wheel-venv/bin/python" \
   tests/test_stdio_mutation_workflows.py -q -o addopts=''
 ```
 
-Use a fresh wheel environment and a `dist/` containing only the intended wheel. The test client runs the installed server from a temporary working directory. Request/response transcripts are saved under `test-results/stdio/`. The bundled transport also supports opt-in legacy HTTP/SSE and raw TCP modes, but these workflow tests cover stdio only. Network/session behaviour is unverified here.
+Use a fresh wheel environment and a `dist/` containing only the intended wheel. The test client runs the installed server from a temporary working directory. Request/response transcripts are saved under `test-results/stdio/`. These tests cover stdio. `tests/test_office_http.py` separately starts authenticated loopback Streamable HTTP servers and checks sessions, persistent connections, progress streams, deletion, framing/auth limits and Office writes. It also checks legacy SSE selection and raw TCP startup. Run that file with `OFFICE_MCP_TEST_PYTHON` to target the same clean installed wheel.
 
 [Python CI](../.github/workflows/tests.yml) runs the suite and clean-wheel checks on Python 3.10, 3.12 and 3.13. It uploads JUnit and resolved dependencies for seven days. The [Windows workflow](../.github/workflows/build-windows.yml) builds an executable and checks discovery; that is narrower than the mutation suite.
+
+## uMCP upgrade checks
+
+```sh
+PYTHON=.venv/bin/python bash tests/run_tests.sh \
+  tests/test_umcp_vendor.py tests/test_umcp_office_features.py \
+  tests/test_office_http.py tests/test_stdio_mutation_workflows.py \
+  -q -o addopts=''
+```
+
+Vendor tests compare exact runtime/licence hashes against `vendor/umcp/manifest.json`. Office tests check object-compatible schemas, structured/text agreement, explicit annotations, guidance-only resources/prompts/completions and request-local progress/cancellation. HTTP tests use ephemeral loopback ports and synthetic tokens; they never use production credentials. Cross-session cancellation, notification isolation and expiry also have bounded in-process tests.
+
+The earlier preservation reports below predate the upgrade and retain their original source pins/counts. New upgrade results belong in a separate report, not a rewritten historical record.
 
 ## Independent calculation and rendering
 
