@@ -2,6 +2,8 @@
 
 import hashlib
 import json
+import os
+import stat
 import subprocess
 from pathlib import Path, PurePosixPath
 
@@ -139,13 +141,69 @@ def shared_fixture(fixture_id):
     return fixture_path(records[0]["assetId"])
 
 
+def _verify_tracked_payloads(source, commit, git_bytes):
+    """Compare disk bytes/modes with committed blobs, never index stat-cache hints."""
+    root = source.resolve()
+    if source.is_symlink():
+        raise RuntimeError("Shared fixture checkout root must not be a symlink")
+    object_format = git_bytes("rev-parse", "--show-object-format").decode().strip()
+    if object_format not in {"sha1", "sha256"}:
+        raise RuntimeError("Unsupported shared fixture Git object format")
+    for entry in git_bytes("ls-tree", "-r", "-z", "--full-tree", commit).split(b"\x00"):
+        if not entry:
+            continue
+        header, raw_name = entry.split(b"\t", 1)
+        mode, kind, object_id = header.decode().split()
+        name = os.fsdecode(raw_name)
+        relative = PurePosixPath(name)
+        if (kind != "blob" or mode not in {"100644", "100755"} or relative.is_absolute()
+                or any(part in {"", ".", ".."} for part in name.split("/"))):
+            raise RuntimeError("Unsupported tracked fixture entry: " + name)
+        path = root
+        try:
+            for index, part in enumerate(relative.parts):
+                path = path / part
+                info = path.lstat()
+                if stat.S_ISLNK(info.st_mode):
+                    raise RuntimeError("Tracked fixture symlink is forbidden: " + name)
+                if index < len(relative.parts) - 1 and not stat.S_ISDIR(info.st_mode):
+                    raise RuntimeError("Tracked fixture parent is not a directory: " + name)
+            if not stat.S_ISREG(info.st_mode) or path.resolve() != root / name:
+                raise RuntimeError("Tracked fixture path is not a regular file: " + name)
+            # Git records the owner executable bit. Windows lacks POSIX mode semantics.
+            actual_mode = "100755" if info.st_mode & stat.S_IXUSR else "100644"
+            if os.name != "nt" and actual_mode != mode:
+                raise RuntimeError("Tracked fixture executable mode mismatch: " + name)
+            fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+            with os.fdopen(fd, "rb") as stream:
+                opened = os.fstat(stream.fileno())
+                def identity(st):
+                    return (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_mode)
+                if identity(opened) != identity(info):
+                    raise RuntimeError("Tracked fixture changed while opening: " + name)
+                digest = hashlib.new(object_format)
+                digest.update(f"blob {opened.st_size}\0".encode())
+                for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                    digest.update(chunk)
+                if identity(os.fstat(stream.fileno())) != identity(opened) or identity(path.lstat()) != identity(opened):
+                    raise RuntimeError("Tracked fixture changed while reading: " + name)
+            if digest.hexdigest() != object_id:
+                raise RuntimeError("Tracked fixture blob mismatch: " + name)
+        except OSError as exc:
+            raise RuntimeError("Cannot verify tracked fixture payload: " + name) from exc
+
+
 def verify_fixture_source(source, pin):
     """Reject drift in every shared input, including facts outside asset manifests."""
-    def git(*args):
-        result = subprocess.run(["git", "-C", str(source), *args], text=True, capture_output=True)
+    def git_bytes(*args):
+        # status may otherwise refresh/write the index as a side effect of verification.
+        result = subprocess.run(["git", "--no-optional-locks", "--no-replace-objects", "-C", str(source), *args], capture_output=True)
         if result.returncode:
-            raise RuntimeError("Cannot verify shared fixtures: " + result.stderr.strip())
-        return result.stdout.strip()
+            raise RuntimeError("Cannot verify shared fixtures: " + result.stderr.decode(errors="replace").strip())
+        return result.stdout
+
+    def git(*args):
+        return git_bytes(*args).decode().strip()
 
     if Path(git("rev-parse", "--show-toplevel")).resolve() != source.resolve():
         raise RuntimeError("Shared fixtures must be an initialised Git submodule")
@@ -158,6 +216,7 @@ def verify_fixture_source(source, pin):
         raise RuntimeError("Shared fixture tag differs from the consumer pin")
     if git("status", "--porcelain", "--untracked-files=all", "--ignore-submodules=none"):
         raise RuntimeError("Shared fixture checkout is dirty; restore the pinned release before testing")
+    _verify_tracked_payloads(source, pin["commit"], git_bytes)
     if hashlib.sha256((source / "manifest.json").read_bytes()).hexdigest() != pin["manifestSha256"]:
         raise RuntimeError("Shared fixture seal mismatch: manifest.json")
 

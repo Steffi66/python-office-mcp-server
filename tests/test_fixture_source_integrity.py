@@ -1,6 +1,8 @@
 """Shared facts and workflows must be as immutable as document fixture bytes."""
 
 import hashlib
+import os
+import stat
 import subprocess
 
 import pytest
@@ -9,7 +11,7 @@ from tests.fixture_paths import verify_fixture_source
 
 
 def git(root, *args):
-    return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
+    return subprocess.check_output(["git", "--no-optional-locks", "-C", str(root), *args], text=True).strip()
 
 
 @pytest.fixture
@@ -96,3 +98,80 @@ def test_nested_directory_is_not_mistaken_for_submodule(release):
     root, pin = release
     with pytest.raises(RuntimeError, match="initialised Git submodule"):
         verify_fixture_source(root / "facts", pin)
+
+
+def assert_read_only_check(root, pin, expected_error=None):
+    before = (root / ".git/index").read_bytes()
+    flags = git(root, "ls-files", "-v")
+    try:
+        if expected_error:
+            with pytest.raises(RuntimeError, match=expected_error):
+                verify_fixture_source(root, pin)
+        else:
+            verify_fixture_source(root, pin)
+    finally:
+        assert (root / ".git/index").read_bytes() == before
+        assert git(root, "ls-files", "-v") == flags
+
+
+@pytest.mark.parametrize("flag", ["assume-unchanged", "skip-worktree"])
+@pytest.mark.parametrize("name", ["facts/constants.json", "ledgers/workflows.json", "contracts/workflow.feature"])
+def test_hidden_tracked_changes_refuse_without_refreshing_index(release, flag, name):
+    root, pin = release
+    git(root, "update-index", "--" + flag, "--", name)
+    path = root / name
+    path.write_bytes(path.read_bytes() + b" ")
+    assert git(root, "status", "--porcelain") == ""
+    assert_read_only_check(root, pin, "Tracked fixture blob mismatch")
+
+
+@pytest.mark.parametrize("flag", ["assume-unchanged", "skip-worktree"])
+def test_hidden_missing_file_refuses_without_refreshing_index(release, flag):
+    root, pin = release
+    name = "facts/constants.json"
+    git(root, "update-index", "--" + flag, "--", name)
+    (root / name).unlink()
+    assert git(root, "status", "--porcelain") == ""
+    assert_read_only_check(root, pin, "Cannot verify tracked fixture payload")
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX executable mode bits unavailable")
+@pytest.mark.parametrize("flag", ["assume-unchanged", "skip-worktree"])
+def test_hidden_executable_mode_refuses_with_filemode_disabled(release, flag):
+    root, pin = release
+    name = "facts/constants.json"
+    git(root, "config", "core.filemode", "false")
+    git(root, "update-index", "--" + flag, "--", name)
+    path = root / name
+    path.chmod(path.stat().st_mode | stat.S_IXUSR)
+    assert git(root, "status", "--porcelain") == ""
+    assert_read_only_check(root, pin, "executable mode mismatch")
+
+
+@pytest.mark.parametrize("flag", ["assume-unchanged", "skip-worktree"])
+@pytest.mark.parametrize("symlink_kind", ["file", "parent"])
+def test_hidden_symlink_to_identical_bytes_refuses(release, flag, symlink_kind):
+    root, pin = release
+    name = "facts/constants.json"
+    git(root, "update-index", "--" + flag, "--", name)
+    target = root / name if symlink_kind == "file" else root / "facts"
+    outside = root.parent / ("outside.json" if symlink_kind == "file" else "outside-facts")
+    target.rename(outside)
+    try:
+        target.symlink_to(outside, target_is_directory=symlink_kind == "parent")
+    except (OSError, NotImplementedError):
+        pytest.skip("Symbolic links unavailable")
+    if symlink_kind == "parent":
+        # Hide the replacement directory link from untracked detection too.
+        with (root / ".git/info/exclude").open("a") as excluded:
+            excluded.write("\n/facts\n")
+    assert git(root, "status", "--porcelain") == ""
+    assert_read_only_check(root, pin, "Tracked fixture symlink")
+
+
+@pytest.mark.parametrize("flag", [None, "assume-unchanged", "skip-worktree"])
+def test_clean_index_flags_are_preserved_without_false_refusal(release, flag):
+    root, pin = release
+    if flag:
+        git(root, "update-index", "--" + flag, "--", "facts/constants.json")
+    assert_read_only_check(root, pin)

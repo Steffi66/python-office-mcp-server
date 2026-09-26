@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "scope": "Shared checkout verification hardening only; native runtime and canonical inputs unchanged",
+  "consumerParentCommit": "982c68cf8285b49b0f957a1553f60cd8d43e0a4f",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.6.0",
+    "commit": "dc8fdccd5a7e14c9154bb71e68e10c7404fe4fa0",
+    "manifestSha256": "28976c7c9ec6acec15383549087adb09a2b2ee476ffd81c4396c37a30a4ebc92"
+  },
+  "before": [
+    {
+      "path": "facts/constants.json",
+      "indexFlag": "assume-unchanged",
+      "gitStatus": "",
+      "result": "INCORRECTLY ACCEPTED hidden tracked change",
+      "rootManifestUnchanged": true
+    },
+    {
+      "path": "ledgers/workflows.json",
+      "indexFlag": "skip-worktree",
+      "gitStatus": "",
+      "result": "INCORRECTLY ACCEPTED hidden tracked change",
+      "rootManifestUnchanged": true
+    }
+  ],
+  "after": [
+    {
+      "path": "facts/constants.json",
+      "indexFlag": "assume-unchanged",
+      "porcelainEmpty": true,
+      "refusal": "Tracked fixture blob mismatch: facts/constants.json",
+      "indexUnchanged": true
+    },
+    {
+      "path": "ledgers/workflows.json",
+      "indexFlag": "skip-worktree",
+      "porcelainEmpty": true,
+      "refusal": "Tracked fixture blob mismatch: ledgers/workflows.json",
+      "indexUnchanged": true
+    }
+  ],
+  "scopedChecks": {
+    "python": "3.12",
+    "passed": 82,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 5.283,
+    "junitSha256": "7be12a73a1daecd2277f4cb85619c5d14034f2d7e05c9bedf814f2af78fe86e0",
+    "newCases": 17,
+    "scope": "Fixture release/source guards and existing mutation/XML/package lanes; not full-suite or matrix rerun"
+  },
+  "verificationPolicy": [
+    "Compare every tracked regular file with pinned HEAD raw Git blob hash",
+    "Require file and parent components not symlinks",
+    "Check Git owner-executable mode on POSIX independently of core.filemode",
+    "Disable Git replacement objects and optional index writes",
+    "Preserve index bytes and flags; clean flags alone do not refuse"
+  ],
+  "review": "Bounded independent read found no concrete issue within regular-file/non-adversarial-concurrency scope",
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "Windows executable mode-bit checking unavailable",
+    "Not a claim of protection against arbitrary concurrent adversarial filesystem replacement",
+    "No new runtime, binding, central tag or catalogue execution credit",
+    "No full native matrix or wheel rerun for guard-only change"
+  ]
+}
