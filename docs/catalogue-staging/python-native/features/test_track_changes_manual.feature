@@ -7,39 +7,22 @@ Feature: track changes manual native behavior capture
   @candidate-python-track-changes-manual-2eaf569b22
   # Native: tests/test_track_changes_manual.py::TestManualVerification::test_create_sample_with_track_changes
   Scenario: Native check: create sample with track changes [TestManualVerification]
-    Given an isolated writable temporary directory
-    And doc.save with tmp path under "track_changes_manual_test.docx"
-    And doc is prepared as the result of Document with no arguments
-    And para1 is prepared as the result of doc.add paragraph with "This paragraph has an insertion: "
-    And para2 is prepared as the result of doc.add paragraph with "This paragraph has a deletion: "
-    And para3 is prepared as the result of doc.add paragraph with "Before replacement "
-    And para4 is prepared as the result of doc.add paragraph with "Changes by different people: "
-    And output path is prepared as tmp path under "track_changes_manual_test.docx"
-    And doc2 is prepared as the result of Document with tmp path under "track_changes_manual_test.docx"
-    When doc.add heading using "Track Changes Test Document"; 0
-    And doc.add paragraph using "Open this in Word and check Review > Track Changes panel."
-    And doc.add paragraph using ""
-    And doc.add heading using "Test 1: Insertion Only"
-    And doc.add paragraph using "This paragraph has an insertion: "
-    Then the number of entries in the result of Document with tmp path under "track_changes_manual_test.docx" paragraphs exceeds 0
+    Given A temporary output directory is available.
+    And The tracked-change helper functions can add insertion and deletion markup to python-docx paragraphs.
+    When The test builds a DOCX with headings plus four review scenarios: insertion, deletion, replacement, and multiple authors.
+    And It saves the document as track_changes_manual_test.docx in the temporary directory and prints instructions for opening it in Microsoft Word.
+    And It reopens the saved file with python-docx for a basic sanity check.
+    Then The saved DOCX can be reopened successfully.
+    And The reopened document contains at least one paragraph.
 
   @candidate-python-track-changes-manual-63b1c88c77
   # Native: tests/test_track_changes_manual.py::TestManualVerification::test_analyze_current_implementation
   Scenario: Native check: analyze current implementation [TestManualVerification]
-    Given an isolated writable temporary directory
-    And doc.save with tmp path under "analyze_structure.docx"
-    And doc is prepared as the result of Document with no arguments
-    And para is prepared as the result of doc.add paragraph with "Start "
-    And output path is prepared as tmp path under "analyze_structure.docx"
-    And root is prepared as the result of ET.fromstring with zf saved payload for "word/document.xml"
-    And body is prepared as the result of ET.fromstring with zf saved payload for "word/document.xml" first match for text .//{{WORD NS}}body
-    And paragraphs is prepared as the result of ET.fromstring with zf saved payload for "word/document.xml" first match for text .//{{WORD NS}}body matches for text {{WORD NS}}p
-    When doc.add paragraph using "Start "
-    And add tracked deletion using the result of doc.add paragraph with "Start "; "OLD"
-    And add tracked insertion using the result of doc.add paragraph with "Start "; "NEW"
-    And para.add run using " End"
-    And zf.read using "word/document.xml"
-    Then the resulting document or diagnostic output is available for manual inspection
+    Given A temporary output directory is available.
+    When The test creates a DOCX paragraph containing a tracked deletion followed by a tracked insertion and saves it as analyze_structure.docx.
+    And It opens the DOCX as a ZIP archive, reads word/document.xml, parses the XML, and prints any detected w:ins and w:del structure for non-empty paragraphs.
+    Then The saved DOCX must be readable as a ZIP archive.
+    And word/document.xml must parse successfully as XML.
 
   @candidate-python-track-changes-manual-5d62e67797
   # Native: tests/test_track_changes_manual.py::TestManualVerification::test_compare_with_word_generated
@@ -57,13 +40,11 @@ Feature: track changes manual native behavior capture
   @candidate-python-track-changes-manual-6b059e206a
   # Native: tests/test_track_changes_manual.py::TestToolIntegration::test_patch_with_track_changes_creates_changes
   Scenario: Native check: patch with track changes creates changes [TestToolIntegration]
-    Given Create an instance of WordAdvancedTools.
-    And an isolated writable temporary directory
-    And doc.save with tmp path under "input.docx"
-    And doc is prepared as the result of Document with no arguments
-    And input path is prepared as tmp path under "input.docx"
-    And output path is prepared as tmp path under "output.docx"
-    When word advanced tools.tool word patch with track changes using file path str representation of tmp path under "input.docx"; replacements {"PLACEHOLDER": "REPLACED"}; author "Integration Test"; output path str representation of tmp path under "output.docx"
-    Then result field "success" is non-empty or true
-    And result field "total_changes" equals 1
-    And "<w:ins " occurs in the result of zf.read('word/document.xml').decode with no arguments or "w:ins " occurs in the result of zf.read('word/document.xml').decode with no arguments or "<w:del " occurs in the result of zf.read('word/document.xml').decode with no arguments or "w:del " occurs in the result of zf.read('word/document.xml').decode with no arguments
+    Given The word_advanced_tools fixture must expose tool_word_patch_with_track_changes.
+    And A temporary output directory is available.
+    When The test creates an input DOCX containing the text Hello PLACEHOLDER world.
+    And It calls tool_word_patch_with_track_changes to replace PLACEHOLDER with REPLACED and writes output.docx.
+    And It then reads word/document.xml from the output package and searches the XML text for track-change tags.
+    Then The tool reports success.
+    And The tool reports exactly one total change.
+    And The output package XML contains at least one w:ins or w:del element marker.

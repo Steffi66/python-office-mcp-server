@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "purpose": "Central reconciliation input only; no independent authoritative behavior catalogue",
   "consumer": "python",
-  "sourceCommit": "db68b330710911fe3126b3098be5441996239e88",
+  "sourceCommit": "e9783cdc453e57a2d082e5b31d3df682b753d619",
   "sourceFileHashes": {
     "tests/test_acceptance_ledger.py": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
     "tests/test_advanced_edge_cases.py": "e56c9d4f8604fd84ca4c4f2ed74e19c35596aae277860160d1ac53ce6f3dfdf8",
@@ -22631,10 +22631,12 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Whether Word shows colored underlines, strikethrough, author metadata, dates, and review-pane entries is left to manual inspection."
+      ]
     },
     {
       "candidateScenarioId": "@candidate-python-track-changes-manual-63b1c88c77",
@@ -22659,10 +22661,12 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "No machine-checked observable postcondition in the native test definition"
+        "No machine-checked observable postcondition in the native test definition",
+        "The printed XML structure is not compared with an expected structure.",
+        "The test has no assertions about the number, order, or correctness of the tracked-change elements."
       ]
     },
     {
@@ -22716,10 +22720,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly"
+        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly",
+        "The test only checks for XML substrings and does not verify exact OOXML placement or that both insertion and deletion markup are present."
       ]
     },
     {
@@ -29470,10 +29475,19 @@
       ]
     },
     {
+      "nativeDefinition": "tests/test_track_changes_manual.py::TestManualVerification::test_create_sample_with_track_changes",
+      "candidateScenarioId": "@candidate-python-track-changes-manual-2eaf569b22",
+      "gaps": [
+        "Whether Word shows colored underlines, strikethrough, author metadata, dates, and review-pane entries is left to manual inspection."
+      ]
+    },
+    {
       "nativeDefinition": "tests/test_track_changes_manual.py::TestManualVerification::test_analyze_current_implementation",
       "candidateScenarioId": "@candidate-python-track-changes-manual-63b1c88c77",
       "gaps": [
-        "No machine-checked observable postcondition in the native test definition"
+        "No machine-checked observable postcondition in the native test definition",
+        "The printed XML structure is not compared with an expected structure.",
+        "The test has no assertions about the number, order, or correctness of the tracked-change elements."
       ]
     },
     {
@@ -29489,7 +29503,8 @@
       "nativeDefinition": "tests/test_track_changes_manual.py::TestToolIntegration::test_patch_with_track_changes_creates_changes",
       "candidateScenarioId": "@candidate-python-track-changes-manual-6b059e206a",
       "gaps": [
-        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly"
+        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly",
+        "The test only checks for XML substrings and does not verify exact OOXML placement or that both insertion and deletion markup are present."
       ]
     },
     {

@@ -116,7 +116,7 @@ Feature: shared contract inventory native behavior capture
     And json.loads using saved text of FIXTURE SOURCE under "facts/content-types.json"
     Then the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "schemaVersion" equals 1
     And the number of entries in row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" equals the number of entries in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values"
-    And row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" at name at "status" occurs in "{'specified', 'observed'}"
+    And row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" at name at "status" occurs in "{'observed', 'specified'}"
     And row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" at name at "value" equals value
     And the result of next with row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts/content-types.json" at "values" where row at "id" equals "ContentTypeCommentsExtended" at "status" equals "disputed"
     And the result of next with row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts/content-types.json" at "values" where row at "id" equals "ContentTypeCommentsExtended" at "value" differs from word tools CT COMMENTS EXTENDED

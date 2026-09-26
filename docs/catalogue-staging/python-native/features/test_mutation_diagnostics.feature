@@ -42,7 +42,7 @@ Feature: mutation diagnostics native behavior capture
     And doc is prepared as the result of Document with no arguments
     When UnifiedOfficeTools().tool office patch using file path str representation of temp dir under "placeholder.docx"; changes [{"target": "<Customer Name>", "value": "Contoso"}]
     Then result at "success" is false
-    And result at "status" occurs in "{'skipped', 'failed'}"
+    And result at "status" occurs in "{'failed', 'skipped'}"
     And result at "matched_targets" equals []
     And result at "skipped_targets" is non-empty or true
     And "office_inspect" occurs in result at "next_tools"
