@@ -247,8 +247,8 @@ def merge_xlsx_preserving_package(
     staged_path: str,
     output_path: str,
     edited_sheets: set[str],
-) -> None:
-    """Write an XLSX using original package entries except edited sheet XML.
+) -> dict[str, Any]:
+    """Write edited sheets and their supported dependencies into the original package.
 
     This preserves package parts that openpyxl tends to discard for complex
     workbooks (for example customXml, docMetadata, printer settings, drawings,
@@ -266,11 +266,20 @@ def merge_xlsx_preserving_package(
                 raise ValueError(f"Could not resolve worksheet entry for sheet '{sheet_name}'")
             replacement_entries[source_entry] = staged_zip.read(staged_entry)
 
+    from .xlsx_preservation import repair_dependencies
+
+    with zipfile.ZipFile(source_path) as source_zip, zipfile.ZipFile(staged_path) as staged_zip:
+        removed, recalculation_required = repair_dependencies(
+            source_zip, staged_zip, replacement_entries, set(source_sheet_map.values())
+        )
+
     fd, temp_output = tempfile.mkstemp(suffix=Path(output_path).suffix or ".xlsx", dir=Path(output_path).parent)
     os.close(fd)
     try:
         with zipfile.ZipFile(source_path, "r") as source_zip, zipfile.ZipFile(temp_output, "w") as out_zip:
             for info in source_zip.infolist():
+                if info.filename in removed:
+                    continue
                 payload = replacement_entries.get(info.filename)
                 if payload is None:
                     payload = source_zip.read(info.filename)
@@ -288,6 +297,12 @@ def merge_xlsx_preserving_package(
     finally:
         if os.path.exists(temp_output):
             os.unlink(temp_output)
+    return {
+        "calculation_state": "recalculation-required" if recalculation_required else "not-required",
+        "cache_policy": "invalidate-all-formula-caches",
+        "changed_parts": sorted(replacement_entries),
+        "removed_parts": sorted(removed),
+    }
 
 
 def open_docx_with_retries(file_path: str, retries: int = 2, retry_delay: float = 0.2) -> tuple[Any | None, str, str | None]:

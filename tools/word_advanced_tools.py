@@ -19,6 +19,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal
 
+from .mutation import staged_writer
 from .diagnostics import build_mutation_diagnostics
 from .metadata_cache import load_cached_metadata, store_cached_metadata
 from .save_utils import open_docx_with_retries, resolve_office_path, safe_save_docx
@@ -345,33 +346,14 @@ def _replace_with_track_changes(
         tracked insertions for this paragraph,
         or "not_found" when no eligible plain-text match exists.
     """
-    plain_text = _get_plain_paragraph_text(paragraph)
-    if old_text not in plain_text:
-        inserted_text = _get_inserted_paragraph_text(paragraph)
-        if new_text and new_text in inserted_text:
-            return "already_applied"
-        return "not_found"
+    from .word_spans import replace_tracked_span
 
-    idx = plain_text.find(old_text)
-    before = plain_text[:idx]
-    after = plain_text[idx + len(old_text):]
-
-    for run in paragraph.runs:
-        run.text = ""
-
-    if before:
-        if paragraph.runs:
-            paragraph.runs[0].text = before
-        else:
-            paragraph.add_run(before)
-
-    _add_tracked_deletion(paragraph, old_text, author)
-    _add_tracked_insertion(paragraph, new_text, author)
-
-    if after:
-        paragraph.add_run(after)
-
-    return "replaced"
+    if replace_tracked_span(paragraph, old_text, new_text, author, _next_revision_id):
+        return "replaced"
+    inserted_text = _get_inserted_paragraph_text(paragraph)
+    if new_text and new_text in inserted_text:
+        return "already_applied"
+    return "not_found"
 
 
 class WordAdvancedTools:
@@ -1382,6 +1364,7 @@ Project: Cloud Migration Sprint 1
 
         return result
 
+    @staged_writer
     def tool_word_cleanup_sow(
         self,
         file_path: str,
@@ -2832,6 +2815,7 @@ Project: Cloud Migration Sprint 1
                       (f" after paragraph containing '{insert_after_paragraph}'" if insert_para else " at end of document")
         }
 
+    @staged_writer
     def tool_word_insert_at_anchor(
         self,
         file_path: str,
@@ -4028,6 +4012,7 @@ Project: Cloud Migration Sprint 1
             "next_tools": ["word_list_tables", "word_get_section_guidance", "word_insert_table_row"]
         }
 
+    @staged_writer
     def tool_word_patch_with_track_changes(
         self,
         file_path: str,
@@ -4137,6 +4122,7 @@ Project: Cloud Migration Sprint 1
             "next_tools": ["word_add_comment", "word_check_tracking", "word_audit_completion"]
         }
 
+    @staged_writer
     def tool_word_enable_track_changes(
         self,
         file_path: str,
@@ -4196,6 +4182,7 @@ Project: Cloud Migration Sprint 1
             "message": "Track Changes enabled. Subsequent edits in Word will be tracked."
         }
 
+    @staged_writer
     def tool_word_accept_all_changes(
         self,
         file_path: str,

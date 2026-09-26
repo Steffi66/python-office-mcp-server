@@ -32,6 +32,7 @@ try:
 except ImportError:
     HAS_PPTX = False
 
+from .mutation import staged_writer
 from .save_utils import open_pptx_with_retries, safe_save_pptx
 
 
@@ -632,6 +633,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_list_slides", "pptx_replace_placeholders", "pptx_list_masters"]
         }
 
+    @staged_writer
     def tool_pptx_add_slide(
         self,
         file_path: str,
@@ -720,6 +722,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_patch_shape", "pptx_add_bullet", "pptx_add_comment"]
         }
 
+    @staged_writer
     def tool_pptx_delete_slide(
         self,
         file_path: str,
@@ -782,6 +785,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_list_slides"]
         }
 
+    @staged_writer
     def tool_pptx_reorder_slides(
         self,
         file_path: str,
@@ -840,6 +844,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_list_slides"]
         }
 
+    @staged_writer
     def tool_pptx_duplicate_slide(
         self,
         file_path: str,
@@ -872,54 +877,31 @@ class PresentationAdvancedTools:
         if slide_number < 1 or slide_number > len(prs.slides):
             return {"error": f"Slide {slide_number} not found. Presentation has {len(prs.slides)} slides."}
 
-        source_slide = prs.slides[slide_number - 1]
-        position_text = str(position).strip().strip('"').strip("'").lower()
+        position_text = str(position).lower()
         if position_text not in {"after", "end"}:
-            return {"error": "Invalid position. Use 'after' or 'end'."}
+            return {"error": "position must be 'after' or 'end'"}
+        # Reuse the package graph importer so charts/workbooks/media are independent.
+        from .pptx_slide_transfer_tools import PresentationSlideTransferTools
 
-        target_slide = prs.slides.add_slide(source_slide.slide_layout)
-
-        for shape in list(target_slide.shapes):
-            sp = shape._element
-            sp.getparent().remove(sp)
-
-        for shape in source_slide.shapes:
-            target_slide.shapes._spTree.insert_element_before(deepcopy(shape._element), 'p:extLst')
-
-        notes_reltype = getattr(RT, "NOTES_SLIDE", None)
-        for rel in source_slide.part.rels.values():
-            if rel.reltype == RT.SLIDE_LAYOUT:
-                continue
-            if notes_reltype and rel.reltype == notes_reltype:
-                continue
-            try:
-                target_slide.part.rels.add_relationship(rel.reltype, rel._target, rel.rId, rel.is_external)
-            except Exception:
-                continue
-
-        sldIdLst = prs.part._element.find(qn('p:sldIdLst'))
-        new_slide_num = len(prs.slides)
-
-        if position_text == "after" and sldIdLst is not None:
-            children = list(sldIdLst)
-            last_slide = children[-1]
-            sldIdLst.remove(last_slide)
-            sldIdLst.insert(slide_number, last_slide)
-            new_slide_num = slide_number + 1
-
-        # Save
-        save_path = output_path or resolved_path
-        safe_save_pptx(prs, save_path)
-
+        result = PresentationSlideTransferTools().tool_pptx_import_slide(
+            source_file_path=resolved_path,
+            source_slide_number=slide_number,
+            target_file_path=resolved_path,
+            position=position_text,
+            after_slide_number=slide_number if position_text == "after" else None,
+            output_path=output_path,
+            include_notes=False,
+        )
+        if result.get("error"):
+            return result
         return {
-            "success": True,
-            "file": save_path,
+            **result,
             "source_slide": slide_number,
-            "new_slide_number": new_slide_num,
-            "message": f"Duplicated slide {slide_number} to position {new_slide_num}",
-            "next_tools": ["pptx_patch_shape", "pptx_get_slide"]
+            "message": f"Duplicated slide {slide_number} to position {result['new_slide_number']}",
+            "next_tools": ["pptx_patch_shape", "pptx_get_slide"],
         }
 
+    @staged_writer
     def tool_pptx_hide_slide(
         self,
         file_path: str,
@@ -1385,6 +1367,7 @@ class PresentationAdvancedTools:
 
         return result
 
+    @staged_writer
     def tool_pptx_add_table(
         self,
         file_path: str,
@@ -1643,6 +1626,7 @@ class PresentationAdvancedTools:
     # NOTES AND COMMENTS TOOLS
     # =========================================================================
 
+    @staged_writer
     def tool_pptx_set_notes(
         self,
         file_path: str,
@@ -1845,47 +1829,31 @@ class PresentationAdvancedTools:
         if load_error:
             return load_error
 
+        from .pptx_text import iter_shapes, replace_paragraph
+
+        if not find_text:
+            return {"error": "find_text must not be empty"}
+        if slide_number is not None and not 1 <= slide_number <= len(prs.slides):
+            return {"error": "Slide number outside presentation bounds"}
         replacement_count = 0
         slides_modified = []
-
         slides_to_process = [prs.slides[slide_number - 1]] if slide_number else prs.slides
-
         for slide_idx, slide in enumerate(slides_to_process):
-            actual_slide_num = slide_number if slide_number else slide_idx + 1
-            slide_replaced = False
-
-            for shape in slide.shapes:
+            before = replacement_count
+            for shape in iter_shapes(slide.shapes):
+                frames = []
                 if shape.has_text_frame:
-                    for para in shape.text_frame.paragraphs:
-                        for run in para.runs:
-                            if find_text in run.text:
-                                run.text = run.text.replace(find_text, replace_text)
-                                replacement_count += 1
-                                slide_replaced = True
-
+                    frames.append(shape.text_frame)
                 if shape.has_table:
-                    for row in shape.table.rows:
-                        for cell in row.cells:
-                            # Use run-level replacement to preserve formatting
-                            for para in cell.text_frame.paragraphs:
-                                for run in para.runs:
-                                    if find_text in run.text:
-                                        run.text = run.text.replace(find_text, replace_text)
-                                        replacement_count += 1
-                                        slide_replaced = True
-
-            # Also check notes
-            if slide.has_notes_slide:
-                notes_tf = slide.notes_slide.notes_text_frame
-                for para in notes_tf.paragraphs:
-                    for run in para.runs:
-                        if find_text in run.text:
-                            run.text = run.text.replace(find_text, replace_text)
-                            replacement_count += 1
-                            slide_replaced = True
-
-            if slide_replaced:
-                slides_modified.append(actual_slide_num)
+                    frames.extend(cell.text_frame for row in shape.table.rows for cell in row.cells)
+                for frame in frames:
+                    for para in frame.paragraphs:
+                        replacement_count += replace_paragraph(para, find_text, replace_text)
+            if slide.has_notes_slide and slide.notes_slide.notes_text_frame is not None:
+                for para in slide.notes_slide.notes_text_frame.paragraphs:
+                    replacement_count += replace_paragraph(para, find_text, replace_text)
+            if replacement_count != before:
+                slides_modified.append(slide_number or slide_idx + 1)
 
         # Save
         save_path = output_path or resolved_path
@@ -2234,6 +2202,7 @@ class PresentationAdvancedTools:
         except Exception as e:
             return {"error": f"Failed to get comments: {str(e)}"}
 
+    @staged_writer
     def tool_pptx_delete_comment(
         self,
         file_path: str,
@@ -2421,6 +2390,7 @@ class PresentationAdvancedTools:
     # CHANGE LOG TOOLS (for auditability without track changes)
     # =========================================================================
 
+    @staged_writer
     def tool_pptx_log_changes(
         self,
         file_path: str,

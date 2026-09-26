@@ -161,4 +161,5 @@ def test_import_slide_requires_after_slide_number_for_after_mode(
         str(target),
         position="after",
     )
-    assert result == {"error": "after_slide_number is required when position='after'."}
+    assert result["error"] == "after_slide_number is required when position='after'."
+    assert result["changes_applied"] == 0

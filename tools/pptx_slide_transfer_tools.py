@@ -39,6 +39,7 @@ try:
 except ImportError:
     HAS_PPTX = False
 
+from .mutation import staged_writer
 from .save_utils import resolve_office_path
 
 PKG_CT_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
@@ -519,6 +520,7 @@ def _insert_slide_into_presentation(
 class PresentationSlideTransferTools:
     """Standalone tools for slide transfer across presentations."""
 
+    @staged_writer(source_argument="target_file_path")
     def tool_pptx_import_slide(
         self,
         source_file_path: str,
