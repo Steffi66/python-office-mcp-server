@@ -63,5 +63,26 @@
     "No new runtime dependency/fixture changes",
     "Broader catalogue semantic reconciliation and generated-seed inventory incomplete",
     "No production deployment"
-  ]
+  ],
+  "cleanRecursiveClone": {
+    "testedConsumerCommit": "bd219dc5d9d0737e6de7e59e321ae3bd4594f8f0",
+    "fixtureTag": "v0.4.0",
+    "fixtureCommit": "40eb26e684b12073956e4f24915444075a60c212",
+    "freshDependencyInstall": true,
+    "python": "3.12",
+    "scopedChecksPassed": 93,
+    "seconds": 5.06,
+    "junitSha256": "e83a8d0e9bc088b5b8570ba5044cc4ab971f98c887cd6e12b7cf6c41d3843f76",
+    "scope": "XML lane/guards, native comparison, mutation lane, fixture/contracts/integrity and transport dependency tests; not a second full-suite run",
+    "xmlCases": 10,
+    "xmlSteps": 40,
+    "mutationCases": 19,
+    "mutationSteps": 159,
+    "acceptedLocalFeatureAbsent": true,
+    "trackedFilesUnchanged": true
+  },
+  "docs": {
+    "linksAndAnchors": 63,
+    "pythonJsonSnippets": 40
+  }
 }
