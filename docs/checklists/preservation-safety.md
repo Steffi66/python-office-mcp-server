@@ -62,13 +62,16 @@ Verification: **1,040 passed in 17.21s**. Source/destination fingerprint changes
 
 ## Batch 5: executable acceptance
 
-- [ ] Add pytest-bdd and bind all shared Given/When/Then operations.
-- [ ] Reuse independent pytest assertions and fixture copies; retain low-level tests.
-- [ ] Inventory before execution, with fresh run IDs and source/dependency/fixture hashes.
-- [ ] Record exact expanded case identity, step outcomes and failure artifacts.
-- [ ] Gate duplicate IDs, undefined/ambiguous steps, empty assertions and stale reports.
-- [ ] Keep planned/skipped cases separate from passes.
-- [ ] Run all 19 cases plus runner self-tests as one batch; review and commit.
+- [x] Add pytest-bdd and bind all shared Given/When/Then operations.
+- [x] Reuse independent pytest assertions and fixture copies; retain low-level tests.
+- [x] Inventory before execution, with fresh run IDs and source/dependency/fixture hashes.
+- [x] Record exact expanded case identity, step outcomes and failure artifacts.
+- [x] Gate duplicate IDs, undefined/ambiguous steps, empty assertions and stale reports.
+- [x] Keep planned/skipped cases separate from passes.
+- [x] Restore byte-original semantically unchanged PPTX XML payloads before publication (acceptance exposed this prerequisite ahead of Batch 8).
+- [x] Run all 19 cases plus runner self-tests as one batch; review and commit.
+
+Verification: **66 tests passed in 1.36s**, including **19 acceptance cases / 159 executed steps**. Runtime feature copy is tagged `@implemented @python`; original shared pack remains immutable/planned evidence. Gherkin table escaping is decoded before JSON string parsing; the adapter accepts literal newlines emitted by the compiler. Conservative OPC-equivalence restores unchanged PPTX payloads without relaxing fixture hashes. Independent regressions cover whitespace, child order, prefix-valued attributes and DTD rejection. The worktree lockfile was refreshed for pytest-bdd; original checkout lockfile is untouched.
 
 ## Batch 6: MCP and packaging
 

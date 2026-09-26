@@ -145,6 +145,10 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
             elif result.get("error"):
                 result.update(success=False, status="failed")
             elif planned:
+                if staged.suffix.lower() == ".pptx":
+                    from .package_preservation import restore_unchanged_parts
+
+                    restore_unchanged_parts(source_path, staged)
                 validate_staged_document(staged)
                 if (Path(source).resolve() != source_path or Path(output or source).resolve() != destination
                         or fingerprint(source_path) != source_state
