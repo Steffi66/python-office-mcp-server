@@ -19,6 +19,14 @@ Output-only creation (`word_from_markdown`, `excel_from_markdown`, `pptx_from_ma
 
 Deprecated internal writers are not all decorated individually. Calls reached through an enrolled unified tool run on its private copy. Direct calls to an undecorated internal helper are not covered. External source paths used by slide import are read-only inputs but are not locked against other applications.
 
+## Receipts and operation modes
+
+`office_patch`, `office_table` and `office_comment` expose `best_effort`, `safe`, `strict` and `dry_run`. Other enrolled tools accept modes only where their existing signature declares them. `safe` requires a distinct output but permits a supported subset; `strict` rejects the transaction on unmatched/skipped targets. Preview runs on a private copy and reports zero committed operations.
+
+`changes_planned` and `changes_applied` separate staged outcomes from publication. Inspect per-target `results[].applied`, error/diagnostic fields and the source fingerprint. `package_diff` lists added, removed and changed member payloads; equivalent-only XML serialisations are separate. It describes the proposed result during preview and the committed result after a successful write.
+
+Word and PowerPoint adjacent-run replacement retains boundary formatting. Word fields/hyperlinks/revisions and PowerPoint fields/paragraph breaks form barriers; a match cannot cross them. PPTX whole-shape replacement retains its existing clear/autofit semantics. Duplication gives charts and embedded workbooks independent parts; notes require explicit `pptx_import_slide(include_notes=True)`.
+
 ## Limits
 
 Atomic publication prevents partial files; it does not prove complete OOXML fidelity. XLSX style/cache dependency repair currently belongs to `office_patch`. Table/comment/chart saves still use the underlying library serialiser and may lose unsupported structures. Package-level preservation ports need independent tests before extending that claim. Process locks do not exclude arbitrary external writers; fingerprints detect most stale-file changes but are not an operating-system compare-and-swap.

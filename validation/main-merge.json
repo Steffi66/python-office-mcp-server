@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "event": "main-merge-verification",
+  "mergeCommit": "7f4552d3bf221e6f27b7f28f6c347a9f6892f3c3",
+  "featureTip": "cabb5d6bc85111aa8be9aa500bd7c606383bde1a",
+  "branch": "main",
+  "runtime": "3.12.3",
+  "results": {
+    "passed": 1110,
+    "skipped": 3,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 24.223
+  },
+  "scope": {
+    "committedSuitePassed": 1106,
+    "localOnlyAdditionalTests": 4,
+    "includesLocalOnlyTests": true
+  },
+  "junitSha256": "567b80fa27164e07f6629a82a7f4a2e1686cde77600feeb4a2ab2aeb83ffc3a1",
+  "localOnlyFiles": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "cleanup": {
+    "remainingWorktree": "main checkout",
+    "removedLocalBranches": [
+      "feature/preservation-safety",
+      "backport/aioumcp-schema-fallback"
+    ],
+    "removedRemoteBranches": [
+      "origin/feature/preservation-safety",
+      "fork/backport/aioumcp-schema-fallback"
+    ],
+    "originalUntrackedFilesPreserved": true,
+    "quickjsRemovalInMergedLock": true
+  },
+  "historicalValidation": "preservation-safety.json",
+  "deploymentPerformed": false,
+  "unverified": [
+    "Three LibreOffice oracle checks skipped: executable unavailable",
+    "Native Microsoft Office rendering",
+    "Windows executable runtime",
+    "HTTP transport"
+  ]
+}

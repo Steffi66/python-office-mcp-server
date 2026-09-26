@@ -1,8 +1,10 @@
 # Preservation safety implementation checklist
 
-The first release closes six reproduced server mutation failures before adding broader editing functionality. Keep the MCP interface, existing pytest tests and source provenance. Every test batch ends with a reviewed commit; no unrelated changes are bundled.
+The preservation-safety work was merged and pushed to `main` as `7f4552d3bf221e6f27b7f28f6c347a9f6892f3c3`. The temporary worktree and feature branch were removed, along with the obsolete patch-equivalent backport branch. This checklist records the completed batches; it is not a list of pending work.
 
-Base: `36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943`. The audited source at `774ee72` differs only in CI files. Work takes place on `feature/preservation-safety` in an isolated worktree. Modified `uv.lock` and untracked standalone import files in the original checkout are excluded.
+The implementation was based on `36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943`; the audited source at `774ee72` differs only in two CI files. Work ran in an isolated worktree before the merge. The original lockfile's quickjs removal is included in the merged lock. Two untracked standalone import files remain unchanged and uncommitted in the main checkout.
+
+See [testing](../testing.md) for current commands and result scopes. Historical measurements below retain their original counts and limitations.
 
 ## Completed research
 
@@ -24,7 +26,7 @@ Base: `36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943`. The audited source at `774ee72
 
 Verification: Python 3.12.3, **996 passed in 17.08s** (988 baseline plus eight inventory/precondition tests). Touched-file Ruff check, shell syntax and `git diff --check` pass. Original dirty-file SHA-256 values are unchanged. The new remote CI matrix has not run locally.
 
-The imported scenarios remain `@planned`. Inventory tests validate their inputs; they do not count as scenario execution. Python 3.12 is locally verified. CI is configured for 3.10, 3.12 and 3.13; those remote results must be recorded before claiming matrix coverage. Python 3.14 is not part of this initial gate.
+At this checkpoint only inventory/preconditions ran; the immutable shared source stays tagged `@planned`. The executable Python copy added in Batch 5 runs all 19 cases. Final local matrix runs cover Python 3.10, 3.12 and 3.13; remote CI results are separate. Python 3.14 is not in the declared matrix.
 
 ## Batch 2: mutation semantics
 
@@ -37,7 +39,7 @@ The imported scenarios remain `@planned`. Inventory tests validate their inputs;
 - [x] Preserve existing destinations on failure.
 - [x] Run mutation, diagnostics and relevant format tests together; review and commit.
 
-Verification: **151 passed in 2.42s**; new-file Ruff and diff whitespace checks pass. Private-copy preview validates actual transformations, then discards them. Repeated format writers address the same private copy; only the final destination replacement is committed. Source-fingerprint/locking hardening follows in Batch 4.
+Verification: **151 passed in 2.42s**; new-file Ruff and diff whitespace checks pass. Private-copy preview validates actual transformations, then discards them. Repeated format writers address the same private copy; only the final destination replacement is committed. Batch 4 added source-fingerprint/locking hardening.
 
 ## Batch 3: XLSX dependency preservation
 
@@ -58,7 +60,7 @@ Verification: **219 passed in 2.47s**, including opaque-part byte checks, custom
 - [x] Inject save/validation failures; verify rollback and staging cleanup.
 - [x] Run transaction/security tests and full-suite pass; review and commit.
 
-Verification: **1,040 passed in 17.21s**. Source/destination fingerprint changes refuse publication; process-local per-path locks prevent lost updates through this staging path. Symlinks retain their link identity; hard-linked files refuse. Fault tests assert the injected failure was actually reached. Legacy specialised writers are not yet covered by these locks (Batch 7). Arbitrary external writers can still race after the final hash check; no cross-process locking guarantee is claimed.
+Verification: **1,040 passed in 17.21s**. Source/destination fingerprint changes refuse publication; process-local per-path locks prevent lost updates through this staging path. Symlinks retain their link identity; hard-linked files refuse. Fault tests assert the injected failure was actually reached. At this checkpoint specialised writers were not covered; Batch 7 enrolled the explicit writer list. Arbitrary external writers can still race after the final hash check; no cross-process locking guarantee is claimed.
 
 ## Batch 5: executable acceptance
 
@@ -71,7 +73,7 @@ Verification: **1,040 passed in 17.21s**. Source/destination fingerprint changes
 - [x] Restore byte-original semantically unchanged PPTX XML payloads before publication (acceptance exposed this prerequisite ahead of Batch 8).
 - [x] Run all 19 cases plus runner self-tests as one batch; review and commit.
 
-Verification: **66 tests passed in 1.36s**, including **19 acceptance cases / 159 executed steps**. Runtime feature copy is tagged `@implemented @python`; original shared pack remains immutable/planned evidence. Gherkin table escaping is decoded before JSON string parsing; the adapter accepts literal newlines emitted by the compiler. Conservative OPC-equivalence restores unchanged PPTX payloads without relaxing fixture hashes. Independent regressions cover whitespace, child order, prefix-valued attributes and DTD rejection. The worktree lockfile was refreshed for pytest-bdd; original checkout lockfile is untouched.
+Verification: **66 tests passed in 1.36s**, including **19 acceptance cases / 159 executed steps**. Runtime feature copy is tagged `@implemented @python`; original shared pack remains immutable/planned evidence. This checkpoint used a temporary JSON tolerance workaround; the v2 correction below removed it. Current bindings consume official-compiler table values with strict JSON decoding. Conservative OPC-equivalence restores unchanged PPTX payloads without relaxing fixture hashes. Independent regressions cover whitespace, child order, prefix-valued attributes and DTD rejection. The worktree lockfile was refreshed for pytest-bdd; original checkout lockfile is untouched.
 
 ## Batch 6: MCP and packaging
 
@@ -126,10 +128,12 @@ Verification: **5 passed, 3 skipped in 0.18s**. LibreOffice is absent locally; s
 - [x] Run all declared local gates and record skipped/unavailable evidence separately: Python 3.10/3.12/3.13 each **1,106 passed, 3 LibreOffice skips**; final clean-wheel MCP **4 passed**.
 - [x] Review fixture provenance, licence records and implementation diffs; fix XML prolog and acceptance lifecycle gaps in `130af6e` (35 focused tests).
 - [x] Commit final validation evidence and current discovery/documentation guidance (11 delivery tests passed).
-- [x] Push `feature/preservation-safety` to origin; remote `4ac411dbaa1bbc87e2f79ce0ed7fca582b866ca6` verified before this delivery note. Dirty local main remains unmerged.
-- [x] Recheck original local-edit hashes and leave shared references unchanged.
+- [x] Publish the completed feature branch at `cabb5d6`, then merge and push `main` at `7f4552d` following approval.
+- [x] Verify the merged checkout: **1,110 passed, 3 skipped** on Python 3.12, including four pre-existing local-only tests. The committed suite contains **1,106 passing tests**.
+- [x] Remove the extra worktree and feature/backport branches locally and on their remotes after saving a recovery bundle.
+- [x] Recheck both untracked Python files' hashes, incorporate the lockfile's quickjs removal and leave shared references unchanged.
 
-Final local evidence is in `validation/preservation-safety.json`. Microsoft Office/Windows runtime and independent LibreOffice calculation/rendering remain unverified/outside the selected server slice. External model review attempts timed out; no independent review pass is claimed. Feature-branch publication is separate from merging/deployment.
+[Historical validation](../../validation/preservation-safety.json) retains the source revision and branch used for the matrix. [Merge validation](../../validation/main-merge.json) records the main merge and the local-only test distinction. Microsoft Office/Windows runtime and independent LibreOffice calculation/rendering are unverified or outside the selected server slice. External model review attempts timed out; no independent review pass is claimed. Merging source does not deploy or restart a running server.
 
 ## Test execution policy
 

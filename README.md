@@ -6,6 +6,8 @@ Since the server itself is pretty generic code and does not support enterprise f
 
 The code is considered _stable_, so it will not be maintained other than patches/hotfixes and there is _zero_ support or issue tracking.
 
+The current `main` includes staged edits for existing documents: preview on a private copy, validate the saved result, then replace the destination once. Excel cell patches preserve style dependencies and invalidate stale formula caches; Word and PowerPoint literal replacements preserve formatting across adjacent text runs. See [writer scope](docs/writer-scope.md) for the covered tools and [testing](docs/testing.md) for reproducible checks and known limits.
+
 ## Available Tools
 
 ### Core-First Tool Model
@@ -50,7 +52,7 @@ These remain discoverable, but should usually be reached from `office_help`, dia
 
 #### Word SOW Generation
 
-These were a proof-of-concept approach fod managing and updating specific document templates - all the tools marked `sow` are deprecated and kept only for historical interest.
+These were a proof-of-concept approach for managing and updating specific document templates. Tools marked `sow` are deprecated and retained for compatibility; prefer the unified editing tools for new workflows.
 
 | Tool | Description |
 |------|-------------|
@@ -73,12 +75,13 @@ These were a proof-of-concept approach fod managing and updating specific docume
 |------|-------------|
 | `pptx_add_slide` | Add new slide with specified layout |
 | `pptx_delete_slide` | Remove a slide |
-| `pptx_duplicate_slide` | Copy a slide |
+| `pptx_duplicate_slide` | Copy a slide with independent chart and embedded-workbook parts |
 | `pptx_reorder_slides` | Change slide order |
 | `pptx_hide_slide` | Hide/unhide a slide |
 | `pptx_set_notes` | Set speaker notes |
 | `pptx_recommend_layout` | Get best layout for content type |
 | `pptx_log_changes` | Add change log slide |
+| `pptx_import_slide` | Copy a slide between presentations, with optional speaker notes |
 
 #### Document Conversion
 
@@ -232,13 +235,13 @@ Start with `office_help`, then inspect, preview, patch to a new output, and reop
 
 ### Verification
 
-Run a read-only batch with `bash tests/run_tests.sh`, or select related test paths as arguments. Set `PYTHON=/path/to/python` to choose the environment. Verification never auto-formats or fixes source.
+Install the development dependencies before running `bash tests/run_tests.sh`, or select related test paths as arguments. Set `PYTHON=/path/to/python` to choose the environment. The [testing guide](docs/testing.md) covers setup, focused batches, Gherkin reports and the optional LibreOffice checks. Verification never auto-formats or fixes source.
 
 Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. The source fixture pack in `tests/contracts/shared/` is immutable provenance; executable Python feature copies are separate.
 
-Verified locally on Python 3.10.21, 3.12.3 and 3.13.14: 1,106 tests pass per runtime, with three explicit LibreOffice-unavailable skips. Native Microsoft Office and the independent rendering/calculation lane remain unverified. The clean wheel passes four real MCP stdio workflows.
+The committed suite passed on Python 3.10, 3.12 and 3.13; a clean wheel also passed the MCP stdio workflow tests. LibreOffice checks were skipped locally because the executable was unavailable. Native Microsoft Office rendering and Windows executable behaviour have not been verified locally.
 
-See [the implementation checklist](docs/checklists/preservation-safety.md), [validation evidence](validation/preservation-safety.json) and [XLSX adoption decision](docs/xlsx-adoption-decision.md) for scope and limitations.
+The [test results](docs/testing.md#recorded-results) distinguish committed tests from local-only tests. The [implementation checklist](docs/checklists/preservation-safety.md) records the completed merge into `main`; the [XLSX adoption decision](docs/xlsx-adoption-decision.md) explains why the server retains upstream openpyxl.
 
 ### Table Operations
 
@@ -446,23 +449,26 @@ Primary test files:
 
 ## Word Review Workflow
 
-The recommended workflow for reviewing documents is this:
+Inspect the document before choosing targets. Use `section:` targets for section content and literal text for placeholders; `office_patch` has no `operation` argument.
 
-```
-1. office_help(goal="fill_sow_from_markdown") → Choose the workflow and recovery path first
-2. office_template(operation="copy")          → Create working document from template
-3. office_template(operation="analyze")       → Understand what to preserve vs fill
-4. office_inspect(what="tables")              → Get EXACT column names for all tables
-5. word_generate_sow                           → Fill placeholders and tables with data
-6. office_patch(operation="section")          → Add prose to Introduction, Business Context
-7. office_table(operation="insert_row")       → Add engagement-specific rows to tables
-8. office_patch(operation="fix_split")        → Replace any remaining split placeholders
-9. office_comment(operation="add")            → Add review comments for stakeholders
-10. word_cleanup_sow                           → Remove template guidance (tracked)
-11. office_audit(checks=["completion"])       → Verify completion score ≥ 80%
+```python
+office_inspect(file_path="draft.docx", what="sections")
+word_list_anchors(file_path="draft.docx", query="Delivery")
+
+changes = [
+  {"target": "<Customer>", "value": "Contoso"},
+  {"target": "section:Delivery", "value": "Delivery starts after approval."}
+]
+office_patch(file_path="draft.docx", changes=changes, mode="dry_run")
+office_patch(
+  file_path="draft.docx", changes=changes,
+  mode="strict", output_path="review.docx"
+)
+office_read(file_path="review.docx")
+office_audit(file_path="review.docx", checks=["placeholders", "completion"])
 ```
 
-> **Quality Bar:** All review tools preserve document structure by editing templates rather than creating new documents from scratch. All changes are tracked for stakeholder review.
+Preview reports planned changes; strict commit requires every requested target to apply. Word replacement tools use tracked revisions, and read-back includes insertions while excluding deletions. Inspect the saved document before accepting those revisions. Package checks cannot establish that a document's meaning or rendered layout is correct.
 
 ## Setup
 
@@ -480,7 +486,7 @@ Using pip:
 pip install "git+https://github.com/rcarmo/python-office-mcp-server.git"
 ```
 
-This installs the `office-mcp-server` command. Requires Python ≥3.10 (tested with 3.12).
+This installs the `office-mcp-server` command. Requires Python >=3.10; locally tested on 3.10, 3.12 and 3.13.
 
 ### Install from local clone
 
@@ -539,7 +545,7 @@ python office_server.py
 }
 ```
 
-If using `uvx` or `bunx` instead of a pre-installed binary:
+To use `uvx` instead of a pre-installed binary:
 
 ```json
 {
@@ -571,7 +577,7 @@ code ~/.config/github-copilot/config.json
   "mcpServers": {
     "officeServer": {
       "command": "python",
-      "args": ["/path/to/.github/mcp/office_server.py"]
+      "args": ["/path/to/python-office-mcp-server/office_server.py"]
     }
   }
 }
@@ -580,7 +586,7 @@ code ~/.config/github-copilot/config.json
 ### Running Manually
 
 ```bash
-cd .github/mcp
+cd python-office-mcp-server
 pip install -r requirements.txt
 python office_server.py
 ```
@@ -592,7 +598,7 @@ Build a standalone `.exe` using PyInstaller.
 ### Build on Windows
 
 ```powershell
-cd .github/mcp
+cd python-office-mcp-server
 python -m pip install -r requirements.txt
 python -m pip install -r requirements-build.txt
 python build_windows_onefile.py --clean
@@ -628,12 +634,17 @@ Use the generated executable in MCP client configuration by pointing `command` t
 
 The server dynamically loads tool modules from `tools/`:
 
-- `office_unified_tools.py` — Unified interface (7 tools)
+- `office_unified_tools.py` — Unified document operations
 - `word_tools.py` — Word conversion tools
 - `word_advanced_tools.py` — SOW-specific tools
 - `excel_tools.py` — Excel conversion tools
 - `excel_advanced_tools.py` — Excel advanced operations (internal)
 - `pptx_tools.py` — PowerPoint conversion tools
 - `pptx_advanced_tools.py` — Slide management tools
+- `pptx_slide_transfer_tools.py` — Relationship-aware slide import
+- `mutation.py` — Staging, writer locks, fingerprints and commit receipts
+- `package_guard.py` / `package_preservation.py` — Bounded admission and package differences
+- `xlsx_preservation.py` — Cell-edit style and calculation dependencies
+- `word_spans.py` / `pptx_text.py` — Adjacent-run text replacement
 
 Tools are discovered automatically by class name pattern (`*Tools`).
