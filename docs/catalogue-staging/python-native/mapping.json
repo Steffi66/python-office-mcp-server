@@ -1894,7 +1894,7 @@
       "sourceLine": 98,
       "sourceSha256": "c30198fe506c315aaef772a258d361c967a6961157a085cad8767fb103595425",
       "feature": "features/test_comment_tools_e2e.feature",
-      "scenario": "Native check: excel comments unified read write delete",
+      "scenario": "Unified Excel comments expose the target and text before deleting A1",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -1911,10 +1911,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate unified read checks exact Excel count, Data/A1 and Finance fragment; no author or package preservation assertion. Skips without openpyxl."
+      ],
+      "semanticReviewCommit": "161b437fc51e8a75369c049bcfe0e0a2e1fbc78b",
+      "semanticReviewNotes": "comment-tools-e2e-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-comment-tools-e2e-f0bcc3a2a3",
@@ -1923,7 +1927,7 @@
       "sourceLine": 129,
       "sourceSha256": "c30198fe506c315aaef772a258d361c967a6961157a085cad8767fb103595425",
       "feature": "features/test_comment_tools_e2e.feature",
-      "scenario": "Native check: excel comments direct read write delete",
+      "scenario": "Direct Excel tools report one comment before deletion and a zero-or-missing count afterwards",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -1940,10 +1944,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate direct Excel read checks only count=1, not returned text/cell/sheet or error absence. Skips without openpyxl."
+      ],
+      "semanticReviewCommit": "161b437fc51e8a75369c049bcfe0e0a2e1fbc78b",
+      "semanticReviewNotes": "comment-tools-e2e-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-comment-tools-e2e-20ece7957e",
@@ -1952,7 +1960,7 @@
       "sourceLine": 149,
       "sourceSha256": "c30198fe506c315aaef772a258d361c967a6961157a085cad8767fb103595425",
       "feature": "features/test_comment_tools_e2e.feature",
-      "scenario": "Native check: word comments unified read write delete",
+      "scenario": "Unified Word comments expose text and delete the first returned ID",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -1969,10 +1977,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate unified Word read checks positive count and verify text fragment; no exact count, author or package preservation assertion. Skips without python-docx or lxml."
+      ],
+      "semanticReviewCommit": "161b437fc51e8a75369c049bcfe0e0a2e1fbc78b",
+      "semanticReviewNotes": "comment-tools-e2e-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-comment-tools-e2e-676e3b50ad",
@@ -1981,7 +1993,7 @@
       "sourceLine": 180,
       "sourceSha256": "c30198fe506c315aaef772a258d361c967a6961157a085cad8767fb103595425",
       "feature": "features/test_comment_tools_e2e.feature",
-      "scenario": "Native check: word comments direct read write delete",
+      "scenario": "Direct Word tools delete the first returned ID after a positive count",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -1998,10 +2010,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate direct Word read checks positive count and locates an ID, not text or error absence. Skips without python-docx or lxml."
+      ],
+      "semanticReviewCommit": "161b437fc51e8a75369c049bcfe0e0a2e1fbc78b",
+      "semanticReviewNotes": "comment-tools-e2e-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-comment-tools-e2e-de1d579a0b",
@@ -2010,7 +2026,7 @@
       "sourceLine": 201,
       "sourceSha256": "c30198fe506c315aaef772a258d361c967a6961157a085cad8767fb103595425",
       "feature": "features/test_comment_tools_e2e.feature",
-      "scenario": "Native check: pptx comments unified read write delete",
+      "scenario": "Unified PowerPoint comments expose slide-1 text and delete its returned index",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -2027,10 +2043,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate unified PPTX read checks positive count, slide-1 list and update text fragment; no exact count, author or package preservation assertion. Skips without python-pptx."
+      ],
+      "semanticReviewCommit": "161b437fc51e8a75369c049bcfe0e0a2e1fbc78b",
+      "semanticReviewNotes": "comment-tools-e2e-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-comment-tools-e2e-846a41e278",
@@ -2039,7 +2059,7 @@
       "sourceLine": 232,
       "sourceSha256": "c30198fe506c315aaef772a258d361c967a6961157a085cad8767fb103595425",
       "feature": "features/test_comment_tools_e2e.feature",
-      "scenario": "Native check: pptx comments direct read write delete",
+      "scenario": "Direct PowerPoint tools delete the first slide-1 comment index after a positive count",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -2056,10 +2076,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate direct PPTX read checks positive count and locates slide-1 index, not text or error absence. Skips without python-pptx."
+      ],
+      "semanticReviewCommit": "161b437fc51e8a75369c049bcfe0e0a2e1fbc78b",
+      "semanticReviewNotes": "comment-tools-e2e-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-comprehensive-paths-7418e79b0c",
@@ -30838,6 +30862,48 @@
       "candidateScenarioId": "@candidate-python-word-comment-roundtrip-fixture-ec40884570",
       "gaps": [
         "Source/copy done states are checked, not source bytes or preserved output members; source is not reread after reopening the copy."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_comment_tools_e2e.py::test_excel_comments_unified_read_write_delete",
+      "candidateScenarioId": "@candidate-python-comment-tools-e2e-87e7f9fd1d",
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate unified read checks exact Excel count, Data/A1 and Finance fragment; no author or package preservation assertion. Skips without openpyxl."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_comment_tools_e2e.py::test_excel_comments_direct_read_write_delete",
+      "candidateScenarioId": "@candidate-python-comment-tools-e2e-f0bcc3a2a3",
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate direct Excel read checks only count=1, not returned text/cell/sheet or error absence. Skips without openpyxl."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_comment_tools_e2e.py::test_word_comments_unified_read_write_delete",
+      "candidateScenarioId": "@candidate-python-comment-tools-e2e-20ece7957e",
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate unified Word read checks positive count and verify text fragment; no exact count, author or package preservation assertion. Skips without python-docx or lxml."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_comment_tools_e2e.py::test_word_comments_direct_read_write_delete",
+      "candidateScenarioId": "@candidate-python-comment-tools-e2e-676e3b50ad",
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate direct Word read checks positive count and locates an ID, not text or error absence. Skips without python-docx or lxml."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_comment_tools_e2e.py::test_pptx_comments_unified_read_write_delete",
+      "candidateScenarioId": "@candidate-python-comment-tools-e2e-de1d579a0b",
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate unified PPTX read checks positive count, slide-1 list and update text fragment; no exact count, author or package preservation assertion. Skips without python-pptx."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_comment_tools_e2e.py::test_pptx_comments_direct_read_write_delete",
+      "candidateScenarioId": "@candidate-python-comment-tools-e2e-846a41e278",
+      "gaps": [
+        "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate direct PPTX read checks positive count and locates slide-1 index, not text or error absence. Skips without python-pptx."
       ]
     }
   ],

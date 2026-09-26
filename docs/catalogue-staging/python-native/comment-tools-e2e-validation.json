@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "scope": "Six cross-format comment catalogue descriptions; parser and inventory validation only",
+  "reviewedSourceCommit": "161b437fc51e8a75369c049bcfe0e0a2e1fbc78b",
+  "sourceSha256": {
+    "tests/test_comment_tools_e2e.py": "c30198fe506c315aaef772a258d361c967a6961157a085cad8767fb103595425"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 6,
+    "recordedCases": 6,
+    "compiledCases": 6,
+    "features": [
+      {
+        "feature": "docs/catalogue-staging/python-native/features/test_comment_tools_e2e.feature",
+        "cases": 6,
+        "compiledStepsIncludingBackground": 77
+      }
+    ],
+    "changedMappingRows": 6,
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 160,
+    "newAssertionLimitEntries": 6,
+    "totalEntries": 166
+  },
+  "localDocumentationLinks": 6,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "a7f6f4f90d917a65393590a8d318273e8d6fe1a07cd1c6495ae2db56a38724f0",
+    "docs/catalogue-staging/python-native/comment-tools-e2e-review.md": "b442cd6b912e919b6482eac6b3693d1bc8c4424283d537baabf57e8b2cd0067b",
+    "docs/catalogue-staging/python-native/features/test_comment_tools_e2e.feature": "11755ee4f93d6d93e8a631fbb1bcd7fc4b496f131a53b80a720c095f4e2d4b0d",
+    "docs/catalogue-staging/python-native/mapping.json": "7cf6afcf7cc4609e33344ce25a575b0deea37e3e5554e4052c715a47a17686a0"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "Central reconciliation and generated-seed inventory incomplete",
+    "Parsing Gherkin does not execute native tests or Office operations"
+  ]
+}

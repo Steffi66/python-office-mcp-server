@@ -1,93 +1,99 @@
 @captured @python_candidate
-Feature: comment tools e2e native behavior capture
+Feature: Python direct and unified comment operation observations across formats
 
-  These candidate descriptions need central reconciliation.
-  Captured text grants no execution credit.
+  Six native definitions exercise generated Office files when their dependencies are available.
+  Candidate descriptions need central reconciliation and grant no execution credit.
+  Post-delete counts default to zero if missing; no final error or empty-collection assertion is made.
+
+  Background:
+    Given a combined tools object composed from TOOL_CLASSES
+    And an isolated writable temporary directory
 
   @candidate-python-comment-tools-e2e-87e7f9fd1d
   # Native: tests/test_comment_tools_e2e.py::test_excel_comments_unified_read_write_delete
-  Scenario: Native check: excel comments unified read write delete
-    Given Provide a full tool instance similar to the dynamic server composition.
-    And Create an Excel workbook prepared for comment operations.
-    When tools.tool office comment using file path excel comment file; operation "add"; target "A1"; text "Validate this number with Finance"
-    And tools.tool office comment using file path excel comment file; operation "get"
-    And tools.tool office comment using file path excel comment file; operation "delete"; target "A1"
-    Then add field "success" is true
-    And "error" does not occur in got
-    And got field "total_comments", defaulting to 0 equals 1
-    And the number of entries in got field "by_sheet", defaulting to {} field "Data", defaulting to [] equals 1
-    And got field "by_sheet", defaulting to {} field "Data", defaulting to [] at 0 field "cell" equals "A1"
-    And "Finance" occurs in got field "by_sheet", defaulting to {} field "Data", defaulting to [] at 0 field "text", defaulting to ""
-    And deleted field "success" is true
-    And after field "total_comments", defaulting to 0 equals 0
+  Scenario: Unified Excel comments expose the target and text before deleting A1
+    Given openpyxl is importable or the native check is skipped
+    And a saved workbook with sheet "Data", A1 "Revenue" and B1 equal to 1000
+    When tool_office_comment adds "Validate this number with Finance" to target "A1"
+    Then the add result has success true
+    When tool_office_comment gets comments
+    Then the response has no error and total_comments equals 1
+    And by_sheet for "Data" contains exactly one entry with cell "A1" and text containing "Finance"
+    When tool_office_comment deletes target "A1"
+    Then the delete result has success true
+    When tool_office_comment gets comments again
+    Then total_comments, defaulting to 0 if missing, equals 0
 
   @candidate-python-comment-tools-e2e-f0bcc3a2a3
   # Native: tests/test_comment_tools_e2e.py::test_excel_comments_direct_read_write_delete
-  Scenario: Native check: excel comments direct read write delete
-    Given Provide a full tool instance similar to the dynamic server composition.
-    And Create an Excel workbook prepared for comment operations.
-    When tools.tool excel add comment using file path excel comment file; cell ref "A1"; text "Direct Excel comment"
-    And tools.tool excel get comments using file path excel comment file
-    And tools.tool excel delete comment using file path excel comment file; cell ref "A1"
-    Then add field "success" is true
-    And got field "total_comments", defaulting to 0 equals 1
-    And deleted field "success" is true
-    And after field "total_comments", defaulting to 0 equals 0
+  Scenario: Direct Excel tools report one comment before deletion and a zero-or-missing count afterwards
+    Given openpyxl is importable or the native check is skipped
+    And a saved workbook with sheet "Data", A1 "Revenue" and B1 equal to 1000
+    When tool_excel_add_comment adds "Direct Excel comment" to cell_ref "A1"
+    Then the add result has success true
+    When tool_excel_get_comments reads the workbook
+    Then total_comments equals 1
+    When tool_excel_delete_comment deletes cell_ref "A1"
+    Then the delete result has success true
+    When tool_excel_get_comments reads the workbook again
+    Then total_comments, defaulting to 0 if missing, equals 0
 
   @candidate-python-comment-tools-e2e-20ece7957e
   # Native: tests/test_comment_tools_e2e.py::test_word_comments_unified_read_write_delete
-  Scenario: Native check: word comments unified read write delete
-    Given Provide a full tool instance similar to the dynamic server composition.
-    And Create a Word document prepared for comment operations.
-    When tools.tool office comment using file path word comment file; operation "add"; target "comment target"; text "Please verify this claim"
-    And tools.tool office comment using file path word comment file; operation "get"
-    And tools.tool office comment using file path word comment file; operation "delete"; target str representation of got field "comments", defaulting to [] at 0 at "id"
-    Then add field "success" is true
-    And "error" does not occur in got
-    And got field "comment_count", defaulting to 0 is at least 1
-    And got field "comments", defaulting to [] is non-empty or true
-    And "verify" occurs in got field "comments", defaulting to [] at 0 field "text", defaulting to "" in lowercase
-    And deleted field "success" is true
-    And after field "comment_count", defaulting to 0 equals 0
+  Scenario: Unified Word comments expose text and delete the first returned ID
+    Given python-docx and lxml are importable or the native check is skipped
+    And a saved document with "This sentence is the comment target." and "Another paragraph for context."
+    When tool_office_comment adds "Please verify this claim" to target "comment target"
+    Then the add result has success true
+    When tool_office_comment gets comments
+    Then the response has no error and comment_count is at least 1
+    And comments is nonempty and its first entry's text lowercases to a string containing "verify"
+    And the first entry's ID is captured
+    When tool_office_comment deletes that ID as a string target
+    Then the delete result has success true
+    When tool_office_comment gets comments again
+    Then comment_count, defaulting to 0 if missing, equals 0
 
   @candidate-python-comment-tools-e2e-676e3b50ad
   # Native: tests/test_comment_tools_e2e.py::test_word_comments_direct_read_write_delete
-  Scenario: Native check: word comments direct read write delete
-    Given Provide a full tool instance similar to the dynamic server composition.
-    And Create a Word document prepared for comment operations.
-    When tools.tool word add comment using file path word comment file; target text "comment target"; comment text "Direct Word comment"
-    And tools.tool word get comments using file path word comment file
-    And tools.tool word delete comment using file path word comment file; comment id str representation of got at "comments" at 0 at "id"
-    Then add field "success" is true
-    And got field "comment_count", defaulting to 0 is at least 1
-    And deleted field "success" is true
-    And after field "comment_count", defaulting to 0 equals 0
+  Scenario: Direct Word tools delete the first returned ID after a positive count
+    Given python-docx and lxml are importable or the native check is skipped
+    And a saved document with "This sentence is the comment target." and "Another paragraph for context."
+    When tool_word_add_comment adds "Direct Word comment" to target_text "comment target"
+    Then the add result has success true
+    When tool_word_get_comments reads the document
+    Then comment_count is at least 1 and the first returned comment ID is captured
+    When tool_word_delete_comment deletes that ID as a string comment_id
+    Then the delete result has success true
+    When tool_word_get_comments reads the document again
+    Then comment_count, defaulting to 0 if missing, equals 0
 
   @candidate-python-comment-tools-e2e-de1d579a0b
   # Native: tests/test_comment_tools_e2e.py::test_pptx_comments_unified_read_write_delete
-  Scenario: Native check: pptx comments unified read write delete
-    Given Provide a full tool instance similar to the dynamic server composition.
-    And Create a PowerPoint deck prepared for comment operations.
-    When tools.tool office comment using file path pptx comment file; operation "add"; target "slide:1"; text "Please update this title"
-    And tools.tool office comment using file path pptx comment file; operation "get"
-    And tools.tool office comment using file path pptx comment file; operation "delete"; target text slide:1/comment:{got field "comments", defaulting to {} field 1, defaulting to [] at 0 at "index"}
-    Then add field "success" is true
-    And "error" does not occur in got
-    And got field "total_comments", defaulting to 0 is at least 1
-    And got field "comments", defaulting to {} field 1, defaulting to [] is non-empty or true
-    And "update" occurs in got field "comments", defaulting to {} field 1, defaulting to [] at 0 field "text", defaulting to "" in lowercase
-    And deleted field "success" is true
-    And after field "total_comments", defaulting to 0 equals 0
+  Scenario: Unified PowerPoint comments expose slide-1 text and delete its returned index
+    Given python-pptx is importable or the native check is skipped
+    And a saved deck with one title-layout slide whose title is set to "Comment Test Slide" if a title shape exists
+    When tool_office_comment adds "Please update this title" to target "slide:1"
+    Then the add result has success true
+    When tool_office_comment gets comments
+    Then the response has no error and total_comments is at least 1
+    And comments at integer slide key 1 is nonempty and its first entry's text lowercases to a string containing "update"
+    And that entry's index is captured
+    When tool_office_comment deletes target "slide:1/comment:" followed by the captured index
+    Then the delete result has success true
+    When tool_office_comment gets comments again
+    Then total_comments, defaulting to 0 if missing, equals 0
 
   @candidate-python-comment-tools-e2e-846a41e278
   # Native: tests/test_comment_tools_e2e.py::test_pptx_comments_direct_read_write_delete
-  Scenario: Native check: pptx comments direct read write delete
-    Given Provide a full tool instance similar to the dynamic server composition.
-    And Create a PowerPoint deck prepared for comment operations.
-    When tools.tool pptx add comment using file path pptx comment file; slide number 1; comment text "Direct PPTX comment"
-    And tools.tool pptx get comments using file path pptx comment file; slide number 1
-    And tools.tool pptx delete comment using file path pptx comment file; slide number 1; comment index int representation of got at "comments" at 1 at 0 at "index"
-    Then add field "success" is true
-    And got field "total_comments", defaulting to 0 is at least 1
-    And deleted field "success" is true
-    And after field "total_comments", defaulting to 0 equals 0
+  Scenario: Direct PowerPoint tools delete the first slide-1 comment index after a positive count
+    Given python-pptx is importable or the native check is skipped
+    And a saved deck with one title-layout slide whose title is set to "Comment Test Slide" if a title shape exists
+    When tool_pptx_add_comment adds "Direct PPTX comment" to slide_number 1
+    Then the add result has success true
+    When tool_pptx_get_comments reads slide_number 1
+    Then total_comments is at least 1 and the first comment's index at integer slide key 1 is captured
+    When tool_pptx_delete_comment deletes slide_number 1 with comment_index converted from the captured index to an integer
+    Then the delete result has success true
+    When tool_pptx_get_comments reads slide_number 1 again
+    Then total_comments, defaulting to 0 if missing, equals 0
