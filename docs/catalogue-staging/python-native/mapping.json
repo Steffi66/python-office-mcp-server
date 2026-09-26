@@ -12965,7 +12965,7 @@
       "sourceLine": 51,
       "sourceSha256": "b2cc6f4246c76a1c5715bfdd4005c81d87c90c97e62e58794503d6719e3b3d05",
       "feature": "features/test_mutation_diagnostics.feature",
-      "scenario": "Native check: word patch section emits standard fields [TestMutationDiagnostics]",
+      "scenario": "Section patch returns matched-target and follow-up diagnostic fields",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -12978,10 +12978,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Response fields only; no saved section text or diagnostics content/cardinality validation."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-diagnostics-47d3962281",
@@ -12990,7 +12994,7 @@
       "sourceLine": 71,
       "sourceSha256": "b2cc6f4246c76a1c5715bfdd4005c81d87c90c97e62e58794503d6719e3b3d05",
       "feature": "features/test_mutation_diagnostics.feature",
-      "scenario": "Native check: word create sow from markdown surfaces partial success [TestMutationDiagnostics]",
+      "scenario": "SOW creation reports an unmapped assumptions section as partial success",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13003,10 +13007,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Response-only partial success and unmapped section evidence; no output existence/content or template-byte preservation assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-diagnostics-cb38d01946",
@@ -13015,7 +13023,7 @@
       "sourceLine": 99,
       "sourceSha256": "b2cc6f4246c76a1c5715bfdd4005c81d87c90c97e62e58794503d6719e3b3d05",
       "feature": "features/test_mutation_diagnostics.feature",
-      "scenario": "Native check: office patch word all miss reports failed [TestMutationDiagnostics]",
+      "scenario": "A missing Word placeholder permits failed or skipped diagnostic status",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13028,10 +13036,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Accepts either failed or skipped status; truthy skipped_targets does not identify/count skips. No source-byte preservation assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-diagnostics-e9a6629de8",
@@ -13040,7 +13052,7 @@
       "sourceLine": 116,
       "sourceSha256": "b2cc6f4246c76a1c5715bfdd4005c81d87c90c97e62e58794503d6719e3b3d05",
       "feature": "features/test_mutation_diagnostics.feature",
-      "scenario": "Native check: office patch excel all miss reports failed [TestMutationDiagnostics]",
+      "scenario": "A missing Excel sheet reports failure and the named preservation strategy",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13053,10 +13065,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Preservation strategy and empty edited_sheets are reported only; no saved workbook/byte comparison or unmatched-list cardinality assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-diagnostics-1580998c58",
@@ -13065,7 +13081,7 @@
       "sourceLine": 133,
       "sourceSha256": "b2cc6f4246c76a1c5715bfdd4005c81d87c90c97e62e58794503d6719e3b3d05",
       "feature": "features/test_mutation_diagnostics.feature",
-      "scenario": "Native check: excel table mutations emit standard diagnostics [TestMutationDiagnostics]",
+      "scenario": "Appending and updating with unknown columns each report partial-success diagnostics",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13078,10 +13094,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Append/update diagnostics only; no saved-row values, ignored-column effects, exact matched/update counts or table metadata assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-faults-d0b84bdd09",
@@ -13327,7 +13347,7 @@
       "sourceLine": 58,
       "sourceSha256": "dd085dbc5ebe58f0ae0c617a7f6fdec82dca8501b81b544314327039b9689cce",
       "feature": "features/test_mutation_modes.feature",
-      "scenario": "Native check: office patch dry run does not modify word file [TestMutationModes]",
+      "scenario": "Word dry-run returns its mode and preserves source bytes",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13340,10 +13360,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Dry-run compares source bytes only with success/mode; no planned/applied counts, directory inventory or external-write assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-modes-e5e9ce01ea",
@@ -13352,7 +13376,7 @@
       "sourceLine": 72,
       "sourceSha256": "dd085dbc5ebe58f0ae0c617a7f6fdec82dca8501b81b544314327039b9689cce",
       "feature": "features/test_mutation_modes.feature",
-      "scenario": "Native check: office patch safe requires distinct output path [TestMutationModes]",
+      "scenario": "Word safe mode reports failure when output_path is omitted",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13365,10 +13389,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Safe failure tests omitted output_path, not same-path, symlink or alias output; no source-byte preservation assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-modes-98a5ec284e",
@@ -13377,7 +13405,7 @@
       "sourceLine": 85,
       "sourceSha256": "dd085dbc5ebe58f0ae0c617a7f6fdec82dca8501b81b544314327039b9689cce",
       "feature": "features/test_mutation_modes.feature",
-      "scenario": "Native check: word create sow strict rejects unmapped sections without writing [TestMutationModes]",
+      "scenario": "Strict SOW creation reports failure and leaves its requested output absent",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13390,10 +13418,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Strict failure checks only requested output nonexistence and response fields; no template bytes, temporary writes or unmatched-section diagnostics assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-modes-5c226b35fd",
@@ -13402,7 +13434,7 @@
       "sourceLine": 113,
       "sourceSha256": "dd085dbc5ebe58f0ae0c617a7f6fdec82dca8501b81b544314327039b9689cce",
       "feature": "features/test_mutation_modes.feature",
-      "scenario": "Native check: office table excel dry run does not write [TestMutationModes]",
+      "scenario": "Excel table dry-run returns its mode and preserves source bytes",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13415,10 +13447,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Dry-run compares source bytes only with success/mode; no planned row, directory inventory or other destination check."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-modes-bd31ead847",
@@ -13427,7 +13463,7 @@
       "sourceLine": 129,
       "sourceSha256": "dd085dbc5ebe58f0ae0c617a7f6fdec82dca8501b81b544314327039b9689cce",
       "feature": "features/test_mutation_modes.feature",
-      "scenario": "Native check: office table excel safe requires output path [TestMutationModes]",
+      "scenario": "Excel table safe mode reports failure when output_path is omitted",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13440,10 +13476,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Safe table failure tests omitted output_path only; no status, same-path/alias or source-byte preservation assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-mutation-modes-a5aa9665b7",
@@ -13452,7 +13492,7 @@
       "sourceLine": 143,
       "sourceSha256": "dd085dbc5ebe58f0ae0c617a7f6fdec82dca8501b81b544314327039b9689cce",
       "feature": "features/test_mutation_modes.feature",
-      "scenario": "Native check: best effort preserves existing successful path [TestMutationModes]",
+      "scenario": "Best-effort table append writes an output whose A3 contains Engineer",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -13465,10 +13505,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Best-effort saved output checks A3=Engineer only; no B3 value, table metadata/full row or source-byte preservation assertion."
+      ],
+      "semanticReviewCommit": "a44009f1a9c23a2d79759a06569d3c5ac44d75c3",
+      "semanticReviewNotes": "mutation-diagnostics-modes-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-office-help-d5eb3bbdf1",
@@ -31305,6 +31349,83 @@
       "candidateScenarioId": "@candidate-python-track-changes-2c61301c0a",
       "gaps": [
         "Automated python-docx reopen/read smoke, not Microsoft Word compatibility or complete corruption/schema detection; returned text values are not compared."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_diagnostics.py::TestMutationDiagnostics::test_word_patch_section_emits_standard_fields",
+      "candidateScenarioId": "@candidate-python-mutation-diagnostics-571472667f",
+      "gaps": [
+        "Response fields only; no saved section text or diagnostics content/cardinality validation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_diagnostics.py::TestMutationDiagnostics::test_word_create_sow_from_markdown_surfaces_partial_success",
+      "candidateScenarioId": "@candidate-python-mutation-diagnostics-47d3962281",
+      "gaps": [
+        "Response-only partial success and unmapped section evidence; no output existence/content or template-byte preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_diagnostics.py::TestMutationDiagnostics::test_office_patch_word_all_miss_reports_failed",
+      "candidateScenarioId": "@candidate-python-mutation-diagnostics-cb38d01946",
+      "gaps": [
+        "Accepts either failed or skipped status; truthy skipped_targets does not identify/count skips. No source-byte preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_diagnostics.py::TestMutationDiagnostics::test_office_patch_excel_all_miss_reports_failed",
+      "candidateScenarioId": "@candidate-python-mutation-diagnostics-e9a6629de8",
+      "gaps": [
+        "Preservation strategy and empty edited_sheets are reported only; no saved workbook/byte comparison or unmatched-list cardinality assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_diagnostics.py::TestMutationDiagnostics::test_excel_table_mutations_emit_standard_diagnostics",
+      "candidateScenarioId": "@candidate-python-mutation-diagnostics-1580998c58",
+      "gaps": [
+        "Append/update diagnostics only; no saved-row values, ignored-column effects, exact matched/update counts or table metadata assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_modes.py::TestMutationModes::test_office_patch_dry_run_does_not_modify_word_file",
+      "candidateScenarioId": "@candidate-python-mutation-modes-cd0c13a3e2",
+      "gaps": [
+        "Dry-run compares source bytes only with success/mode; no planned/applied counts, directory inventory or external-write assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_modes.py::TestMutationModes::test_office_patch_safe_requires_distinct_output_path",
+      "candidateScenarioId": "@candidate-python-mutation-modes-e5e9ce01ea",
+      "gaps": [
+        "Safe failure tests omitted output_path, not same-path, symlink or alias output; no source-byte preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_modes.py::TestMutationModes::test_word_create_sow_strict_rejects_unmapped_sections_without_writing",
+      "candidateScenarioId": "@candidate-python-mutation-modes-98a5ec284e",
+      "gaps": [
+        "Strict failure checks only requested output nonexistence and response fields; no template bytes, temporary writes or unmatched-section diagnostics assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_modes.py::TestMutationModes::test_office_table_excel_dry_run_does_not_write",
+      "candidateScenarioId": "@candidate-python-mutation-modes-5c226b35fd",
+      "gaps": [
+        "Dry-run compares source bytes only with success/mode; no planned row, directory inventory or other destination check."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_modes.py::TestMutationModes::test_office_table_excel_safe_requires_output_path",
+      "candidateScenarioId": "@candidate-python-mutation-modes-bd31ead847",
+      "gaps": [
+        "Safe table failure tests omitted output_path only; no status, same-path/alias or source-byte preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_mutation_modes.py::TestMutationModes::test_best_effort_preserves_existing_successful_path",
+      "candidateScenarioId": "@candidate-python-mutation-modes-a5aa9665b7",
+      "gaps": [
+        "Best-effort saved output checks A3=Engineer only; no B3 value, table metadata/full row or source-byte preservation assertion."
       ]
     }
   ],
