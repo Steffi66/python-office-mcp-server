@@ -65,12 +65,16 @@ Feature: shared contract inventory native behavior capture
   @candidate-python-shared-contract-inventory-ca6f9e6c3f
   # Native: tests/test_shared_contract_inventory.py::test_pinned_word_and_slide_facts
   Scenario: Native check: pinned word and slide facts
-    Given document is prepared as the result of Document with ROOT under "fixtures" under "present-placeholder.docx"
-    When the pinned word and slide facts behavior is exercised with its prepared inputs
-    Then p text for each p in the result of Document with ROOT under "fixtures" under "present-placeholder.docx" paragraphs equals ["<Present>"]
-    And the number of entries in the result of Presentation with ROOT under "fixtures" under "title-and-subtitle.pptx" slides equals 1
-    And the result of Presentation with ROOT under "fixtures" under "title-and-subtitle.pptx" slides at 0 shapes title text equals "Original title"
-    And the result of Presentation with ROOT under "fixtures" under "title-and-subtitle.pptx" slides at 0 placeholders at 1 text equals "Original subtitle"
+    Given Open Document(ROOT / "fixtures" / "present-placeholder.docx").
+    And Open Presentation(ROOT / "fixtures" / "title-and-subtitle.pptx").
+    When Collect [p.text for p in document.paragraphs].
+    And Read len(presentation.slides).
+    And Read presentation.slides[0].shapes.title.text.
+    And Read presentation.slides[0].placeholders[1].text.
+    Then The document paragraph texts equal ["<Present>"].
+    And The presentation has exactly 1 slide.
+    And The first slide title text is "Original title".
+    And presentation.slides[0].placeholders[1].text equals "Original subtitle".
 
   @candidate-python-shared-contract-inventory-af21552e25
   # Native: tests/test_shared_contract_inventory.py::test_pinned_workbook_style_and_cache_facts
@@ -112,7 +116,7 @@ Feature: shared contract inventory native behavior capture
     And json.loads using saved text of FIXTURE SOURCE under "facts/content-types.json"
     Then the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "schemaVersion" equals 1
     And the number of entries in row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" equals the number of entries in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values"
-    And row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" at name at "status" occurs in "{'observed', 'specified'}"
+    And row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" at name at "status" occurs in "{'specified', 'observed'}"
     And row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts" under group joined with ".json" at "values" at name at "value" equals value
     And the result of next with row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts/content-types.json" at "values" where row at "id" equals "ContentTypeCommentsExtended" at "status" equals "disputed"
     And the result of next with row for each row in the result of json.loads with saved text of FIXTURE SOURCE under "facts/content-types.json" at "values" where row at "id" equals "ContentTypeCommentsExtended" at "value" differs from word tools CT COMMENTS EXTENDED

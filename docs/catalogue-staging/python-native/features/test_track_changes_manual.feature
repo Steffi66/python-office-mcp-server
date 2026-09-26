@@ -44,9 +44,15 @@ Feature: track changes manual native behavior capture
   @candidate-python-track-changes-manual-5d62e67797
   # Native: tests/test_track_changes_manual.py::TestManualVerification::test_compare_with_word_generated
   Scenario: Native check: compare with word generated [TestManualVerification]
-    Given the native compare with word generated inputs and isolated test state
-    When the compare with word generated behavior is exercised with its prepared inputs
-    Then the resulting document or diagnostic output is available for manual inspection
+    Given The test is explicitly manual/documentation-oriented and cites OOXML insertion and deletion structure from ISO/IEC 29500-1 in its docstring.
+    And Its printed example hard-codes the replacement of "OLD" with "NEW", author "Author", and timestamp "2026-01-20T10:00:00Z".
+    When Print a separator banner made from "=" * 60.
+    And Print the heading "EXPECTED XML STRUCTURE (per OOXML spec)".
+    And Print a multiline <w:p> example where <w:del> and <w:ins> are sibling paragraph-level elements around OLD and NEW.
+    And Print six key points covering sibling placement, order, w:delText versus w:t, unique w:id values, and ISO 8601 date format.
+    And Print the closing separator banner.
+    Then There are no automated assertions.
+    And The observable result is console output describing the expected OOXML structure and the six stated constraints.
 
   @candidate-python-track-changes-manual-6b059e206a
   # Native: tests/test_track_changes_manual.py::TestToolIntegration::test_patch_with_track_changes_creates_changes

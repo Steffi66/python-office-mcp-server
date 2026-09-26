@@ -7,37 +7,37 @@ Feature: strategic coverage native behavior capture
   @candidate-python-strategic-coverage-a03279abe0
   # Native: tests/test_strategic_coverage.py::TestModuleLevelErrors::test_word_tools_instance
   Scenario: Native check: word tools instance [TestModuleLevelErrors]
-    Given tools is prepared as the result of WordTools with no arguments
-    When the word tools instance behavior is exercised with its prepared inputs
-    Then the result of WordTools with no arguments is not null
+    Given WordTools is importable in the test module.
+    When Instantiate tools = WordTools().
+    Then The constructed tools object is not None.
 
   @candidate-python-strategic-coverage-80e1ab6456
   # Native: tests/test_strategic_coverage.py::TestModuleLevelErrors::test_pptx_tools_instance
   Scenario: Native check: pptx tools instance [TestModuleLevelErrors]
-    Given tools is prepared as the result of PowerPointTools with no arguments
-    When the pptx tools instance behavior is exercised with its prepared inputs
-    Then the result of PowerPointTools with no arguments is not null
+    Given PowerPointTools is importable in the test module.
+    When Instantiate tools = PowerPointTools().
+    Then The constructed tools object is not None.
 
   @candidate-python-strategic-coverage-3563aa0c95
   # Native: tests/test_strategic_coverage.py::TestModuleLevelErrors::test_excel_tools_instance
   Scenario: Native check: excel tools instance [TestModuleLevelErrors]
-    Given tools is prepared as the result of ExcelTools with no arguments
-    When the excel tools instance behavior is exercised with its prepared inputs
-    Then the result of ExcelTools with no arguments is not null
+    Given ExcelTools is importable in the test module.
+    When Instantiate tools = ExcelTools().
+    Then The constructed tools object is not None.
 
   @candidate-python-strategic-coverage-5857fa9cfd
   # Native: tests/test_strategic_coverage.py::TestModuleLevelErrors::test_word_advanced_tools_instance
   Scenario: Native check: word advanced tools instance [TestModuleLevelErrors]
-    Given tools is prepared as the result of WordAdvancedTools with no arguments
-    When the word advanced tools instance behavior is exercised with its prepared inputs
-    Then the result of WordAdvancedTools with no arguments is not null
+    Given WordAdvancedTools is importable in the test module.
+    When Instantiate tools = WordAdvancedTools().
+    Then The constructed tools object is not None.
 
   @candidate-python-strategic-coverage-d61f293345
   # Native: tests/test_strategic_coverage.py::TestModuleLevelErrors::test_pptx_advanced_tools_instance
   Scenario: Native check: pptx advanced tools instance [TestModuleLevelErrors]
-    Given tools is prepared as the result of PresentationAdvancedTools with no arguments
-    When the pptx advanced tools instance behavior is exercised with its prepared inputs
-    Then the result of PresentationAdvancedTools with no arguments is not null
+    Given PresentationAdvancedTools is importable in the test module.
+    When Instantiate tools = PresentationAdvancedTools().
+    Then The constructed tools object is not None.
 
   @candidate-python-strategic-coverage-418166d099
   # Native: tests/test_strategic_coverage.py::TestWordToMarkdownEdgeCases::test_to_markdown_with_complex_formatting

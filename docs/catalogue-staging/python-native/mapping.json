@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "purpose": "Central reconciliation input only; no independent authoritative behavior catalogue",
   "consumer": "python",
-  "sourceCommit": "19786d36db79dad32eda36186a4d6b5f80c4b9a0",
+  "sourceCommit": "db68b330710911fe3126b3098be5441996239e88",
   "sourceFileHashes": {
     "tests/test_acceptance_ledger.py": "a9af1371ef3b3bdc11f25ade3b6d8cdc9a3e756d723a863fbd52c2dbd8578832",
     "tests/test_advanced_edge_cases.py": "e56c9d4f8604fd84ca4c4f2ed74e19c35596aae277860160d1ac53ce6f3dfdf8",
@@ -270,10 +270,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert which context objects are returned, only truthiness and count.",
+        "It only covers the `\"then\"` step type and an exact text match from `parser.is_matching`."
       ]
     },
     {
@@ -1318,10 +1319,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not cover uppercase extensions, directory components, or files with multiple dots.",
+        "It only checks a lowercase `.pdf` extension."
       ]
     },
     {
@@ -1343,10 +1345,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not cover uppercase extensions, directory components, or files with multiple dots.",
+        "It only checks a lowercase `.txt` extension."
       ]
     },
     {
@@ -1468,10 +1471,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not probe symlinks, path normalization, or relative-path resolution.",
+        "It only covers an existing absolute `.docx` path."
       ]
     },
     {
@@ -1493,10 +1497,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not verify downstream error handling or platform-specific absolute path behavior.",
+        "It only checks one Unix-style missing absolute path."
       ]
     },
     {
@@ -7440,10 +7445,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It checks only attribute presence, not callability or behavior.",
+        "It does not verify signatures, registration, or collisions with similarly named members."
       ]
     },
     {
@@ -13211,12 +13217,10 @@
           ]
         }
       ],
-      "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "captured-for-reconciliation",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": [
-        "Operation requires manual semantic reconciliation"
-      ]
+      "gaps": []
     },
     {
       "candidateScenarioId": "@candidate-python-office-unified-tools-dbcfca7ad2",
@@ -13239,10 +13243,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not verify aliases, inheritance, or whether the discovered member is callable.",
+        "It exercises only one positive lookup."
       ]
     },
     {
@@ -13266,10 +13271,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not cover whitespace, case differences, or near-miss names.",
+        "It exercises only one exact missing-name lookup."
       ]
     },
     {
@@ -15622,10 +15628,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not probe duplicate IDs, extra attributes, or mixed equivalent and non-equivalent relationship sets.",
+        "It only covers two relationship entries under the OPC relationships namespace."
       ]
     },
     {
@@ -15647,10 +15654,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It checks only one example each for text whitespace, sibling order, and attribute value differences.",
+        "It does not distinguish whether failure comes from normalization policy, parser behavior, or explicit comparison rules."
       ]
     },
     {
@@ -15672,10 +15680,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It checks only one prefix-valued attribute named `value`.",
+        "It does not cover multiple prefixes, default namespaces, or QName-like values in element text."
       ]
     },
     {
@@ -15697,10 +15706,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not show behavior for one-valid/one-invalid comparisons or differentiate parse-error categories.",
+        "It only covers same-input rejection cases."
       ]
     },
     {
@@ -15722,10 +15732,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It covers only target/content differences, not position changes or repeated instructions.",
+        "It does not test whitespace-only comment changes or processing-instruction data changes with the same target."
       ]
     },
     {
@@ -17102,10 +17113,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It covers only three canonical layout patterns.",
+        "It does not test ambiguous placeholder sets, unknown layout names, or precedence between placeholder content and layout name."
       ]
     },
     {
@@ -20412,10 +20424,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert formatting, placeholder types, or any additional slide and paragraph metadata.",
+        "It locks behavior to two specific fixture files."
       ]
     },
     {
@@ -20649,10 +20662,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `WordTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
@@ -20674,10 +20688,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `PowerPointTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
@@ -20699,10 +20714,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually an `ExcelTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
@@ -20724,10 +20740,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `WordAdvancedTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
@@ -20749,10 +20766,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `PresentationAdvancedTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
@@ -22666,11 +22684,12 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "No machine-checked observable postcondition in the native test definition",
-        "Operation requires manual semantic reconciliation"
+        "It does not validate the sample with a parser, schema, or Word round-trip.",
+        "Manual-only: it does not compare any generated document against Word-generated XML automatically.",
+        "No machine-checked observable postcondition in the native test definition"
       ]
     },
     {
@@ -24166,10 +24185,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "Despite the comment, it does not assert absence on `WordAdvancedTools`, call the method, or verify its signature.",
+        "It only proves presence on `WordTools`."
       ]
     },
     {
@@ -28017,10 +28037,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert which classes are present, their order, or whether each entry is a valid tool class.",
+        "It only checks that the collection is non-empty."
       ]
     },
     {
@@ -28459,10 +28480,11 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "manual-override",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert which classes are present, their order, or whether each entry is a valid tool class.",
+        "It only checks that the collection is non-empty."
       ]
     },
     {
@@ -28808,7 +28830,8 @@
       "nativeDefinition": "tests/test_acceptance_ledger.py::test_binding_match_count_exposes_undefined_and_ambiguous",
       "candidateScenarioId": "@candidate-python-acceptance-ledger-a63c5dab21",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert which context objects are returned, only truthiness and count.",
+        "It only covers the `\"then\"` step type and an exact text match from `parser.is_matching`."
       ]
     },
     {
@@ -28843,28 +28866,32 @@
       "nativeDefinition": "tests/test_bugfix_round2.py::TestUnsupportedFormatError::test_detect_format_returns_none_for_pdf",
       "candidateScenarioId": "@candidate-python-bugfix-round2-68ebdd520a",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not cover uppercase extensions, directory components, or files with multiple dots.",
+        "It only checks a lowercase `.pdf` extension."
       ]
     },
     {
       "nativeDefinition": "tests/test_bugfix_round2.py::TestUnsupportedFormatError::test_detect_format_returns_none_for_txt",
       "candidateScenarioId": "@candidate-python-bugfix-round2-14e0ec8202",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not cover uppercase extensions, directory components, or files with multiple dots.",
+        "It only checks a lowercase `.txt` extension."
       ]
     },
     {
       "nativeDefinition": "tests/test_bugfix_round2.py::TestResolveFilePath::test_absolute_path_exists",
       "candidateScenarioId": "@candidate-python-bugfix-round2-86092be1bb",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not probe symlinks, path normalization, or relative-path resolution.",
+        "It only covers an existing absolute `.docx` path."
       ]
     },
     {
       "nativeDefinition": "tests/test_bugfix_round2.py::TestResolveFilePath::test_absolute_path_not_found",
       "candidateScenarioId": "@candidate-python-bugfix-round2-ca2bd73327",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not verify downstream error handling or platform-specific absolute path behavior.",
+        "It only checks one Unix-style missing absolute path."
       ]
     },
     {
@@ -28997,7 +29024,8 @@
       "nativeDefinition": "tests/test_excel_tools.py::TestListSupportedFormats::test_tool_exists",
       "candidateScenarioId": "@candidate-python-excel-tools-fb5db0083e",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It checks only attribute presence, not callability or behavior.",
+        "It does not verify signatures, registration, or collisions with similarly named members."
       ]
     },
     {
@@ -29085,24 +29113,19 @@
       ]
     },
     {
-      "nativeDefinition": "tests/test_office_unified_tools.py::TestFormatDetection::test_detect_format",
-      "candidateScenarioId": "@candidate-python-office-unified-tools-3cac4f6635",
-      "gaps": [
-        "Operation requires manual semantic reconciliation"
-      ]
-    },
-    {
       "nativeDefinition": "tests/test_office_unified_tools.py::TestHasToolHelper::test_has_tool_true",
       "candidateScenarioId": "@candidate-python-office-unified-tools-dbcfca7ad2",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not verify aliases, inheritance, or whether the discovered member is callable.",
+        "It exercises only one positive lookup."
       ]
     },
     {
       "nativeDefinition": "tests/test_office_unified_tools.py::TestHasToolHelper::test_has_tool_false",
       "candidateScenarioId": "@candidate-python-office-unified-tools-a8b3a26575",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not cover whitespace, case differences, or near-miss names.",
+        "It exercises only one exact missing-name lookup."
       ]
     },
     {
@@ -29144,42 +29167,48 @@
       "nativeDefinition": "tests/test_package_preservation.py::test_prefix_and_opc_collection_order_are_equivalent",
       "candidateScenarioId": "@candidate-python-package-preservation-00a43c0f38",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not probe duplicate IDs, extra attributes, or mixed equivalent and non-equivalent relationship sets.",
+        "It only covers two relationship entries under the OPC relationships namespace."
       ]
     },
     {
       "nativeDefinition": "tests/test_package_preservation.py::test_text_whitespace_order_and_attributes_are_significant",
       "candidateScenarioId": "@candidate-python-package-preservation-4d465caaa9",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It checks only one example each for text whitespace, sibling order, and attribute value differences.",
+        "It does not distinguish whether failure comes from normalization policy, parser behavior, or explicit comparison rules."
       ]
     },
     {
       "nativeDefinition": "tests/test_package_preservation.py::test_prefix_valued_attributes_retain_namespace_meaning",
       "candidateScenarioId": "@candidate-python-package-preservation-4bf31dfbf9",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It checks only one prefix-valued attribute named `value`.",
+        "It does not cover multiple prefixes, default namespaces, or QName-like values in element text."
       ]
     },
     {
       "nativeDefinition": "tests/test_package_preservation.py::test_dtd_or_malformed_xml_is_never_equated",
       "candidateScenarioId": "@candidate-python-package-preservation-9babfbd455",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not show behavior for one-valid/one-invalid comparisons or differentiate parse-error categories.",
+        "It only covers same-input rejection cases."
       ]
     },
     {
       "nativeDefinition": "tests/test_package_preservation.py::test_processing_instruction_targets_and_prolog_are_significant",
       "candidateScenarioId": "@candidate-python-package-preservation-59db595b9c",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It covers only target/content differences, not position changes or repeated instructions.",
+        "It does not test whitespace-only comment changes or processing-instruction data changes with the same target."
       ]
     },
     {
       "nativeDefinition": "tests/test_pptx_advanced_tools.py::TestHelperFunctions::test_classify_layout",
       "candidateScenarioId": "@candidate-python-pptx-advanced-tools-bf9cfe728c",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It covers only three canonical layout patterns.",
+        "It does not test ambiguous placeholder sets, unknown layout names, or precedence between placeholder content and layout name."
       ]
     },
     {
@@ -29340,7 +29369,8 @@
       "nativeDefinition": "tests/test_shared_contract_inventory.py::test_pinned_word_and_slide_facts",
       "candidateScenarioId": "@candidate-python-shared-contract-inventory-ca6f9e6c3f",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert formatting, placeholder types, or any additional slide and paragraph metadata.",
+        "It locks behavior to two specific fixture files."
       ]
     },
     {
@@ -29354,35 +29384,40 @@
       "nativeDefinition": "tests/test_strategic_coverage.py::TestModuleLevelErrors::test_word_tools_instance",
       "candidateScenarioId": "@candidate-python-strategic-coverage-a03279abe0",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `WordTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
       "nativeDefinition": "tests/test_strategic_coverage.py::TestModuleLevelErrors::test_pptx_tools_instance",
       "candidateScenarioId": "@candidate-python-strategic-coverage-80e1ab6456",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `PowerPointTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
       "nativeDefinition": "tests/test_strategic_coverage.py::TestModuleLevelErrors::test_excel_tools_instance",
       "candidateScenarioId": "@candidate-python-strategic-coverage-3563aa0c95",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually an `ExcelTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
       "nativeDefinition": "tests/test_strategic_coverage.py::TestModuleLevelErrors::test_word_advanced_tools_instance",
       "candidateScenarioId": "@candidate-python-strategic-coverage-5857fa9cfd",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `WordAdvancedTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
       "nativeDefinition": "tests/test_strategic_coverage.py::TestModuleLevelErrors::test_pptx_advanced_tools_instance",
       "candidateScenarioId": "@candidate-python-strategic-coverage-d61f293345",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert that `tools` is actually a `PresentationAdvancedTools` instance.",
+        "It does not verify initialization side effects, dependencies, or exposed methods."
       ]
     },
     {
@@ -29445,8 +29480,9 @@
       "nativeDefinition": "tests/test_track_changes_manual.py::TestManualVerification::test_compare_with_word_generated",
       "candidateScenarioId": "@candidate-python-track-changes-manual-5d62e67797",
       "gaps": [
-        "No machine-checked observable postcondition in the native test definition",
-        "Operation requires manual semantic reconciliation"
+        "It does not validate the sample with a parser, schema, or Word round-trip.",
+        "Manual-only: it does not compare any generated document against Word-generated XML automatically.",
+        "No machine-checked observable postcondition in the native test definition"
       ]
     },
     {
@@ -29572,7 +29608,8 @@
       "nativeDefinition": "tests/test_word_advanced_tools.py::TestWordFromMarkdown::test_method_location",
       "candidateScenarioId": "@candidate-python-word-advanced-tools-95a1d33a6d",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "Despite the comment, it does not assert absence on `WordAdvancedTools`, call the method, or verify its signature.",
+        "It only proves presence on `WordTools`."
       ]
     },
     {
@@ -29726,14 +29763,16 @@
       "nativeDefinition": "tests/test_workflow_coverage.py::TestListSupportedFormats::test_tool_classes_available",
       "candidateScenarioId": "@candidate-python-workflow-coverage-ddad2d0e41",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert which classes are present, their order, or whether each entry is a valid tool class.",
+        "It only checks that the collection is non-empty."
       ]
     },
     {
       "nativeDefinition": "tests/test_workflows.py::TestListSupportedFormats::test_tool_classes_available",
       "candidateScenarioId": "@candidate-python-workflows-2b4937f7f0",
       "gaps": [
-        "Operation requires manual semantic reconciliation"
+        "It does not assert which classes are present, their order, or whether each entry is a valid tool class.",
+        "It only checks that the collection is non-empty."
       ]
     },
     {

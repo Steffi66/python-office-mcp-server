@@ -133,8 +133,10 @@ Feature: excel tools native behavior capture
   @candidate-python-excel-tools-fb5db0083e
   # Native: tests/test_excel_tools.py::TestListSupportedFormats::test_tool_exists
   Scenario: Native check: tool exists [TestListSupportedFormats]
-    Given Create an instance of ExcelTools.
-    When the tool exists behavior is exercised with its prepared inputs
-    Then excel tools has attribute "tool_excel_extract"
-    And excel tools has attribute "tool_excel_to_markdown"
-    And excel tools has attribute "tool_excel_from_markdown"
+    Given Use the excel_tools fixture instance.
+    When Evaluate hasattr(excel_tools, 'tool_excel_extract').
+    And Evaluate hasattr(excel_tools, 'tool_excel_to_markdown').
+    And Evaluate hasattr(excel_tools, 'tool_excel_from_markdown').
+    Then excel_tools exposes tool_excel_extract.
+    And excel_tools exposes tool_excel_to_markdown.
+    And excel_tools exposes tool_excel_from_markdown.

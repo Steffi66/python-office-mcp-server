@@ -229,6 +229,6 @@ Feature: workflows native behavior capture
   @candidate-python-workflows-2b4937f7f0
   # Native: tests/test_workflows.py::TestListSupportedFormats::test_tool_classes_available
   Scenario: Native check: tool classes available [TestListSupportedFormats]
-    Given the native tool classes available inputs and isolated test state
-    When the tool classes available behavior is exercised with its prepared inputs
-    Then the number of entries in TOOL CLASSES is at least 1
+    Given Import TOOL_CLASSES from tools.
+    When Evaluate len(TOOL_CLASSES).
+    Then len(TOOL_CLASSES) is greater than or equal to 1.

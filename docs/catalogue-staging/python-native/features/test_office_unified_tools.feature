@@ -7,8 +7,7 @@ Feature: office unified tools native behavior capture
   @candidate-python-office-unified-tools-3cac4f6635
   # Native: tests/test_office_unified_tools.py::TestFormatDetection::test_detect_format
   Scenario: Native check: detect format [TestFormatDetection]
-    Given a prepared filename input or fixture
-    And a prepared expected input or fixture
+    Given Receive filename and expected from parametrization defined elsewhere in the test file.
     And each of these native parameter variants is exercised independently
       | variant | parameter values |
       | [file.xlsx-excel] | {"filename": "'file.xlsx'", "expected": "'excel'"} |
@@ -19,22 +18,22 @@ Feature: office unified tools native behavior capture
       | [File.Docx-word] | {"filename": "'File.Docx'", "expected": "'word'"} |
       | [file.txt-None] | {"filename": "'file.txt'", "expected": "None"} |
       | [file.pdf-None] | {"filename": "'file.pdf'", "expected": "None"} |
-    When the detect format behavior is exercised with its prepared inputs
-    Then the result of detect format with filename equals expected
+    When Call _detect_format(filename).
+    Then The result equals the parameterized expected value.
 
   @candidate-python-office-unified-tools-dbcfca7ad2
   # Native: tests/test_office_unified_tools.py::TestHasToolHelper::test_has_tool_true
   Scenario: Native check: has tool true [TestHasToolHelper]
-    Given Provide a combined tools instance for helper tests.
-    When the has tool true behavior is exercised with its prepared inputs
-    Then the result of has tool with combined tools; "excel_extract" is true
+    Given Use the combined_tools fixture that aggregates tool providers.
+    When Call _has_tool(combined_tools, "excel_extract").
+    Then The helper returns True for "excel_extract".
 
   @candidate-python-office-unified-tools-a8b3a26575
   # Native: tests/test_office_unified_tools.py::TestHasToolHelper::test_has_tool_false
   Scenario: Native check: has tool false [TestHasToolHelper]
-    Given Provide a combined tools instance for helper tests.
-    When the has tool false behavior is exercised with its prepared inputs
-    Then the result of has tool with combined tools; "nonexistent_tool" is false
+    Given Use the combined_tools fixture that aggregates tool providers.
+    When Call _has_tool(combined_tools, "nonexistent_tool").
+    Then The helper returns False for "nonexistent_tool".
 
   @candidate-python-office-unified-tools-5de4ce721e
   # Native: tests/test_office_unified_tools.py::TestOfficeReadExcel::test_read_excel_json

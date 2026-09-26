@@ -21,7 +21,7 @@ Feature: workflow coverage native behavior capture
     And tools.tool word cleanup sow using str representation of temp dir under "workflow_generated.docx"; output path str representation of temp dir under "workflow_cleaned.docx"
     And tools.tool word audit completion using str representation of temp dir under "workflow_cleaned.docx"
     Then generation field "success" is true
-    And generation field "status" occurs in "{'partial_success', 'success'}"
+    And generation field "status" occurs in "{'success', 'partial_success'}"
     And cleanup field "success" is true
     And audit field "success" is true
     And audit field "score", defaulting to 0 is at least 95
@@ -280,6 +280,6 @@ Feature: workflow coverage native behavior capture
   @candidate-python-workflow-coverage-ddad2d0e41
   # Native: tests/test_workflow_coverage.py::TestListSupportedFormats::test_tool_classes_available
   Scenario: Native check: tool classes available [TestListSupportedFormats]
-    Given the native tool classes available inputs and isolated test state
-    When the tool classes available behavior is exercised with its prepared inputs
-    Then the number of entries in TOOL CLASSES is at least 1
+    Given Import TOOL_CLASSES from tools.
+    When Evaluate len(TOOL_CLASSES).
+    Then len(TOOL_CLASSES) is greater than or equal to 1.

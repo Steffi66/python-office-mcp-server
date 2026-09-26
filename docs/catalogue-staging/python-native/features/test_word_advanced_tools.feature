@@ -202,7 +202,7 @@ Feature: word advanced tools native behavior capture
     And template path is prepared as temp dir under "missing_staffing_table.docx"
     And output is prepared as temp dir under "missing_staffing_out.docx"
     When word advanced tools.tool word generate sow using str representation of temp dir under "missing_staffing_table.docx"; str representation of temp dir under "missing_staffing_out.docx"; {"staffing": [{"role": "Architect", "hours": "40"}]}
-    Then result field "success" is false or result field "status" occurs in "{'failed', 'partial_success'}"
+    Then result field "success" is false or result field "status" occurs in "{'partial_success', 'failed'}"
     And at least one item satisfies item field "purpose" equals "staffing" and item field "reason" equals "no_matching_table_found" for each item in result field "table_diagnostics", defaulting to []
 
   @candidate-python-word-advanced-tools-0804226cdb
@@ -305,9 +305,10 @@ Feature: word advanced tools native behavior capture
   @candidate-python-word-advanced-tools-95a1d33a6d
   # Native: tests/test_word_advanced_tools.py::TestWordFromMarkdown::test_method_location
   Scenario: Native check: method location [TestWordFromMarkdown]
-    Given wt is prepared as the result of WordTools with no arguments
-    When the method location behavior is exercised with its prepared inputs
-    Then the result of WordTools with no arguments has attribute "tool_word_from_markdown"
+    Given Import WordTools from tools.word_tools.
+    When Instantiate wt = WordTools().
+    And Evaluate hasattr(wt, 'tool_word_from_markdown').
+    Then The WordTools instance exposes tool_word_from_markdown.
 
   @candidate-python-word-advanced-tools-8d5ec232f1
   # Native: tests/test_word_advanced_tools.py::TestCreateSowFromMarkdown::test_creates_sow

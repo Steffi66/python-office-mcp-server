@@ -58,11 +58,15 @@ Feature: pptx advanced tools native behavior capture
   @candidate-python-pptx-advanced-tools-bf9cfe728c
   # Native: tests/test_pptx_advanced_tools.py::TestHelperFunctions::test_classify_layout
   Scenario: Native check: classify layout [TestHelperFunctions]
-    Given the native classify layout inputs and isolated test state
-    When the classify layout behavior is exercised with its prepared inputs
-    Then the result of classify layout with ["CENTER_TITLE (3)", "SUBTITLE (4)"]; "Title Slide" equals "title_slide"
-    And the result of classify layout with ["TITLE (1)", "BODY (2)"]; "Title and Content" equals "title_and_content"
-    And the result of classify layout with []; "Blank" equals "blank"
+    Given Use placeholders ['CENTER_TITLE (3)', 'SUBTITLE (4)'] with layout name 'Title Slide'.
+    And Use placeholders ['TITLE (1)', 'BODY (2)'] with layout name 'Title and Content'.
+    And Use placeholders [] with layout name 'Blank'.
+    When Call _classify_layout(['CENTER_TITLE (3)', 'SUBTITLE (4)'], 'Title Slide').
+    And Call _classify_layout(['TITLE (1)', 'BODY (2)'], 'Title and Content').
+    And Call _classify_layout([], 'Blank').
+    Then The first call returns 'title_slide'.
+    And The second call returns 'title_and_content'.
+    And The third call returns 'blank'.
 
   @candidate-python-pptx-advanced-tools-71db233f56
   # Native: tests/test_pptx_advanced_tools.py::TestHelperFunctions::test_get_layout_recommendations

@@ -7,42 +7,52 @@ Feature: package preservation native behavior capture
   @candidate-python-package-preservation-00a43c0f38
   # Native: tests/test_package_preservation.py::test_prefix_and_opc_collection_order_are_equivalent
   Scenario: Native check: prefix and opc collection order are equivalent
-    Given uri is prepared as "http://schemas.openxmlformats.org/package/2006/relationships"
-    And a is prepared as text <Relationships xmlns="{"http://schemas.openxmlformats.org/package/2006/relationships"}"><Relationship Id="a" Target="a.xml"/><Relationship Id="b" Target="b.xml"/></Relationships>
-    And b is prepared as text <r:Relationships xmlns:r="{"http://schemas.openxmlformats.org/package/2006/relationships"}"><r:Relationship Target="b.xml" Id="b"/><r:Relationship Target="a.xml" Id="a"/></r:Relationships>
-    When the prefix and opc collection order are equivalent behavior is exercised with its prepared inputs
-    Then the result of equivalent xml with the result of a.encode with no arguments; the result of b.encode with no arguments is non-empty or true
+    Given Set uri = 'http://schemas.openxmlformats.org/package/2006/relationships'.
+    And Build a as <Relationships xmlns="{uri}"><Relationship Id="a" Target="a.xml"/><Relationship Id="b" Target="b.xml"/></Relationships>.
+    And Build b as <r:Relationships xmlns:r="{uri}"><r:Relationship Target="b.xml" Id="b"/><r:Relationship Target="a.xml" Id="a"/></r:Relationships>.
+    When Encode both XML strings to bytes and call equivalent_xml(a.encode(), b.encode()).
+    Then The function returns truthy, treating namespace prefix changes, reversed relationship element order, and reversed attribute order as equivalent.
 
   @candidate-python-package-preservation-4d465caaa9
   # Native: tests/test_package_preservation.py::test_text_whitespace_order_and_attributes_are_significant
   Scenario: Native check: text whitespace order and attributes are significant
-    Given the native text whitespace order and attributes are significant inputs and isolated test state
-    When the text whitespace order and attributes are significant behavior is exercised with its prepared inputs
-    Then not the result of equivalent xml with "b'<a><b> x </b></a>'"; "b'<a><b>x</b></a>'"
-    And not the result of equivalent xml with "b'<a><b/><c/></a>'"; "b'<a><c/><b/></a>'"
-    And not the result of equivalent xml with "b'<a v=\"1\"/>'"; "b'<a v=\"2\"/>'"
+    Given Prepare b'<a><b> x </b></a>' and b'<a><b>x</b></a>'.
+    And Prepare b'<a><b/><c/></a>' and b'<a><c/><b/></a>'.
+    And Prepare b'<a v="1"/>' and b'<a v="2"/>'.
+    When Call equivalent_xml on the whitespace-different pair.
+    And Call equivalent_xml on the sibling-order-swapped pair.
+    And Call equivalent_xml on the differing-attribute-value pair.
+    Then Whitespace-sensitive text comparison returns falsy for b'<a><b> x </b></a>' versus b'<a><b>x</b></a>'.
+    And Sibling element order comparison returns falsy for b'<a><b/><c/></a>' versus b'<a><c/><b/></a>'.
+    And Attribute value comparison returns falsy for b'<a v="1"/>' versus b'<a v="2"/>'.
 
   @candidate-python-package-preservation-4bf31dfbf9
   # Native: tests/test_package_preservation.py::test_prefix_valued_attributes_retain_namespace_meaning
   Scenario: Native check: prefix valued attributes retain namespace meaning
-    Given a is prepared as "b'<a xmlns:p=\"urn:one\" value=\"p:x\"/>'"
-    And b is prepared as "b'<a xmlns:p=\"urn:two\" value=\"p:x\"/>'"
-    When the prefix valued attributes retain namespace meaning behavior is exercised with its prepared inputs
-    Then not the result of equivalent xml with "b'<a xmlns:p=\"urn:one\" value=\"p:x\"/>'"; "b'<a xmlns:p=\"urn:two\" value=\"p:x\"/>'"
+    Given Prepare a = b'<a xmlns:p="urn:one" value="p:x"/>'.
+    And Prepare b = b'<a xmlns:p="urn:two" value="p:x"/>'.
+    When Call equivalent_xml(a, b).
+    Then The comparison returns falsy because the same lexical prefix p:x is bound to different namespace URIs.
 
   @candidate-python-package-preservation-9babfbd455
   # Native: tests/test_package_preservation.py::test_dtd_or_malformed_xml_is_never_equated
   Scenario: Native check: dtd or malformed xml is never equated
-    Given dtd is prepared as "b'<!DOCTYPE a [<!ENTITY e \"text\">]><a>&e;</a>'"
-    When the dtd or malformed xml is never equated behavior is exercised with its prepared inputs
-    Then not the result of equivalent xml with "b'<!DOCTYPE a [<!ENTITY e \"text\">]><a>&e;</a>'"; "b'<!DOCTYPE a [<!ENTITY e \"text\">]><a>&e;</a>'"
-    And not the result of equivalent xml with "b'broken'"; "b'broken'"
+    Given Create dtd = b'<!DOCTYPE a [<!ENTITY e "text">]><a>&e;</a>'.
+    And Use malformed input b'broken'.
+    When Call equivalent_xml(dtd, dtd).
+    And Call equivalent_xml(b'broken', b'broken').
+    Then The DTD-bearing input is not considered equivalent even to itself.
+    And The malformed input b'broken' is not considered equivalent even to itself.
 
   @candidate-python-package-preservation-59db595b9c
   # Native: tests/test_package_preservation.py::test_processing_instruction_targets_and_prolog_are_significant
   Scenario: Native check: processing instruction targets and prolog are significant
-    Given the native processing instruction targets and prolog are significant inputs and isolated test state
-    When the processing instruction targets and prolog are significant behavior is exercised with its prepared inputs
-    Then not the result of equivalent xml with "b'<?one x?><a/>'"; "b'<?two x?><a/>'"
-    And not the result of equivalent xml with "b'<a><?one x?></a>'"; "b'<a><?two x?></a>'"
-    And not the result of equivalent xml with "b'<!--old--><a/>'"; "b'<!--new--><a/>'"
+    Given Prepare b'<?one x?><a/>' and b'<?two x?><a/>'.
+    And Prepare b'<a><?one x?></a>' and b'<a><?two x?></a>'.
+    And Prepare b'<!--old--><a/>' and b'<!--new--><a/>'.
+    When Call equivalent_xml on the prolog processing-instruction pair.
+    And Call equivalent_xml on the in-document processing-instruction pair.
+    And Call equivalent_xml on the differing-comment pair.
+    Then Different prolog processing-instruction targets are treated as non-equivalent.
+    And Different in-document processing-instruction targets are treated as non-equivalent.
+    And Different comment contents are treated as non-equivalent.

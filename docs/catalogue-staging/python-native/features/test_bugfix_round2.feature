@@ -97,16 +97,16 @@ Feature: bugfix round2 native behavior capture
   @candidate-python-bugfix-round2-68ebdd520a
   # Native: tests/test_bugfix_round2.py::TestUnsupportedFormatError::test_detect_format_returns_none_for_pdf
   Scenario: Native check: detect format returns none for pdf [TestUnsupportedFormatError]
-    Given the native detect format returns none for pdf inputs and isolated test state
-    When the detect format returns none for pdf behavior is exercised with its prepared inputs
-    Then the result of detect format with "report.pdf" is null
+    Given Use the literal filename "report.pdf".
+    When Call _detect_format("report.pdf").
+    Then The return value is None.
 
   @candidate-python-bugfix-round2-14e0ec8202
   # Native: tests/test_bugfix_round2.py::TestUnsupportedFormatError::test_detect_format_returns_none_for_txt
   Scenario: Native check: detect format returns none for txt [TestUnsupportedFormatError]
-    Given the native detect format returns none for txt inputs and isolated test state
-    When the detect format returns none for txt behavior is exercised with its prepared inputs
-    Then the result of detect format with "notes.txt" is null
+    Given Use the literal filename "notes.txt".
+    When Call _detect_format("notes.txt").
+    Then The return value is None.
 
   @candidate-python-bugfix-round2-8f32d78c2d
   # Native: tests/test_bugfix_round2.py::TestUnsupportedFormatError::test_unsupported_format_error_includes_extension
@@ -151,18 +151,17 @@ Feature: bugfix round2 native behavior capture
   @candidate-python-bugfix-round2-86092be1bb
   # Native: tests/test_bugfix_round2.py::TestResolveFilePath::test_absolute_path_exists
   Scenario: Native check: absolute path exists [TestResolveFilePath]
-    Given an isolated writable temporary directory
-    And f.write bytes with "b'pk'"
-    And f is prepared as temp dir under "existing.docx"
-    When the absolute path exists behavior is exercised with its prepared inputs
-    Then the result of resolve file path with str representation of temp dir under "existing.docx" equals str representation of temp dir under "existing.docx"
+    Given Use the temp_dir fixture.
+    And Create f = temp_dir / "existing.docx" and write b"pk" into it.
+    When Call _resolve_file_path(str(f)).
+    Then The function returns str(f) unchanged.
 
   @candidate-python-bugfix-round2-ca2bd73327
   # Native: tests/test_bugfix_round2.py::TestResolveFilePath::test_absolute_path_not_found
   Scenario: Native check: absolute path not found [TestResolveFilePath]
-    Given p is prepared as "/nonexistent/abc.docx"
-    When the absolute path not found behavior is exercised with its prepared inputs
-    Then the result of resolve file path with "/nonexistent/abc.docx" equals "/nonexistent/abc.docx"
+    Given Set p = "/nonexistent/abc.docx".
+    When Call _resolve_file_path(p).
+    Then The function returns the same string p unchanged.
 
   @candidate-python-bugfix-round2-553f29f540
   # Native: tests/test_bugfix_round2.py::TestResolveFilePath::test_relative_via_workspace_root

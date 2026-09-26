@@ -48,12 +48,14 @@ Feature: acceptance ledger native behavior capture
   @candidate-python-acceptance-ledger-a63c5dab21
   # Native: tests/test_acceptance_ledger.py::test_binding_match_count_exposes_undefined_and_ambiguous
   Scenario: Native check: binding match count exposes undefined and ambiguous
-    Given step is prepared as the result of SimpleNamespace with name "saved value matches"; type "then"
-    And context is prepared as the result of SimpleNamespace with type "then"; parser the result of SimpleNamespace with is matching text equals the result of SimpleNamespace with name "saved value matches"; type "then" name
-    When the binding match count exposes undefined and ambiguous behavior is exercised with its prepared inputs
-    Then not the result of binding matches with the result of SimpleNamespace with name "saved value matches"; type "then"; []
-    And the number of entries in the result of binding matches with the result of SimpleNamespace with name "saved value matches"; type "then"; the entries the result of SimpleNamespace with type "then"; parser the result of SimpleNamespace with is matching text equals the result of SimpleNamespace with name "saved value matches"; type "then" name equals 1
-    And the number of entries in the result of binding matches with the result of SimpleNamespace with name "saved value matches"; type "then"; the entries the result of SimpleNamespace with type "then"; parser the result of SimpleNamespace with is matching text equals the result of SimpleNamespace with name "saved value matches"; type "then" name, the result of SimpleNamespace with type "then"; parser the result of SimpleNamespace with is matching text equals the result of SimpleNamespace with name "saved value matches"; type "then" name equals 2
+    Given Create step = SimpleNamespace(name="saved value matches", type="then").
+    And Create context = SimpleNamespace(type="then", parser=SimpleNamespace(is_matching=lambda text: text == step.name)).
+    When Call binding_matches(step, []).
+    And Call binding_matches(step, [context]) and measure len(...).
+    And Call binding_matches(step, [context, context]) and measure len(...).
+    Then binding_matches(step, []) is falsy.
+    And len(binding_matches(step, [context])) equals 1.
+    And len(binding_matches(step, [context, context])) equals 2.
 
   @candidate-python-acceptance-ledger-a9061d4bb9
   # Native: tests/test_acceptance_ledger.py::test_compiled_table_json_rejects_literal_newlines
