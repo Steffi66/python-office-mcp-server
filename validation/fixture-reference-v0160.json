@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "scope": "Official v0.16 reference-only consumer repin; release guards and existing lanes only",
+  "consumerParentCommit": "108f9a10a43dab0ec9ac3e44370ac0a90803f4c6",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.16.0",
+    "commit": "641146c020e1011b8f3e930f5fb4fd0b76c27b3d",
+    "manifestSha256": "341cdea9d1184231070e210bbdd148afecc32284da35b788d9522a24f9725cb0"
+  },
+  "annotatedTagObject": "7b4c4ee4427fd72424d77ff05bdc8c3683789e88",
+  "priorAssetRecordsExactlyUnchanged": 147,
+  "totalAssetRecords": 163,
+  "verification": {
+    "python": "3.12.3",
+    "checksPassed": 82,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 5.03,
+    "junitSha256": "0093d8b211f9f1e758a19c5a384370ad9973d1304c2e64b81d1f8d80c79c4249",
+    "testPaths": [
+      "tests/test_shared_contract_inventory.py",
+      "tests/test_fixture_source_integrity.py",
+      "tests/acceptance",
+      "tests/xml_comparison",
+      "tests/package_admission"
+    ]
+  },
+  "lanes": {
+    "acceptance": {
+      "cases": 19,
+      "steps": 159,
+      "runId": "7516dbf2-6e8e-489b-bd17-0b63100c1f00",
+      "outcome": "passed",
+      "featureHashes": [
+        "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3"
+      ]
+    },
+    "xml-comparison": {
+      "cases": 10,
+      "steps": 40,
+      "runId": "2b3168ba-6983-4141-8df3-75f1ef8f99a7",
+      "outcome": "passed",
+      "featureHashes": [
+        "b700a3da8670cb048aa3f836c193f4533908730c185847f63e167e59c48f5e93"
+      ]
+    },
+    "package-admission": {
+      "cases": 14,
+      "steps": 47,
+      "runId": "a29520c0-c2b4-4618-b24f-d2eae654eb2f",
+      "outcome": "passed",
+      "featureHashes": [
+        "28b1599e839f360929e689ff2d99e13599e000b98d6a47b4efe696",
+        "19fa717632d689e7ff4e883fb2af3f31e018373dc79ddb78efecf7742ea14e91",
+        "eebe822867a6f83d77351a0590dd81d7e929dc13f2d1add0bfcbbc44c5e90ca7"
+      ]
+    }
+  },
+  "nativeTestsAndRuntimeUnchanged": true,
+  "catalogueReviewsUnchanged": true,
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "No full Python matrix, full-suite, wheel or new shared-feature semantic run for this reference-only update",
+    "No Python binding or execution credit for newly planned font-size or VML scenarios",
+    "Authoritative ECMA PDFs are distinct from informative extracts and notes; no Python schema or renderer conformance is implied",
+    "Broader Python catalogue semantic reconciliation and generated-seed inventory incomplete",
+    "No production deployment"
+  ]
+}
