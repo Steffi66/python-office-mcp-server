@@ -346,33 +346,14 @@ def _replace_with_track_changes(
         tracked insertions for this paragraph,
         or "not_found" when no eligible plain-text match exists.
     """
-    plain_text = _get_plain_paragraph_text(paragraph)
-    if old_text not in plain_text:
-        inserted_text = _get_inserted_paragraph_text(paragraph)
-        if new_text and new_text in inserted_text:
-            return "already_applied"
-        return "not_found"
+    from .word_spans import replace_tracked_span
 
-    idx = plain_text.find(old_text)
-    before = plain_text[:idx]
-    after = plain_text[idx + len(old_text):]
-
-    for run in paragraph.runs:
-        run.text = ""
-
-    if before:
-        if paragraph.runs:
-            paragraph.runs[0].text = before
-        else:
-            paragraph.add_run(before)
-
-    _add_tracked_deletion(paragraph, old_text, author)
-    _add_tracked_insertion(paragraph, new_text, author)
-
-    if after:
-        paragraph.add_run(after)
-
-    return "replaced"
+    if replace_tracked_span(paragraph, old_text, new_text, author, _next_revision_id):
+        return "replaced"
+    inserted_text = _get_inserted_paragraph_text(paragraph)
+    if new_text and new_text in inserted_text:
+        return "already_applied"
+    return "not_found"
 
 
 class WordAdvancedTools:

@@ -105,10 +105,12 @@ Verification: **54 passed in 1.76s**. Limits, duplicate/traversal names, unusual
 
 ## Batch 9: Word and presentation enhancements
 
-- [ ] Import missing Word span/revision/comment assertions and PPTX clone/import/formatting assertions.
-- [ ] Compare them against existing implementations before porting duplicate features.
-- [ ] Expand into concrete feature sub-batches with compatibility rules.
-- [ ] Implement, batch-test and commit each selected slice.
+- [x] Add independently authored Word span/revision boundary and PPTX clone/import/formatting assertions; retain existing comment thread regressions.
+- [x] Compare against current code: Word flattened runs, PPTX replacement missed split runs, duplication shared relationship targets.
+- [x] Select bounded slices: adjacent-run tracked Word replacement, adjacent-run PPTX literal replacement, graph-based duplication and explicit note-import checks.
+- [x] Implement and batch-test these related preservation outcomes; record compatibility boundaries and commit.
+
+Verification: **106 passed in 3.86s**. See `docs/provenance/selected-enhancements.md`. Full Word composition/compare and inherited PPTX formatting-provenance APIs are outside this selected server slice; no full-library parity claim.
 
 ## Batch 10: larger subsystem decisions
 
