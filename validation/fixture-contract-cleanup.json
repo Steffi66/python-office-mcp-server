@@ -89,5 +89,22 @@
     "Windows/native Office rendering not tested",
     "No production deployment",
     "Candidate matrix and official-release scopes kept distinct"
-  ]
+  ],
+  "cleanRecursiveClone": {
+    "testedConsumerCommit": "ed7da17cebd81ce38672692a9f316d5b7dd001d1",
+    "fixtureTag": "v0.3.0",
+    "fixtureCommit": "a3048639f5b9c521852b9d126b83639c08eae056",
+    "python": "3.12",
+    "committedPassed": 1163,
+    "optionalLibreOfficeSkipped": 3,
+    "seconds": 35.603,
+    "junitSha256": "5470c0d31a016932174fcc7f54f9b32b640fbdf02ae46d575c4007804a7e805c",
+    "freshDependencyInstall": true,
+    "installedWheelChecksPassed": 13,
+    "trackedFilesUnchanged": true
+  },
+  "docs": {
+    "localLinksAndAnchors": 61,
+    "pythonJsonSnippets": 40
+  }
 }
