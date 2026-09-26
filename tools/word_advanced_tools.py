@@ -19,6 +19,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal
 
+from .mutation import staged_writer
 from .diagnostics import build_mutation_diagnostics
 from .metadata_cache import load_cached_metadata, store_cached_metadata
 from .save_utils import open_docx_with_retries, resolve_office_path, safe_save_docx
@@ -1382,6 +1383,7 @@ Project: Cloud Migration Sprint 1
 
         return result
 
+    @staged_writer
     def tool_word_cleanup_sow(
         self,
         file_path: str,
@@ -2832,6 +2834,7 @@ Project: Cloud Migration Sprint 1
                       (f" after paragraph containing '{insert_after_paragraph}'" if insert_para else " at end of document")
         }
 
+    @staged_writer
     def tool_word_insert_at_anchor(
         self,
         file_path: str,
@@ -4028,6 +4031,7 @@ Project: Cloud Migration Sprint 1
             "next_tools": ["word_list_tables", "word_get_section_guidance", "word_insert_table_row"]
         }
 
+    @staged_writer
     def tool_word_patch_with_track_changes(
         self,
         file_path: str,
@@ -4137,6 +4141,7 @@ Project: Cloud Migration Sprint 1
             "next_tools": ["word_add_comment", "word_check_tracking", "word_audit_completion"]
         }
 
+    @staged_writer
     def tool_word_enable_track_changes(
         self,
         file_path: str,
@@ -4196,6 +4201,7 @@ Project: Cloud Migration Sprint 1
             "message": "Track Changes enabled. Subsequent edits in Word will be tracked."
         }
 
+    @staged_writer
     def tool_word_accept_all_changes(
         self,
         file_path: str,

@@ -33,7 +33,7 @@ except ImportError:
     HAS_OPENPYXL = False
 
 from .diagnostics import build_mutation_diagnostics
-from .mutation import stage_patch
+from .mutation import stage_patch, staged_writer
 from .excel_advanced_tools import (
     DEFAULT_AUTHOR,
     _auto_row_height,
@@ -499,6 +499,7 @@ class OfficeUnifiedTools:
     # office_comment - Consolidated comment tool
     # =========================================================================
 
+    @staged_writer(read_operations=("get",))
     def tool_office_comment(
         self,
         file_path: str,
@@ -509,6 +510,7 @@ class OfficeUnifiedTools:
         output_path: str | None = None,
         format: Literal["flat", "threaded"] = "flat",
         filter: Literal["open", "resolved", "mine", "all"] = "all",
+        mode: Literal["best_effort", "safe", "strict", "dry_run"] = "best_effort",
     ) -> dict[str, Any]:
         """Manage comments in Word, Excel, or PowerPoint documents.
 
@@ -1262,6 +1264,7 @@ class OfficeUnifiedTools:
     # office_table - Consolidated table operations
     # =========================================================================
 
+    @staged_writer(read_operations=("get",))
     def tool_office_table(
         self,
         file_path: str,
@@ -1384,8 +1387,6 @@ class OfficeUnifiedTools:
 
         # Word tables
         elif doc_format == "word":
-            if operation != "get" and mode != "best_effort":
-                return {"error": "mode support for Word table mutations is not implemented yet; use best_effort for this path"}
             if not _has_tool(self, "word_get_table"):
                 return {"error": "Word support not available"}
 
@@ -1442,8 +1443,6 @@ class OfficeUnifiedTools:
 
         # PowerPoint tables
         elif doc_format == "powerpoint":
-            if operation != "get" and mode != "best_effort":
-                return {"error": "mode support for PowerPoint table mutations is not implemented yet; use best_effort for this path"}
             if not _has_tool(self, "pptx_get_table"):
                 return {"error": "PowerPoint support not available"}
 
@@ -1909,6 +1908,7 @@ class OfficeImageTools:
     # office_image - Insert images into documents
     # =========================================================================
 
+    @staged_writer
     def tool_office_image(
         self,
         file_path: str,

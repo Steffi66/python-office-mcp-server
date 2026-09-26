@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import inspect
 import os
 import shutil
 import tempfile
@@ -10,6 +11,8 @@ import threading
 import zipfile
 from collections.abc import Callable
 from contextlib import contextmanager
+from contextvars import ContextVar
+from functools import wraps
 from pathlib import Path
 from typing import Any
 
@@ -38,6 +41,66 @@ def validate_staged_document(path: Path) -> None:
 
         workbook = load_workbook(path, keep_vba=suffix in {".xlsm", ".xltm"})
         _close_workbook(workbook)
+
+
+_staged_paths: ContextVar[frozenset[str]] = ContextVar("office_staged_paths", default=frozenset())
+
+
+def staged_writer(function=None, *, source_argument="file_path", read_operations=()):
+    """Preserve tool signatures while enrolling an explicit writer in private staging.
+
+    Only a nested call addressing the same private document bypasses restaging.
+    Public methods remain usable directly as well as through the MCP dispatcher.
+    """
+    def decorate(method):
+        signature = inspect.signature(method)
+
+        @wraps(method)
+        def wrapped(self, *args, **kwargs):
+            bound = signature.bind(self, *args, **kwargs)
+            bound.apply_defaults()
+            values = dict(bound.arguments)
+            values.pop("self")
+            if values.get("operation") in read_operations:
+                return method(self, **values)
+            from .save_utils import resolve_office_path
+
+            source = str(Path(resolve_office_path(values[source_argument])).resolve())
+            if source in _staged_paths.get():
+                return method(self, **values)
+            mode = values.get("mode", "best_effort")
+            if mode not in {"best_effort", "safe", "strict", "dry_run"}:
+                return {"success": False, "error": "Unsupported mutation mode", "changes_applied": 0}
+            data = values.get("data")
+            nested_output = data.get("output_path") if isinstance(data, dict) else None
+            output = values.get("output_path") or nested_output
+            if mode == "safe" and (not output or Path(output).resolve() == Path(source)):
+                return {"success": False, "mode": mode, "status": "failed", "error": "safe mode requires a distinct output_path", "changes_applied": 0}
+
+            def apply(staged):
+                call = dict(values)
+                call[source_argument] = staged
+                call["output_path"] = None
+                if "mode" in call:
+                    call["mode"] = "strict" if mode == "strict" else "best_effort"
+                if nested_output:
+                    call["data"] = {key: value for key, value in data.items() if key != "output_path"}
+                before = Path(staged).read_bytes()
+                result = method(self, **call)
+                if not isinstance(result, dict):
+                    raise ValueError("Writer must return structured diagnostics")
+                changed = Path(staged).read_bytes() != before
+                accepted = not result.get("error") and result.get("success", True)
+                result.setdefault("success", bool(accepted))
+                # One operation per generic tool call; preserve its own detailed fields.
+                result["results"] = [{"target": values.get("target") or values.get("table_id") or method.__name__[5:],
+                                      "success": bool(accepted and changed)}]
+                return result
+
+            return stage_patch(source, output, mode, 1, apply)
+
+        return wrapped
+    return decorate(function) if function else decorate
 
 
 def _public_paths(value: Any, staged: str, source: str) -> Any:
@@ -127,7 +190,7 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
     try:
         source_state = fingerprint(source_path)
         if source_state is None:
-            raise FileNotFoundError(source)
+            raise FileNotFoundError(f"File not found: {source}")
         destination_state = fingerprint(destination)
         # Same filesystem for atomic publication; the whole private directory is removed
         # on every return, including scratch files made by legacy format writers.
@@ -136,9 +199,13 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
             shutil.copy2(source_path, staged)
             if fingerprint(staged)[0] != source_state[0] or fingerprint(source_path) != source_state:
                 raise ValueError("Source changed while staging")
-            result = _public_paths(apply(str(staged)), str(staged), source)
+            token = _staged_paths.set(_staged_paths.get() | {str(staged.resolve())})
+            try:
+                result = _public_paths(apply(str(staged)), str(staged), source)
+            finally:
+                _staged_paths.reset(token)
             planned = sum(bool(item.get("success")) for item in result.get("results", []))
-            rejected = bool(result.get("errors") or result.get("error") or result.get("skipped_targets"))
+            rejected = bool(result.get("errors") or result.get("error") or result.get("skipped_targets") or result.get("unmatched_targets"))
             if mode == "strict" and (rejected or planned != requested or not result.get("success")):
                 result.update(success=False, status="failed")
                 result.setdefault("warnings", []).append("Strict batch refused; no changes were committed.")

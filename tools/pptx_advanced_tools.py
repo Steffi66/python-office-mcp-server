@@ -32,6 +32,7 @@ try:
 except ImportError:
     HAS_PPTX = False
 
+from .mutation import staged_writer
 from .save_utils import open_pptx_with_retries, safe_save_pptx
 
 
@@ -632,6 +633,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_list_slides", "pptx_replace_placeholders", "pptx_list_masters"]
         }
 
+    @staged_writer
     def tool_pptx_add_slide(
         self,
         file_path: str,
@@ -720,6 +722,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_patch_shape", "pptx_add_bullet", "pptx_add_comment"]
         }
 
+    @staged_writer
     def tool_pptx_delete_slide(
         self,
         file_path: str,
@@ -782,6 +785,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_list_slides"]
         }
 
+    @staged_writer
     def tool_pptx_reorder_slides(
         self,
         file_path: str,
@@ -840,6 +844,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_list_slides"]
         }
 
+    @staged_writer
     def tool_pptx_duplicate_slide(
         self,
         file_path: str,
@@ -920,6 +925,7 @@ class PresentationAdvancedTools:
             "next_tools": ["pptx_patch_shape", "pptx_get_slide"]
         }
 
+    @staged_writer
     def tool_pptx_hide_slide(
         self,
         file_path: str,
@@ -1385,6 +1391,7 @@ class PresentationAdvancedTools:
 
         return result
 
+    @staged_writer
     def tool_pptx_add_table(
         self,
         file_path: str,
@@ -1643,6 +1650,7 @@ class PresentationAdvancedTools:
     # NOTES AND COMMENTS TOOLS
     # =========================================================================
 
+    @staged_writer
     def tool_pptx_set_notes(
         self,
         file_path: str,
@@ -2234,6 +2242,7 @@ class PresentationAdvancedTools:
         except Exception as e:
             return {"error": f"Failed to get comments: {str(e)}"}
 
+    @staged_writer
     def tool_pptx_delete_comment(
         self,
         file_path: str,
@@ -2421,6 +2430,7 @@ class PresentationAdvancedTools:
     # CHANGE LOG TOOLS (for auditability without track changes)
     # =========================================================================
 
+    @staged_writer
     def tool_pptx_log_changes(
         self,
         file_path: str,

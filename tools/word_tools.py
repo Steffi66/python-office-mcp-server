@@ -18,6 +18,7 @@ try:
 except ImportError:
     HAS_DOCX = False
 
+from .mutation import staged_writer
 from .markdown_parser import (
     CodeBlock,
     HorizontalRule,
@@ -719,6 +720,7 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
         except Exception as e:
             return {"error": f"Failed to extract comments: {e}"}
 
+    @staged_writer
     def tool_word_resolve_comment(
         self,
         file_path: str,
@@ -899,6 +901,7 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
         except Exception as e:
             return {"error": f"Failed to set comment resolution state: {e}"}
 
+    @staged_writer
     def tool_word_reply_to_comment(
         self,
         file_path: str,
@@ -1121,6 +1124,7 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
         except Exception as e:
             return {"error": f"Failed to reply to comment: {e}"}
 
+    @staged_writer
     def tool_word_reply_comment(
         self,
         file_path: str,
@@ -1140,6 +1144,7 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
             auto_resolve=auto_resolve,
         )
 
+    @staged_writer
     def tool_word_delete_comment(
         self,
         file_path: str,

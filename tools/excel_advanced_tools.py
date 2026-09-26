@@ -33,6 +33,7 @@ except ImportError:
     HAS_OPENPYXL = False
 
 
+from .mutation import staged_writer
 from .diagnostics import build_mutation_diagnostics
 
 # Author name for change tracking (from environment or default)
@@ -608,6 +609,7 @@ class ExcelAdvancedTools:
     # CHART OPERATIONS
     # =========================================================================
 
+    @staged_writer
     def tool_excel_add_chart(
         self,
         file_path: str,
@@ -869,6 +871,7 @@ class ExcelAdvancedTools:
         finally:
             _close_workbook(wb)
 
+    @staged_writer
     def tool_excel_delete_comment(
         self,
         file_path: str,
@@ -2010,6 +2013,7 @@ class ExcelAdvancedTools:
         finally:
             _close_workbook(wb)
 
+    @staged_writer
     def tool_excel_add_sheet(
         self,
         file_path: str,

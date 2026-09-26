@@ -85,10 +85,13 @@ Verification: clean wheel-backed MCP **4 passed in 3.34s**; full regression **1,
 
 ## Batch 7: remaining writers
 
-- [ ] Inventory table, comment and specialised writers that bypass the staged path.
-- [ ] Expand this checklist into bounded writer-specific sub-batches before editing them.
-- [ ] Extend transaction guarantees without changing unrelated APIs.
-- [ ] Test and commit each sub-batch separately.
+- [x] Inventory table, comment and specialised writers that bypass the staged path; record exact scope in `docs/writer-scope.md`.
+- [x] Batch 7a: enrol unified tables/comments/images and verify nested output handling and preview.
+- [x] Batch 7b: explicitly enrol 22 specialised existing-document writers, including slide-import target staging; preserve signatures.
+- [x] Verify nested calls commit once, failure preserves existing outputs, read paths bypass staging and unsupported creation paths remain documented separately.
+- [x] Run the combined writer regression batch and commit.
+
+Verification: **1,083 passed in 21.06s**. Eight new tests exercise preview/commit across comment formats, Word table modes, specialised validation failure and one-publication nested dispatch. Transaction guarantees do not imply full-fidelity XLSX table/comment/chart serialisation; scope is explicit.
 
 ## Batch 8: bounded package components
 
