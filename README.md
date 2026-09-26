@@ -243,7 +243,7 @@ Install the development dependencies before running `bash tests/run_tests.sh`, o
 
 Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. The source fixture pack in `tests/contracts/shared/` is immutable provenance; executable Python feature copies are separate.
 
-The committed suite passed on Python 3.10, 3.12 and 3.13; a clean wheel also passed the MCP stdio workflow tests. LibreOffice checks were skipped locally because the executable was unavailable. Native Microsoft Office rendering and Windows executable behaviour have not been verified locally.
+The committed suite passed on Python 3.10, 3.12 and 3.13; a clean wheel also passed stdio and authenticated Streamable HTTP workflow tests. The [uMCP upgrade report](validation/umcp-upgrade.json) records the pinned core, scope-separated test counts and official-SDK smoke result. LibreOffice checks were skipped locally because the executable was unavailable. Native Microsoft Office rendering and Windows executable behaviour have not been verified locally.
 
 The [test results](docs/testing.md#recorded-results) distinguish committed tests from local-only tests. The [implementation checklist](docs/checklists/preservation-safety.md) records the completed merge into `main`; the [XLSX adoption decision](docs/xlsx-adoption-decision.md) explains why the server retains upstream openpyxl.
 

@@ -36,8 +36,13 @@ Batch 3 result: **23 passed in 3.01s**. Tests use actual loopback HTTP sockets, 
 - [x] Batch 4: test and commit/push (**31 passed in 3.66s**; documentation examples/51 local links checked).
 
 Session follow-up `bb6b5d1`: upstream notifications broadcast without targets, so the Office adapter routes progress/logging only to the originating session and suppresses unavailable stateless/TCP channels. **24 focused tests passed**. The independent longer review timed out; this issue was found by direct source inspection and covered by a two-session regression.
-- [ ] Final: full Python 3.10/3.12/3.13 regression, all 19 Gherkin cases, clean wheel stdio/HTTP, independent bounded review.
-- [ ] Final: publish pinned results, verify remote main/local edits and mark goal complete only after all required gates pass.
+- [x] Final: Python 3.10/3.12/3.13 each **1,130 passed, 3 optional LibreOffice skips**; four passes per run are local-only CLI tests, so committed suite is **1,126 passed**.
+- [x] Final: all 19 Gherkin cases / 159 steps pass; installed-wheel batch **13 passed** (10 socket workflows plus three in-process checks).
+- [x] Final: official MCP SDK 1.29.0 authenticated Streamable HTTP smoke passes, with tools, structured result, resource, prompt and session termination.
+- [x] Final: initial independent integration review incorporated; longer review timed out; final bounded principal-serialization concern checked against the string-valued transport context and socket tests (not reproduced).
+- [x] Final: publish pinned results and delivery checks; preserve byte-identical upstream files and both local-only file hashes.
+
+Final measurements are in `validation/umcp-upgrade.json`. No running production service was deployed. Optional render/calculate tests, Windows runtime and production proxy configuration remain unverified. The final documentation/result batch was checked with **31 tests passed in 4.28s**.
 
 ## Verification policy
 

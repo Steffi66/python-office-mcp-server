@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "c8a8a1847b75b8d22f0e00024021443158a29e12",
+  "runtimes": [
+    {
+      "runtime": "Python 3.10.21",
+      "passedIncludingLocalOnly": 1130,
+      "committedPassed": 1126,
+      "localOnlyTests": 4,
+      "skipped": 3,
+      "seconds": 43.687,
+      "junitSha256": "d2859ea36771b5558a7f3f05a1b6af78da110dea4f7ac305876791b387f27568"
+    },
+    {
+      "runtime": "Python 3.12.3",
+      "passedIncludingLocalOnly": 1130,
+      "committedPassed": 1126,
+      "localOnlyTests": 4,
+      "skipped": 3,
+      "seconds": 36.014,
+      "junitSha256": "145a176ebd825fc4e514633322bf855497c036bd84d91372f362185bdd5b5419"
+    },
+    {
+      "runtime": "Python 3.13.14",
+      "passedIncludingLocalOnly": 1130,
+      "committedPassed": 1126,
+      "localOnlyTests": 4,
+      "skipped": 3,
+      "seconds": 32.463,
+      "junitSha256": "2078ef515e58093cf3935e1729571147a6c8feef491d45ec8ab985a79a076549"
+    }
+  ],
+  "acceptance": {
+    "cases": 19,
+    "steps": 159,
+    "runId": "232a54a5-7e1e-4860-8770-0fb8c8ad7dcb",
+    "outcome": "passed"
+  },
+  "wheel": {
+    "testsPassed": 13,
+    "socketWorkflowTests": 10,
+    "inProcessPolicyTests": 3,
+    "sha256": "ba6fc59d21bc97dbcfdb626e8b6b40fbeb928adafb5c50a84697adf62025214b"
+  },
+  "officialSdk": {
+    "version": "1.29.0",
+    "transport": "authenticated Streamable HTTP",
+    "result": {
+      "passed": true,
+      "tools": 61,
+      "resources": 1,
+      "prompts": 5,
+      "session": true
+    },
+    "logSha256": "cd06f1231e91de063a2c78329ddf1003f9095e67c4387357dea5bba1935ade1d"
+  },
+  "review": {
+    "initialBoundedReview": "completed; cancellation checkpoints/schema/annotations/auth recommendations incorporated",
+    "longerReview": "timed out; not counted as a pass",
+    "finalBoundedReview": "raised principal serialization concern; code at aioumcp.py HTTP context construction passes principal.name string; authenticated socket tests pass; no runtime defect reproduced",
+    "directReviewFixes": [
+      "Cancellation IDs namespaced across transport/session/principal/peer",
+      "Request-scoped HTTP progress/logging targets originating session"
+    ]
+  },
+  "unverified": [
+    "LibreOffice rendering/calculation (three explicit skips per runtime)",
+    "Windows executable runtime",
+    "Production TLS proxy/network deployment",
+    "Comprehensive JSON Schema or security certification"
+  ],
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "transportDependency": {
+    "repository": "https://github.com/rcarmo/umcp",
+    "revision": "30cce7dfe08c6ee63de235f7d81754ba286dafbb",
+    "version": "0.2.2",
+    "licence": "MIT"
+  }
+}

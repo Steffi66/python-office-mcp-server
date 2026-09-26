@@ -76,7 +76,7 @@ PYTHON=.venv/bin/python bash tests/run_tests.sh \
 
 Vendor tests compare exact runtime/licence hashes against `vendor/umcp/manifest.json`. Office tests check object-compatible schemas, structured/text agreement, explicit annotations, guidance-only resources/prompts/completions and request-local progress/cancellation. HTTP tests use ephemeral loopback ports and synthetic tokens; they never use production credentials. Cross-session cancellation, notification isolation and expiry also have bounded in-process tests.
 
-The earlier preservation reports below predate the upgrade and retain their original source pins/counts. New upgrade results belong in a separate report, not a rewritten historical record.
+The earlier preservation reports below predate the upgrade and retain their original source pins/counts. [uMCP upgrade validation](../validation/umcp-upgrade.json) records the new matrix: 1,130 passing tests per runtime including four local-only tests (1,126 committed), three optional LibreOffice skips, and a 13-test installed-wheel batch (10 socket workflows plus three in-process policy/expiry/error checks). SDK 1.29.0 also completed the optional authenticated HTTP smoke script. Counts from different scopes are not added together.
 
 ## Independent calculation and rendering
 

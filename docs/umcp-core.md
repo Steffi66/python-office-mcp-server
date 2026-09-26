@@ -14,7 +14,7 @@ Tool lists are sorted and can be paginated using upstream `pageSize`/`cursor`. D
 
 ## Guidance, progress and cancellation
 
-`resources/list` exposes `office://guidance/workflows`, a JSON catalogue of goals and safe editing guidance. It opens no documents and does not expose arbitrary file URIs. `prompts/list` exposes `review_document(file_path, document_type)`; its document-type enum provides `completion/complete` suggestions. Prompt paths are data, and retrieving a prompt performs no file read or edit.
+`resources/list` exposes `office://guidance/workflows`, a JSON catalogue of goals and safe editing guidance. It opens no documents and does not expose arbitrary file URIs. `prompts/list` adds `review_document(file_path, document_type)` alongside the existing four workflow prompts; its document-type enum provides `completion/complete` suggestions. Prompt paths are data, and retrieving a prompt performs no file read or edit.
 
 A `tools/call` with `_meta.progressToken` receives coarse start/finish progress where a return channel is available. Finish means the operation returned; check its result for success. Request-scoped progress/log notifications go only to the originating HTTP session, not all connected clients. Stateless HTTP and legacy raw TCP do not get those notifications. Tool/prompt/resource list-change notifications retain upstream catalogue behaviour.
 
@@ -69,4 +69,14 @@ Review a chosen upstream commit and its required modules before changing the pin
 
 Run `tests/test_umcp_vendor.py`, schema/feature tests, real HTTP and stdio tests, then the full declared matrix and clean wheel. Check the wheel contains the shared module and licence, and keep PyInstaller hidden imports/data in sync. Re-review object output schemas, deprecated-tool filtering, cancellation registry keys, request-scoped notification routing and default authentication policy at every upgrade.
 
-Do not infer Office feature support from upstream examples or prose. Record new tests and pinned results separately from historical preservation reports. The [upgrade checklist](checklists/umcp-upgrade.md) records the completed batches and remaining verification gates.
+Do not infer Office feature support from upstream examples or prose. Record new tests and pinned results separately from historical preservation reports. The [upgrade checklist](checklists/umcp-upgrade.md) and [upgrade validation](../validation/umcp-upgrade.json) record the completed gates and explicit limits.
+
+## Optional official-SDK check
+
+The repository includes `scripts/mcp_sdk_smoke.ts`. Point `MCP_SDK_ROOT` at an installed `@modelcontextprotocol/sdk` directory and `MCP_URL` at a running server's Streamable HTTP endpoint. Supply the same `OFFICE_MCP_HTTP_TOKEN` through the environment when authentication is enabled, then run:
+
+```sh
+bun scripts/mcp_sdk_smoke.ts
+```
+
+The script connects, checks tool/structured-result/resource/prompt schemas and terminates its session. Bun and the SDK are optional development tools, not Python runtime dependencies. The recorded run used SDK 1.29.0 against a loopback server with a synthetic credential.
