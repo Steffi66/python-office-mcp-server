@@ -45,10 +45,14 @@ from .excel_advanced_tools import (
 from .save_utils import merge_xlsx_preserving_package, resolve_office_path, safe_save_pptx
 
 
-class PatchChange(TypedDict, total=False):
-    """A single change to apply to a document via office_patch."""
-    target: str   # What to edit: cell ref ("B5"), placeholder ("<Name>"), or shape path ("slide:1/Title 1")
-    value: Any    # New value to set
+class PatchTarget(TypedDict):
+    """Required address for a document patch."""
+    target: str
+
+
+class PatchChange(PatchTarget, total=False):
+    """Patch value is optional for compatibility: omission keeps the existing clear-value behaviour."""
+    value: Any
 
 
 SUPPORTED_EXTENSIONS = {

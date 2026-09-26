@@ -20,6 +20,7 @@ from aioumcp import AsyncMCPServer
 
 # Dynamically import tool classes from the tools package
 from tools import TOOL_CLASSES
+from tools.mcp_features import OfficeMCPFeatures
 
 # Author name for track changes (from environment or default)
 TRACK_CHANGES_AUTHOR = os.environ.get("MCP_AUTHOR", "Solution Architect Agent")
@@ -62,7 +63,7 @@ DEPRECATED_TOOLS = {
 def create_server_class(base_class: type, tool_classes: list[type]) -> type:
     """Dynamically create a server class that inherits from all tool mixins."""
 
-    class DynamicOfficeServer(base_class, *tool_classes):
+    class DynamicOfficeServer(OfficeMCPFeatures, base_class, *tool_classes):
         """MCP server for Office document processing with dynamically loaded tools."""
 
         def __init__(self):
@@ -75,6 +76,11 @@ def create_server_class(base_class: type, tool_classes: list[type]) -> type:
                 tokens = [part for part in str(self._comment_author).split() if part]
                 initials = "".join(part[0].upper() for part in tokens[:2]) if tokens else "SA"
             self._comment_initials = initials
+
+        def get_config(self) -> dict[str, Any]:
+            config = super().get_config()
+            config["serverInfo"] = {"name": "office-mcp-server", "version": "0.1.0"}
+            return config
 
         def get_instructions(self) -> str:
             # Build instructions from loaded tools, excluding deprecated ones

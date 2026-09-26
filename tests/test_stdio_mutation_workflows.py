@@ -52,7 +52,11 @@ class Client:
 
     def call(self, name, **args):
         response = self.request("tools/call", {"name": name, "arguments": args})
-        return json.loads(response["content"][0]["text"])
+        decoded = json.loads(response["content"][0]["text"])
+        if isinstance(decoded, dict):
+            assert response["structuredContent"] == decoded
+            assert response["isError"] == bool(decoded.get("error") or decoded.get("success") is False)
+        return decoded
 
     def close(self):
         self.process.terminate()

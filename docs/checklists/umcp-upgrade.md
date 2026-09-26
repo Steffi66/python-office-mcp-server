@@ -21,8 +21,11 @@ Upstream documents some broader guarantees and examples than its code or this Of
 - [x] Batch 1: run baseline core/Office regressions and commit/push; existing discovery filtering remains compatible.
 
 Batch 1 result: **1,114 passed, 3 LibreOffice skips in 24.51s**, including four local-only CLI tests. Built wheel contains both exact upstream modules, licence and manifest. New tests cover vendor hashes, filtered pagination, negotiated versions and structured/text result agreement. Application-specific schemas, errors and cancellation follow in Batch 2.
-- [ ] Batch 2: explicit annotations, object-compatible output schemas/error flags, precise patch schema and useful workflow resources/prompts/completions.
-- [ ] Batch 2: add cancellation/progress checkpoints to staged publication, test request-context isolation/stdio and commit/push.
+- [x] Batch 2: explicit conservative annotations, object-compatible output schemas/error flags, required patch target schema and workflow guidance resources/prompts/completions.
+- [x] Batch 2: cancellation checkpoints in fingerprint/lock waits and before staged publication; opt-in start/finish progress; request-context isolation/stdio checks.
+- [x] Batch 2: verify and commit/push.
+
+Batch 2 result: **53 passed in 3.12s** (plus the earlier 60-test run including help). A paused synchronous worker received cancellation and exited without replacing source/output. Cancellation is cooperative, cannot undo a completed commit and does not promise interruption within library code. Existing value omission keeps its clear-value compatibility semantics; only target is required in PatchChange. `office_read` advertises no invalid object/string outputSchema; mapping tools retain text plus structuredContent and signal actual failure with isError. Partial success still requires inspecting diagnostics.
 - [ ] Batch 3: environment-backed HTTP identity; real persistent session lifecycle, SSE stream, protocol/origin/header/size/error tests on loopback.
 - [ ] Batch 3: verify legacy selection and shutdown; commit/push.
 - [ ] Batch 4: update setup/network/help/vendoring documentation and examples; batch-test and commit/push.

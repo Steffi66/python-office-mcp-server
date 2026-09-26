@@ -16,6 +16,8 @@ from functools import wraps
 from pathlib import Path
 from typing import Any
 
+from umcp_shared import MCPRequestCancelled, raise_if_cancelled
+
 
 def validate_staged_document(path: Path) -> None:
     """Check archive readability and reopen through the format library before publishing."""
@@ -133,8 +135,10 @@ def _writer_locks(paths):
     acquired = []
     try:
         for _, entry in entries:
-            entry[0].acquire()
+            while not entry[0].acquire(timeout=0.1):
+                raise_if_cancelled()
             acquired.append(entry[0])
+            raise_if_cancelled()
         yield
     finally:
         for lock in reversed(acquired):
@@ -157,6 +161,7 @@ def fingerprint(path: Path):
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            raise_if_cancelled()
             digest.update(chunk)
     after = path.stat()
     def state(stat):
@@ -191,6 +196,7 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
     committed = 0
     source_state = None
     try:
+        raise_if_cancelled()
         source_state = fingerprint(source_path)
         if source_state is None:
             raise FileNotFoundError(f"File not found: {source}")
@@ -210,6 +216,7 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
                 result = _public_paths(apply(str(staged)), str(staged), source)
             finally:
                 _staged_paths.reset(token)
+            raise_if_cancelled()
             planned = sum(bool(item.get("success")) for item in result.get("results", []))
             rejected = bool(result.get("errors") or result.get("error") or result.get("skipped_targets") or result.get("unmatched_targets"))
             if mode == "strict" and (rejected or planned != requested or not result.get("success")):
@@ -218,13 +225,16 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
             elif result.get("error"):
                 result.update(success=False, status="failed")
             elif planned:
+                raise_if_cancelled()
                 if fingerprint(source_path) != source_state:
                     raise ValueError("Source changed before commit; retry with fresh inspection")
                 if staged.suffix.lower() in {".pptx", ".docx"}:
                     from .package_preservation import restore_unchanged_parts
 
                     restore_unchanged_parts(source_path, staged)
+                raise_if_cancelled()
                 validate_staged_document(staged)
+                raise_if_cancelled()
                 from .package_preservation import diff_package
 
                 result["package_diff"] = diff_package(source_path, staged)
@@ -233,10 +243,13 @@ def _stage_patch_locked(source, output, mode, requested, apply, source_path, des
                         or fingerprint(destination) != destination_state):
                     raise ValueError("Source or destination changed before commit; retry with fresh inspection")
                 if mode != "dry_run":
+                    raise_if_cancelled()
                     os.replace(staged, destination)
                     committed = planned
             if mode == "dry_run":
                 result.setdefault("warnings", []).append("Preview only; no changes were committed.")
+    except MCPRequestCancelled:
+        raise
     except Exception as exc:
         result.update(success=False, status="failed", error=f"Patch not committed: {exc}")
     result.update(
