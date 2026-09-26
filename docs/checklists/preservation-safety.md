@@ -123,11 +123,13 @@ Verification: **5 passed, 3 skipped in 0.18s**. LibreOffice is absent locally; s
 
 ## Final integration and delivery
 
-- [ ] Run all declared gates and record skipped/unavailable evidence separately.
-- [ ] Review fixture provenance, licence records and every implementation diff.
-- [ ] Commit any remaining verified batch.
-- [ ] Report commit IDs, tests and remaining gates; coordinate merge/push without rebasing.
-- [ ] Recheck original local-edit hashes and leave shared references unchanged.
+- [x] Run all declared local gates and record skipped/unavailable evidence separately: Python 3.10/3.12/3.13 each **1,106 passed, 3 LibreOffice skips**; final clean-wheel MCP **4 passed**.
+- [x] Review fixture provenance, licence records and implementation diffs; fix XML prolog and acceptance lifecycle gaps in `130af6e` (35 focused tests).
+- [x] Commit final validation evidence and current discovery/documentation guidance (11 delivery tests passed).
+- [ ] Push the feature branch and report exact commit IDs; leave dirty local main unmerged.
+- [x] Recheck original local-edit hashes and leave shared references unchanged.
+
+Final local evidence is in `validation/preservation-safety.json`. Microsoft Office/Windows runtime and independent LibreOffice calculation/rendering remain unverified/outside the selected server slice. External model review attempts timed out; no independent review pass is claimed. Feature-branch publication is separate from merging/deployment.
 
 ## Test execution policy
 

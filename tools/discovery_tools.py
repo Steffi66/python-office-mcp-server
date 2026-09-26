@@ -338,7 +338,7 @@ class DiscoveryTools:
 
     def _patch_safety_guidance(self):
         return {
-            "scope": "office_patch",
+            "scope": "office_patch; enrolled table/comment/specialised writers listed in docs/writer-scope.md",
             "sequence": ["office_inspect", "office_patch(mode='dry_run')", "office_patch(mode='strict', output_path='new file')", "office_read", "office_audit"],
             "modes": {
                 "dry_run": "Private-copy preview; no source/destination commit; inspect changes_planned.",
@@ -350,8 +350,8 @@ class DiscoveryTools:
             "limits": [
                 "Excel cell edits invalidate all formula caches; recalculation requires an external application/engine.",
                 "Hard-linked document paths and unsupported style registry rewrites refuse before commit.",
-                "Writer locks cover this server process's staged patches, not arbitrary external editors.",
-                "Other specialised writers do not yet share every office_patch guarantee.",
+                "Writer locks cover enrolled staged writers in this process, not arbitrary external editors.",
+                "Table/comment/chart serialisation does not share office_patch's XLSX opaque-part guarantees; creation paths have separate contracts.",
             ],
         }
 

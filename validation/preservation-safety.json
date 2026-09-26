@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "130af6e469e28ceb898496bb7a109a66826ccf64",
+  "baseCommit": "36ac406ad9d4bd3e7538b4bcc7aa2fb0e51cc943",
+  "branch": "feature/preservation-safety",
+  "runtimes": [
+    {
+      "runtime": "Python 3.10.21",
+      "passed": 1106,
+      "skipped": 3,
+      "seconds": 28.657,
+      "junit_sha256": "bd676db7895d33571915444f5dff340946c033e710bb41d50961899311dad383"
+    },
+    {
+      "runtime": "Python 3.12.3",
+      "passed": 1106,
+      "skipped": 3,
+      "seconds": 23.71,
+      "junit_sha256": "ee1d9cc75e092c84f2bf99d9b29f96364699779b281648f3c7662fc32f483ed5"
+    },
+    {
+      "runtime": "Python 3.13.14",
+      "passed": 1106,
+      "skipped": 3,
+      "seconds": 24.47,
+      "junit_sha256": "72613e70ce8ca64f182bb82ffe073d3b986b9a7feb8ceb5f260237975fde5d25"
+    }
+  ],
+  "acceptance": {
+    "cases": 19,
+    "steps": 159,
+    "runId": "96c3909c-7621-4922-b97a-6e29d3e86096",
+    "outcome": "passed"
+  },
+  "wheel": {
+    "stdioTestsPassed": 4,
+    "sha256": "2cf79de7546a9877e7d941c5e07b1e5ad5a0faf599a61aabde1abf390f961591"
+  },
+  "sharedPack": {
+    "revision": "ooxml-shared-contracts-v2",
+    "seal": "4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de"
+  },
+  "unverified": [
+    "LibreOffice calculation/PDF lane: 3 explicit skips per runtime",
+    "Native Microsoft Office/Windows binary runtime",
+    "Full library parity/visual layout fidelity",
+    "Independent model review: delegate timed out"
+  ],
+  "originalDirtyFilesUnchanged": {
+    "uv.lock": "fdf1c5d772998833790ed7cbbc31eb5614d5bbdb3102e8b8cef02a5a81f6e518",
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  }
+}

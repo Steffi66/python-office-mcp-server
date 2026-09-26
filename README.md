@@ -224,7 +224,7 @@ That makes partial success and recovery paths explicit instead of relying on gen
 
 For `office_patch`, `safe` requires a distinct destination but may commit the accepted subset. Use `strict` with a new `output_path` when every target is required. Receipts distinguish `changes_planned` from committed `changes_applied`, include `results[].applied`, and record `source_sha256`.
 
-Source/destination fingerprint changes prevent publication. Process-local writer locks cover staged patches; arbitrary external editors are not locked. Hard-linked document paths refuse mutation. Specialised table/comment/generation paths have separate contracts and do not yet share every patch guarantee.
+Source/destination fingerprint changes prevent publication. Process-local writer locks cover staged patches and the enrolled existing-document writers in [writer scope](docs/writer-scope.md); arbitrary external editors are not locked. Hard-linked document paths refuse mutation. Tables and comments share staged publication, but their XLSX serialisation does not preserve every opaque part as `office_patch` does. Output-only generation paths retain separate contracts.
 
 Excel cell patches preserve append-only style dependencies and invalidate formula caches across the workbook. `calculation_state="recalculation-required"` means an external calculation engine must refresh results; no recalculation runs here. Unsupported style registry rewrites refuse before commit. Word read-back includes tracked insertions and excludes tracked deletions.
 
@@ -236,7 +236,9 @@ Run a read-only batch with `bash tests/run_tests.sh`, or select related test pat
 
 Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. The source fixture pack in `tests/contracts/shared/` is immutable provenance; executable Python feature copies are separate.
 
-See [the implementation checklist](docs/checklists/preservation-safety.md) for batch evidence and remaining work.
+Verified locally on Python 3.10.21, 3.12.3 and 3.13.14: 1,106 tests pass per runtime, with three explicit LibreOffice-unavailable skips. Native Microsoft Office and the independent rendering/calculation lane remain unverified. The clean wheel passes four real MCP stdio workflows.
+
+See [the implementation checklist](docs/checklists/preservation-safety.md), [validation evidence](validation/preservation-safety.json) and [XLSX adoption decision](docs/xlsx-adoption-decision.md) for scope and limitations.
 
 ### Table Operations
 
