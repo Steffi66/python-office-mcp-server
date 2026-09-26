@@ -57,3 +57,13 @@ def test_binding_match_count_exposes_undefined_and_ambiguous():
     assert not binding_matches(step, [])
     assert len(binding_matches(step, [context])) == 1
     assert len(binding_matches(step, [context, context])) == 2
+
+
+def test_compiled_table_json_rejects_literal_newlines(tmp_path):
+    path = tmp_path / "bad.feature"
+    text = FEATURE.replace("    When editing", '    When editing:\n      | value_json |\n      | "first\\nsecond" |')
+    path.write_text(text)
+    with pytest.raises(ValueError):
+        inventory([path])
+    path.write_text(text.replace('first\\nsecond', 'first\\\\nsecond'))
+    assert len(inventory([path])) == 1

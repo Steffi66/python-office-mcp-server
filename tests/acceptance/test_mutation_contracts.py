@@ -76,9 +76,13 @@ def no_calculation(ctx):
 
 
 @when(parsers.re(r"(?P<operation>previewing this batch without committing|committing this batch with all-targets-required policy|committing this batch to the distinct destination|committing this batch with multiline wrap enabled):"))
-def apply(ctx, operation, datatable):
+def apply(ctx, operation, datatable, request):
     assert datatable[0] == ["target", "value_json"]
-    changes = [{"target": row[0], "value": json.loads(row[1], strict=False)} for row in datatable[1:]]
+    # pytest-bdd 8 exposes raw table escapes; use the official compiler's decoded
+    # table, which is the same typed input consumed by the Bun runner.
+    step = request.node._office_case["steps"][request.node._office_step]
+    rows = step["argument"]["dataTable"]["rows"]
+    changes = [{"target": row["cells"][0]["value"], "value": json.loads(row["cells"][1]["value"])} for row in rows[1:]]
     mode = "dry_run" if operation.startswith("previewing") else "strict" if "all-targets" in operation else "safe"
     ctx["request"] = {"file_path": str(ctx["source"]), "output_path": str(ctx["output"]), "changes": changes, "mode": mode}
     ctx["result"] = ctx["server"].tool_office_patch(**ctx["request"])

@@ -40,7 +40,7 @@ def test_expanded_inventory_has_unique_ids_and_exact_fixture_pins():
     scenarios = re.findall(rb"^  (@id-[a-z0-9-]+)$", source, re.MULTILINE)
     assert len(scenarios) == len(set(scenarios)) == 8
     compiled = json.loads((ROOT / "expanded-contracts.json").read_text())
-    assert compiled["validation"] == "parsed-and-compiled-only"
+    assert compiled["validation"] == "parsed-compiled-and-typed-inputs-validated"
     assert compiled["bindingsImplemented"] is False
     assert compiled["cases"] == len(compiled["inventory"]) == 19
     assert len({c["stableCaseKey"] for c in compiled["inventory"]}) == 19
@@ -53,6 +53,12 @@ def test_expanded_inventory_has_unique_ids_and_exact_fixture_pins():
         assert case["featureSha256"] == digest(source)
         assert case["fixture"]["sha256"] == fixtures[case["fixture"]["id"]]["sha256"]
         assert any(step["keyword"].strip() == "Then" for step in case["expandedSteps"])
+        for step in case["expandedSteps"]:
+            table = (step.get("argument") or {}).get("dataTable", [])
+            if table and "value_json" in table[0]:
+                column = table[0].index("value_json")
+                for row in table[1:]:
+                    json.loads(row[column])
 
 
 @pytest.mark.parametrize("fixture", MANIFEST["fixtures"], ids=lambda f: f["id"])

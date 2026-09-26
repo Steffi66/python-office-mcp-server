@@ -134,3 +134,12 @@ Verification: **5 passed, 3 skipped in 0.18s**. LibreOffice is absent locally; s
 Use `PYTHON=/path/to/python bash tests/run_tests.sh tests/test_a.py tests/test_b.py -q -o addopts=''` for focused batches. Calling without arguments runs the full suite. Do not run a full suite once per file, or parallelise multiple full-suite processes against the same checkout. New fixtures use isolated temporary document directories.
 
 Run formatting/lint checks explicitly on touched files. Verification must not auto-fix source. Preserve JUnit and resolved dependency versions for CI. Repeat the full suite at transaction and transport integration boundaries, then before final delivery. A failing batch is fixed and rerun before its implementation commit; confirmed red regression seeds may be committed only if explicitly separated and labelled, never hidden as passing acceptance.
+
+## Cross-runner contract correction
+
+- [x] Correct shared multiline table escaping and publish v2; retain v1 as historical evidence.
+- [x] Validate every compiled `value_json` using strict JSON in both compilers.
+- [x] Python reads the official compiler's decoded table rather than pytest-bdd's raw escape form; remove `strict=False` workaround.
+- [x] Verify 36 inventory/ledger/acceptance tests, including all 19 cases / 159 steps.
+
+v2 seal SHA-256: `4fb30e0d1a75e889985eceb0c6929dc59971089cc3bc692f18675f36dfeb81de`. Four fixture hashes and stable scenario/case identities are unchanged. The earlier Batch5 note about accepting literal control characters is superseded by this strict compiled-input contract.

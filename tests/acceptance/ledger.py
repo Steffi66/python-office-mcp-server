@@ -60,6 +60,14 @@ def inventory(paths):
             if not any(scenario["id"] in c["astNodeIds"] for c in compiled):
                 raise ValueError("Scenario has no compiled cases")
         for case in compiled:
+            for step in case["steps"]:
+                table = step.get("argument", {}).get("dataTable", {}).get("rows", [])
+                if table:
+                    header = [c["value"] for c in table[0]["cells"]]
+                    if "value_json" in header:
+                        column = header.index("value_json")
+                        for row in table[1:]:
+                            json.loads(row["cells"][column]["value"])
             ids = [t["name"] for t in case["tags"] if t["name"].startswith("@id-")]
             if len(ids) != 1:
                 raise ValueError("Case overrides scenario identity")
