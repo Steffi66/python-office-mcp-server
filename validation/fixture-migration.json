@@ -80,5 +80,17 @@
     "installedWheelChecks": 13,
     "cases": 19,
     "steps": 159
+  },
+  "cleanRecursiveClone": {
+    "sourceCommit": "95f494b34a13f35567af7f0c621b9991cf6dab86",
+    "runtime": "3.12",
+    "committedPassed": 1130,
+    "skipped": 3,
+    "seconds": 31.573,
+    "junitSha256": "7c41c42d2e2e83a32fdb8bef94ce16cb0cffd22731b671322e41a7d25acd6ba4",
+    "fixtureTag": "v0.1.1",
+    "fixtureCommit": "13b34b40f9d4b79de9378b5253bb21b5ca2e2742",
+    "freshEditableInstall": true,
+    "trackedFilesUnchanged": true
   }
 }
