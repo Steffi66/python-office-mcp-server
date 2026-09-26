@@ -27,6 +27,7 @@ from .markdown_parser import (
     parse_markdown_to_nodes,
 )
 from .save_utils import open_docx_with_retries, resolve_office_path, safe_save_docx
+from .word_advanced_tools import _get_text_with_track_changes
 
 DEFAULT_COMMENT_AUTHOR = os.environ.get("MCP_AUTHOR", "Solution Architect Agent")
 
@@ -208,7 +209,7 @@ class WordTools:
         tables = []
 
         for para in doc.paragraphs:
-            text = para.text.strip()
+            text = _get_text_with_track_changes(para).strip()
             if not text:
                 continue
             style_name = para.style.name if para.style else "Normal"
@@ -225,7 +226,7 @@ class WordTools:
         for table in doc.tables:
             rows = []
             for row in table.rows:
-                cells = [cell.text.strip() for cell in row.cells]
+                cells = [_get_text_with_track_changes(cell).strip() for cell in row.cells]
                 rows.append(cells)
             tables.append(rows)
 
@@ -263,7 +264,7 @@ class WordTools:
         lines = []
 
         for para in doc.paragraphs:
-            text = para.text.strip()
+            text = _get_text_with_track_changes(para).strip()
             if not text:
                 lines.append("")
                 continue
@@ -287,13 +288,13 @@ class WordTools:
                 continue
 
             # Header row
-            header = [cell.text.strip() for cell in table.rows[0].cells]
+            header = [_get_text_with_track_changes(cell).strip() for cell in table.rows[0].cells]
             lines.append("| " + " | ".join(header) + " |")
             lines.append("| " + " | ".join(["---"] * len(header)) + " |")
 
             # Data rows
             for row in table.rows[1:]:
-                cells = [cell.text.strip() for cell in row.cells]
+                cells = [_get_text_with_track_changes(cell).strip() for cell in row.cells]
                 lines.append("| " + " | ".join(cells) + " |")
             lines.append("")
 

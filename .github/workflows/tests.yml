@@ -36,6 +36,12 @@ jobs:
           python -m pip freeze > test-results/dependencies.txt
       - name: Run one sequential test batch
         run: bash tests/run_tests.sh tests/ -q -o addopts='' --junitxml=test-results/pytest.xml
+      - name: Verify wheel-backed MCP workflows
+        run: |
+          python -m pip wheel . --no-deps --wheel-dir dist
+          python -m venv .wheel-venv
+          .wheel-venv/bin/python -m pip install dist/*.whl
+          OFFICE_MCP_TEST_PYTHON="$PWD/.wheel-venv/bin/python" bash tests/run_tests.sh tests/test_stdio_mutation_workflows.py -q -o addopts='' --junitxml=test-results/wheel.xml
       - name: Check tracked files were not changed by verification
         if: always()
         run: git diff --exit-code

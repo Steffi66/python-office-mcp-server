@@ -219,8 +219,24 @@ That makes partial success and recovery paths explicit instead of relying on gen
 
 - `best_effort`: current compatibility-oriented behavior
 - `safe`: requires a distinct output path for covered mutation flows
-- `strict`: refuses writes when requested targets cannot all be matched cleanly
-- `dry_run`: predicts matches and diagnostics without writing files
+- `strict`: for `office_patch`, any missing or failed target prevents the entire batch commit
+- `dry_run`: for `office_patch`, validates changes on a private copy, discards it, and leaves source and destination unchanged
+
+For `office_patch`, `safe` requires a distinct destination but may commit the accepted subset. Use `strict` with a new `output_path` when every target is required. Receipts distinguish `changes_planned` from committed `changes_applied`, include `results[].applied`, and record `source_sha256`.
+
+Source/destination fingerprint changes prevent publication. Process-local writer locks cover staged patches; arbitrary external editors are not locked. Hard-linked document paths refuse mutation. Specialised table/comment/generation paths have separate contracts and do not yet share every patch guarantee.
+
+Excel cell patches preserve append-only style dependencies and invalidate formula caches across the workbook. `calculation_state="recalculation-required"` means an external calculation engine must refresh results; no recalculation runs here. Unsupported style registry rewrites refuse before commit. Word read-back includes tracked insertions and excludes tracked deletions.
+
+Start with `office_help`, then inspect, preview, patch to a new output, and reopen/audit the result.
+
+### Verification
+
+Run a read-only batch with `bash tests/run_tests.sh`, or select related test paths as arguments. Set `PYTHON=/path/to/python` to choose the environment. Verification never auto-formats or fixes source.
+
+Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. The source fixture pack in `tests/contracts/shared/` is immutable provenance; executable Python feature copies are separate.
+
+See [the implementation checklist](docs/checklists/preservation-safety.md) for batch evidence and remaining work.
 
 ### Table Operations
 

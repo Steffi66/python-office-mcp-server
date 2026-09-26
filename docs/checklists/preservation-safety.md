@@ -75,11 +75,13 @@ Verification: **66 tests passed in 1.36s**, including **19 acceptance cases / 15
 
 ## Batch 6: MCP and packaging
 
-- [ ] Exercise inspect/preview/patch/reopen over actual MCP stdio with process timeouts.
-- [ ] Build/install the wheel in a clean environment; verify tool discovery and edits.
-- [ ] Retain Windows executable smoke coverage.
-- [ ] Update office_help and docs with verified mode/receipt/refusal behaviour.
-- [ ] Run transport, packaging and one full-suite integration batch; commit and send results to Bun.
+- [x] Exercise inspect/preview/patch/reopen over actual MCP stdio with process timeouts.
+- [x] Build/install the wheel in a clean environment; verify tool discovery and edits.
+- [x] Retain Windows executable smoke coverage (workflow retained; Windows binary not run locally).
+- [x] Update office_help and docs with verified mode/receipt/refusal behaviour.
+- [x] Run transport, packaging and one full-suite integration batch; commit and send results to Bun.
+
+Verification: clean wheel-backed MCP **4 passed in 3.34s**; full regression **1,075 passed in 18.63s**, including **19 cases / 159 acceptance steps**. Transport assertions exposed that Word's basic JSON/Markdown readers omitted tracked insertions; both now use the revision-aware text helper for paragraphs and cells. Four transport tests cover all formats plus strict failure against an existing output. CI repeats the clean-wheel lane. No native Office, Windows runtime or LibreOffice validation ran locally.
 
 ## Batch 7: remaining writers
 

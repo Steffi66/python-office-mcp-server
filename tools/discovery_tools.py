@@ -336,6 +336,25 @@ class DiscoveryTools:
             return "word"
         return None
 
+    def _patch_safety_guidance(self):
+        return {
+            "scope": "office_patch",
+            "sequence": ["office_inspect", "office_patch(mode='dry_run')", "office_patch(mode='strict', output_path='new file')", "office_read", "office_audit"],
+            "modes": {
+                "dry_run": "Private-copy preview; no source/destination commit; inspect changes_planned.",
+                "strict": "Every requested target must apply; any refusal commits zero changes.",
+                "safe": "Distinct output required; source unchanged; accepted subset may be committed.",
+                "best_effort": "Accepted subset commits once; inspect unmatched/skipped targets.",
+            },
+            "receipts": ["changes_planned", "changes_applied", "results[].applied", "source_sha256", "calculation_state"],
+            "limits": [
+                "Excel cell edits invalidate all formula caches; recalculation requires an external application/engine.",
+                "Hard-linked document paths and unsupported style registry rewrites refuse before commit.",
+                "Writer locks cover this server process's staged patches, not arbitrary external editors.",
+                "Other specialised writers do not yet share every office_patch guarantee.",
+            ],
+        }
+
     def tool_office_help(
         self,
         goal: str | None = None,
@@ -361,6 +380,7 @@ class DiscoveryTools:
                 "success": True,
                 "mode": format,
                 "scope": "systems_architecture_and_consulting",
+                "mutation_safety": self._patch_safety_guidance(),
                 "core_tools": CORE_TOOLS,
                 "advanced_tool_classes": ADVANCED_TOOL_CLASSES,
                 "common_goals": sorted(WORKFLOW_GUIDANCE.keys()),
@@ -396,6 +416,7 @@ class DiscoveryTools:
             "document_type": resolved_document_type,
             "constraints": normalized_constraints,
             "summary": guidance["summary"],
+            "mutation_safety": self._patch_safety_guidance(),
             "recommended": recommendations,
             "fallbacks": guidance["fallbacks"],
             "watch_for": guidance["watch_for"],
