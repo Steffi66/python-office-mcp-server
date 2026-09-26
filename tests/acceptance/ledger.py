@@ -38,6 +38,8 @@ def inventory(paths):
                 raise ValueError("Only direct scenarios are supported in this acceptance lane")
             scenario = child["scenario"]
             scenarios.append(scenario)
+            if any(t["name"] in {"@implemented", "@planned", "@python"} for t in scenario["tags"]):
+                raise ValueError("Scenario cannot override lifecycle or runner")
             ids = [t["name"] for t in scenario["tags"] if t["name"].startswith("@id-")]
             if len(ids) != 1 or ids[0] in seen_ids:
                 raise ValueError("Missing or duplicate scenario ID")
@@ -48,6 +50,8 @@ def inventory(paths):
             if not scenario["steps"] or not any(s["keywordType"] == "Outcome" for s in scenario["steps"]):
                 raise ValueError("Scenario needs at least one outcome assertion")
             for examples in scenario["examples"]:
+                if any(t["name"] in {"@implemented", "@planned", "@python"} or t["name"].startswith("@id-") for t in examples["tags"]):
+                    raise ValueError("Examples cannot override identity, lifecycle or runner")
                 header = [c["value"] for c in examples["tableHeader"]["cells"]]
                 if not all(header) or len(set(header)) != len(header):
                     raise ValueError("Invalid example headers")
@@ -59,6 +63,8 @@ def inventory(paths):
         for scenario in scenarios:
             if not any(scenario["id"] in c["astNodeIds"] for c in compiled):
                 raise ValueError("Scenario has no compiled cases")
+        if len({c["name"] for c in compiled}) != len(compiled):
+            raise ValueError("Duplicate expanded case name")
         for case in compiled:
             for step in case["steps"]:
                 table = step.get("argument", {}).get("dataTable", {}).get("rows", [])
@@ -107,6 +113,9 @@ class Ledger:
 
     def finish(self, exitstatus):
         cases = self.report["inventory"]
-        all_passed = bool(cases) and all(c["outcome"] == "passed" for c in cases)
+        all_passed = bool(cases) and all(
+            c["outcome"] == "passed" and c["steps"] and all(s["outcome"] == "passed" for s in c["steps"])
+            for c in cases
+        )
         self.report.update(finishedAt=now(), outcome="passed" if exitstatus == 0 and all_passed else "incomplete-or-failed")
         self.write()

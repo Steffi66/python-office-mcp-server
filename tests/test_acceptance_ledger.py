@@ -67,3 +67,17 @@ def test_compiled_table_json_rejects_literal_newlines(tmp_path):
         inventory([path])
     path.write_text(text.replace('first\\nsecond', 'first\\\\nsecond'))
     assert len(inventory([path])) == 1
+
+
+def test_scenario_cannot_override_lifecycle(tmp_path):
+    path = tmp_path / 'bad.feature'
+    path.write_text(FEATURE.replace('@id-xlsx-example', '@id-xlsx-example @planned'))
+    with pytest.raises(ValueError, match='override'):
+        inventory([path])
+
+
+def test_case_status_cannot_hide_unexecuted_step(tmp_path):
+    ledger = Ledger(tmp_path / 'report.json')
+    ledger.report['inventory'] = [{'outcome': 'passed', 'steps': [{'outcome': 'not-run'}]}]
+    ledger.finish(0)
+    assert ledger.report['outcome'] == 'incomplete-or-failed'

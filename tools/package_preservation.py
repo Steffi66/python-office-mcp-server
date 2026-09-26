@@ -31,7 +31,12 @@ def _tree(node):
     nsmap = sorted((key or "", value) for key, value in node.nsmap.items()) if not opc and any(
         ":" in value or key.endswith("}Ignorable") for key, value in node.attrib.items()
     ) else []
-    return (str(node.tag), sorted(node.attrib.items()), node.text, node.tail, children, nsmap)
+    if not isinstance(node.tag, str):
+        # Comments and processing instructions need their actual node kind/target.
+        kind = "comment" if isinstance(node, etree._Comment) else ("pi", getattr(node, "target", ""))
+    else:
+        kind = node.tag
+    return (kind, sorted(node.attrib.items()), node.text, node.tail, children, nsmap)
 
 
 def equivalent_xml(left, right):
@@ -40,7 +45,19 @@ def equivalent_xml(left, right):
         a, b = etree.fromstring(left, parser), etree.fromstring(right, parser)
         if a.getroottree().docinfo.doctype or b.getroottree().docinfo.doctype:
             return False
-        return _tree(a) == _tree(b)
+        def outside(root):
+            previous, following = [], []
+            node = root.getprevious()
+            while node is not None:
+                previous.append(_tree(node))
+                node = node.getprevious()
+            node = root.getnext()
+            while node is not None:
+                following.append(_tree(node))
+                node = node.getnext()
+            return previous, following
+
+        return _tree(a) == _tree(b) and outside(a) == outside(b)
     except (ValueError, etree.XMLSyntaxError):
         return False
 

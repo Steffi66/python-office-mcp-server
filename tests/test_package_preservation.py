@@ -26,3 +26,9 @@ def test_dtd_or_malformed_xml_is_never_equated():
     dtd = b'<!DOCTYPE a [<!ENTITY e "text">]><a>&e;</a>'
     assert not equivalent_xml(dtd, dtd)
     assert not equivalent_xml(b'broken', b'broken')
+
+
+def test_processing_instruction_targets_and_prolog_are_significant():
+    assert not equivalent_xml(b'<?one x?><a/>', b'<?two x?><a/>')
+    assert not equivalent_xml(b'<a><?one x?></a>', b'<a><?two x?></a>')
+    assert not equivalent_xml(b'<!--old--><a/>', b'<!--new--><a/>')
