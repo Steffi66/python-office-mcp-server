@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "scope": "Three formatting-analysis response-shape descriptions; syntax/inventory only",
+  "reviewedSourceCommit": "bf56bf95b868348c1ca393b68c262ad8abd6856a",
+  "sourceSha256": {
+    "tests/conftest.py": "1f3f8d173438c11be5a467004ac4504707d03f9e552c92ae3216b25adebd9e56",
+    "tests/test_word_advanced_tools.py": "8606277d4e6508fffa7d6a89883c4d29661fb503ff3df03ac74d7352b0704704",
+    "tests/test_word_coverage.py": "0a75211906e78cb0de7938f81d07747ab0bbedbff063a2eb86661da4d6d66b59",
+    "tests/test_word_pptx_advanced_ops.py": "f2f350d19b449dd59ad335773846d1a5455016349cefbbeb6a0f077643034337"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 3,
+    "recordedCases": 3,
+    "changedMappingRows": 3,
+    "scenarios": [
+      {
+        "candidateScenarioId": "@candidate-python-word-advanced-tools-e6c70de6b3",
+        "steps": 7
+      },
+      {
+        "candidateScenarioId": "@candidate-python-word-coverage-3cc72ff9ad",
+        "steps": 5
+      },
+      {
+        "candidateScenarioId": "@candidate-python-word-pptx-advanced-ops-d7e13faae4",
+        "steps": 6
+      }
+    ],
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 166,
+    "existingEntriesExtended": 1,
+    "newEntries": 2,
+    "totalEntries": 168
+  },
+  "localDocumentationLinks": 10,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "05d59a1f9866844bb5297557812a41226a5dce9df8373ac779b4effe6061aab6",
+    "docs/catalogue-staging/python-native/features/test_word_advanced_tools.feature": "fa16326009252b1524e217747216aead42ebafb6b62cada7035576b169b45703",
+    "docs/catalogue-staging/python-native/features/test_word_coverage.feature": "2ab7144ffc61ca779b6a933405dbdf2e08aaae237b7c069eaa23d11fed581d67",
+    "docs/catalogue-staging/python-native/features/test_word_pptx_advanced_ops.feature": "ed3eb2d0d7cdb20757eaf97549b1b4615be110c60144308920a4d3905fcafb5c",
+    "docs/catalogue-staging/python-native/formatting-analysis-review.md": "6672e42250a550755b42e8559929c46caff4e598357493d91cdbaa7389f35c28",
+    "docs/catalogue-staging/python-native/mapping.json": "ee20e578e5fd06c65f26ceb80e16e7c01d1e50968982e0e418e0d78ef104d765"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "No analysis quality, style creation or inheritance execution credit",
+    "Central reconciliation and generated-seed inventory incomplete"
+  ]
+}

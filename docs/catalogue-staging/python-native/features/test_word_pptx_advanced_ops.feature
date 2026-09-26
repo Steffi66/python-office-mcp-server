@@ -167,17 +167,13 @@ Feature: word pptx advanced ops native behavior capture
 
   @candidate-python-word-pptx-advanced-ops-d7e13faae4
   # Native: tests/test_word_pptx_advanced_ops.py::TestWordSowOperations::test_analyze_template_formatting
-  Scenario: Native check: analyze template formatting [TestWordSowOperations]
-    Given Create an instance of WordAdvancedTools.
-    And an isolated writable temporary directory
-    And doc.save with temp dir under "template_format.docx"
-    And doc is prepared as the result of Document with no arguments
-    And para is prepared as the result of doc.add paragraph with no arguments
-    And run is prepared as the result of para.add run with "[Guidance: Fill in project details]"
-    And the result of para.add run with "[Guidance: Fill in project details]" font color rgb is set to the result of RGBColor with 0; 0; 255
-    And path is prepared as temp dir under "template_format.docx"
-    When word advanced tools.tool word analyze template formatting using str representation of temp dir under "template_format.docx"
-    Then result has type dict
+  Scenario: Formatting analysis of blue guidance text returns a dictionary without classification assertions
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And a saved document with level-1 heading "<Project Name>"
+    And a paragraph containing "[Guidance: Fill in project details]" in a run coloured RGB 0, 0, 255
+    And paragraphs "Standard content here" and "<Customer Name> is the customer"
+    When tool_word_analyze_template_formatting reads that saved document
+    Then the result is a dictionary, including an error dictionary
 
   @candidate-python-word-pptx-advanced-ops-b86a4362b4
   # Native: tests/test_word_pptx_advanced_ops.py::TestPptxNotesOperations::test_get_notes_no_slide_number

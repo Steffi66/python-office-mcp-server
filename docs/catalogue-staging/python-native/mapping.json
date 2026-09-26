@@ -24954,7 +24954,7 @@
       "sourceLine": 412,
       "sourceSha256": "8606277d4e6508fffa7d6a89883c4d29661fb503ff3df03ac74d7352b0704704",
       "feature": "features/test_word_advanced_tools.feature",
-      "scenario": "Native check: analyzes formatting [TestAnalyzeTemplateFormatting]",
+      "scenario": "SOW formatting analysis accepts either no error membership or a dictionary response",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -24970,11 +24970,14 @@
         }
       ],
       "captureStatus": "needs-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
       "gaps": [
-        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly"
-      ]
+        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly",
+        "Response-shape assertion accepts an error dictionary; no analysis field/value, formatting or blue-guidance detection, style mutation, source preservation or inheritance assertion."
+      ],
+      "semanticReviewCommit": "bf56bf95b868348c1ca393b68c262ad8abd6856a",
+      "semanticReviewNotes": "formatting-analysis-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-advanced-tools-95a1d33a6d",
@@ -26513,7 +26516,7 @@
       "sourceLine": 97,
       "sourceSha256": "0a75211906e78cb0de7938f81d07747ab0bbedbff063a2eb86661da4d6d66b59",
       "feature": "features/test_word_coverage.feature",
-      "scenario": "Native check: analyze template formatting [TestAnalyzeTemplateFormatting]",
+      "scenario": "Placeholder formatting analysis returns a dictionary without content assertions",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26527,10 +26530,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Response-shape assertion accepts an error dictionary; no analysis field/value, formatting or blue-guidance detection, style mutation, source preservation or inheritance assertion."
+      ],
+      "semanticReviewCommit": "bf56bf95b868348c1ca393b68c262ad8abd6856a",
+      "semanticReviewNotes": "formatting-analysis-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-coverage-c040cdc236",
@@ -27797,7 +27804,7 @@
       "sourceLine": 244,
       "sourceSha256": "f2f350d19b449dd59ad335773846d1a5455016349cefbbeb6a0f077643034337",
       "feature": "features/test_word_pptx_advanced_ops.feature",
-      "scenario": "Native check: analyze template formatting [TestWordSowOperations]",
+      "scenario": "Formatting analysis of blue guidance text returns a dictionary without classification assertions",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -27811,10 +27818,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Response-shape assertion accepts an error dictionary; no analysis field/value, formatting or blue-guidance detection, style mutation, source preservation or inheritance assertion."
+      ],
+      "semanticReviewCommit": "bf56bf95b868348c1ca393b68c262ad8abd6856a",
+      "semanticReviewNotes": "formatting-analysis-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-pptx-advanced-ops-b86a4362b4",
@@ -30529,7 +30540,8 @@
       "nativeDefinition": "tests/test_word_advanced_tools.py::TestAnalyzeTemplateFormatting::test_analyzes_formatting",
       "candidateScenarioId": "@candidate-python-word-advanced-tools-e6c70de6b3",
       "gaps": [
-        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly"
+        "Alternative outcomes accepted by native assertion; reconcile weaker branches explicitly",
+        "Response-shape assertion accepts an error dictionary; no analysis field/value, formatting or blue-guidance detection, style mutation, source preservation or inheritance assertion."
       ]
     },
     {
@@ -30904,6 +30916,20 @@
       "candidateScenarioId": "@candidate-python-comment-tools-e2e-846a41e278",
       "gaps": [
         "Post-delete count defaults to zero when missing, with no error-absence or empty-collection assertion; persisted deletion is not independently established. Intermediate direct PPTX read checks positive count and locates slide-1 index, not text or error absence. Skips without python-pptx."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_coverage.py::TestAnalyzeTemplateFormatting::test_analyze_template_formatting",
+      "candidateScenarioId": "@candidate-python-word-coverage-3cc72ff9ad",
+      "gaps": [
+        "Response-shape assertion accepts an error dictionary; no analysis field/value, formatting or blue-guidance detection, style mutation, source preservation or inheritance assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_pptx_advanced_ops.py::TestWordSowOperations::test_analyze_template_formatting",
+      "candidateScenarioId": "@candidate-python-word-pptx-advanced-ops-d7e13faae4",
+      "gaps": [
+        "Response-shape assertion accepts an error dictionary; no analysis field/value, formatting or blue-guidance detection, style mutation, source preservation or inheritance assertion."
       ]
     }
   ],

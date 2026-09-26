@@ -296,11 +296,14 @@ Feature: word advanced tools native behavior capture
 
   @candidate-python-word-advanced-tools-e6c70de6b3
   # Native: tests/test_word_advanced_tools.py::TestAnalyzeTemplateFormatting::test_analyzes_formatting
-  Scenario: Native check: analyzes formatting [TestAnalyzeTemplateFormatting]
-    Given Create an instance of WordAdvancedTools.
-    And Create a SOW-style template document.
-    When word advanced tools.tool word analyze template formatting using str representation of sow template
-    Then "error" does not occur in result or result has type dict
+  Scenario: SOW formatting analysis accepts either no error membership or a dictionary response
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And a saved template with level-0 heading "Statement of Work" and paragraphs "<Customer Name>" and "<Project Name>"
+    And level-1 heading "Executive Summary" followed by "[Template Guidance: Describe the project here]"
+    And level-1 heading "Scope" followed by "<Customer Name> requires the following services."
+    And level-1 heading "Staffing" followed by a 2-by-2 table whose first row is "Role", "Hours"
+    When tool_word_analyze_template_formatting reads that saved template
+    Then either "error" is not a member of the result or the result is a dictionary, including an error dictionary
 
   @candidate-python-word-advanced-tools-95a1d33a6d
   # Native: tests/test_word_advanced_tools.py::TestWordFromMarkdown::test_method_location

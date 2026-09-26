@@ -38,9 +38,13 @@ The [reply and roundtrip review](comment-replies-review.md) checks seven reply d
 
 The [cross-format comment review](comment-tools-e2e-review.md) checks six direct/unified Excel, Word and PowerPoint definitions at `161b437`. It retains dependency skips and separates text-checked unified reads from count-only direct reads. Final reads default missing counts to zero and do not reject errors; they cannot independently establish persisted deletion. These are Python method calls, with no MCP transport execution in this pass.
 
+## Formatting-analysis source review
+
+The [formatting-analysis review](formatting-analysis-review.md) checks three definitions at `bf56bf9`. All accept error dictionaries; two assert only dictionary type and one has a weaker alternative-outcome expression. Their blue guidance and placeholder inputs receive no detection assertions. These response-shape tests provide no paragraph-style authoring or inheritance coverage.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 166 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries and six cross-format comment entries added by source review. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 168 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries and two new formatting-analysis entries. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 

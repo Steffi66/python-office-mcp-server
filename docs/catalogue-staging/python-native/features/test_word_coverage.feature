@@ -64,14 +64,12 @@ Feature: word coverage native behavior capture
 
   @candidate-python-word-coverage-3cc72ff9ad
   # Native: tests/test_word_coverage.py::TestAnalyzeTemplateFormatting::test_analyze_template_formatting
-  Scenario: Native check: analyze template formatting [TestAnalyzeTemplateFormatting]
-    Given Create an instance of WordAdvancedTools.
-    And an isolated writable temporary directory
-    And doc.save with temp dir under "format_template.docx"
-    And doc is prepared as the result of Document with no arguments
-    And path is prepared as temp dir under "format_template.docx"
-    When word advanced tools.tool word analyze template formatting using str representation of temp dir under "format_template.docx"
-    Then result has type dict
+  Scenario: Placeholder formatting analysis returns a dictionary without content assertions
+    Given an isolated writable directory and a WordAdvancedTools instance
+    And a saved document with level-0 heading "Template"
+    And paragraphs "Boilerplate text here", "<Placeholder>" and "[TBD]"
+    When tool_word_analyze_template_formatting reads that saved document
+    Then the result is a dictionary, including an error dictionary
 
   @candidate-python-word-coverage-c040cdc236
   # Native: tests/test_word_coverage.py::TestPatchTableRow::test_patch_table_row
