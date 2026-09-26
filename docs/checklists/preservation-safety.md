@@ -28,14 +28,16 @@ The imported scenarios remain `@planned`. Inventory tests validate their inputs;
 
 ## Batch 2: mutation semantics
 
-- [ ] Add independent regressions for PPTX dry-run, XLSX strict rollback, accumulated PPTX outputs and Word per-target counts.
-- [ ] Stage the whole request; resolve strict errors before committing.
-- [ ] Preview without source/destination changes.
-- [ ] Apply all successful edits to one staged document and commit once.
-- [ ] Distinguish planned/matched/committed counts and exact rejected targets.
-- [ ] Validate ranges before mutation, including malformed later rows.
-- [ ] Preserve existing destinations on failure.
-- [ ] Run mutation, diagnostics and relevant format tests together; review and commit.
+- [x] Add independent regressions for PPTX dry-run, XLSX strict rollback, accumulated PPTX outputs and Word per-target counts.
+- [x] Stage the whole request; resolve strict errors before committing.
+- [x] Preview without source/destination changes.
+- [x] Apply all successful edits to one staged document and commit once.
+- [x] Distinguish planned/matched/committed counts and exact rejected targets.
+- [x] Validate ranges before mutation, including malformed later rows.
+- [x] Preserve existing destinations on failure.
+- [x] Run mutation, diagnostics and relevant format tests together; review and commit.
+
+Verification: **151 passed in 2.42s**; new-file Ruff and diff whitespace checks pass. Private-copy preview validates actual transformations, then discards them. Repeated format writers address the same private copy; only the final destination replacement is committed. Source-fingerprint/locking hardening follows in Batch 4.
 
 ## Batch 3: XLSX dependency preservation
 

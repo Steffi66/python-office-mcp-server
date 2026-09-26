@@ -33,6 +33,7 @@ except ImportError:
     HAS_OPENPYXL = False
 
 from .diagnostics import build_mutation_diagnostics
+from .mutation import stage_patch
 from .excel_advanced_tools import (
     DEFAULT_AUTHOR,
     _auto_row_height,
@@ -841,7 +842,14 @@ class OfficeUnifiedTools:
             return _unsupported_format_error(file_path)
 
         if not changes:
-            return {"error": "No changes provided"}
+            return {"error": "No changes provided", "changes_applied": 0}
+        if mode not in {"best_effort", "safe", "strict", "dry_run"}:
+            return {"error": "Unsupported mutation mode", "success": False, "changes_applied": 0}
+        if not isinstance(changes, list) or any(
+            not isinstance(change, dict) or not isinstance(change.get("target"), str)
+            or not change["target"].strip() for change in changes
+        ):
+            return {"error": "Each change requires a non-empty string target", "success": False, "changes_applied": 0, "errors": 1}
 
         if mode == "safe" and (output_path is None or Path(output_path).resolve() == Path(file_path).resolve()):
             return {
@@ -856,6 +864,16 @@ class OfficeUnifiedTools:
                 "next_tools": ["office_help", "office_template", "office_inspect"],
             }
 
+        return stage_patch(
+            file_path, output_path, mode, len(changes),
+            lambda staged: self._apply_patch_staged(
+                staged, changes, doc_format, "strict" if mode == "strict" else "best_effort"
+            ),
+        )
+
+    def _apply_patch_staged(self, file_path, changes, doc_format, mode):
+        """Internal writer: file_path is always a private staged document."""
+        output_path = None
         results = []
         errors = []
 
@@ -911,19 +929,29 @@ class OfficeUnifiedTools:
                             })
                             continue
 
+                        if expected_rows < 1 or expected_cols < 1 or max_row > 1048576 or max_col > 16384:
+                            errors.append({"target": target, "error": "Invalid worksheet range bounds"})
+                            continue
+                        if not re.fullmatch(r"\$?[A-Za-z]+\$?[1-9][0-9]*:\$?[A-Za-z]+\$?[1-9][0-9]*", cell_ref):
+                            errors.append({"target": target, "error": "Invalid cell range"})
+                            continue
+                        if any(not isinstance(row, list) or len(row) != expected_cols for row in value):
+                            errors.append({"target": target, "error": "Column count mismatch; range was not applied"})
+                            continue
                         rows_to_adjust = set()
                         ws = wb[target_sheet]
+                        from openpyxl.cell.cell import Cell, MergedCell
+                        try:
+                            for ri, row_values in enumerate(value):
+                                for ci, new_value in enumerate(row_values):
+                                    if isinstance(ws.cell(min_row + ri, min_col + ci), MergedCell):
+                                        raise ValueError("Cannot write a merged non-anchor cell")
+                                    Cell(ws, row=min_row + ri, column=min_col + ci, value=_coerce_value(new_value))
+                        except (ValueError, TypeError) as exc:
+                            errors.append({"target": target, "error": str(exc)})
+                            continue
 
                         for row_idx, row_values in enumerate(value):
-                            if len(row_values) != expected_cols:
-                                errors.append({
-                                    "target": target,
-                                    "error": f"Column count mismatch in row {row_idx + 1}: "
-                                             f"expected {expected_cols}, got {len(row_values)}",
-                                })
-                                range_error = True
-                                break
-
                             for col_idx, new_value in enumerate(row_values):
                                 cell = ws.cell(row=min_row + row_idx, column=min_col + col_idx)
                                 old_value = cell.value
@@ -955,9 +983,22 @@ class OfficeUnifiedTools:
                         continue
 
                     ws = wb[target_sheet]
-                    cell = ws[cell_address]
-                    old_value = cell.value
-                    coerced_value = _coerce_value(value) if mode == "dry_run" else _set_cell_with_coercion(cell, value, auto_height=True)
+                    try:
+                        from openpyxl.cell.cell import Cell, MergedCell
+                        from openpyxl.utils.cell import coordinate_to_tuple
+                        if not re.fullmatch(r"\$?[A-Za-z]+\$?[1-9][0-9]*", cell_address):
+                            raise ValueError("Invalid cell address")
+                        row, column = coordinate_to_tuple(cell_address.replace("$", ""))
+                        if row > 1048576 or column > 16384:
+                            raise ValueError("Cell address outside worksheet bounds")
+                        cell = ws[cell_address]
+                        if isinstance(cell, MergedCell):
+                            raise ValueError("Cannot write a merged non-anchor cell")
+                        Cell(ws, row=row, column=column, value=_coerce_value(value))
+                        _set_cell_with_coercion(cell, value, auto_height=True)
+                    except (ValueError, TypeError) as exc:
+                        errors.append({"target": target, "error": str(exc)})
+                        continue
 
                     if mode != "dry_run":
                         _auto_row_height(ws, cell.row, cell=cell)
@@ -1077,8 +1118,8 @@ class OfficeUnifiedTools:
                         output_path=output_path,
                         mode=mode,
                     )
-                    if "error" in section_result:
-                        errors.append({"target": target, "error": section_result["error"]})
+                    if "error" in section_result or not section_result.get("success", True):
+                        errors.append({"target": target, "error": section_result.get("error", "Section patch refused")})
                     else:
                         results.append({
                             "target": target,
@@ -1108,11 +1149,11 @@ class OfficeUnifiedTools:
                     if "error" in result:
                         errors.append(result)
                     else:
-                        total_replacements = result.get("total_replacements", 0)
+                        counts = result.get("by_placeholder", {})
                         for target in placeholders:
                             results.append({
                                 "target": target,
-                                "success": total_replacements > 0,
+                                "success": counts.get(target, 0) > 0,
                                 "value_preview": _preview_value(placeholders.get(target, "")),
                             })
 
@@ -1140,7 +1181,13 @@ class OfficeUnifiedTools:
                 if target.startswith("slide:"):
                     # Parse slide:N/shape_name format
                     parts = target[6:].split("/", 1)
-                    slide_num = int(parts[0])
+                    try:
+                        slide_num = int(parts[0])
+                        if slide_num < 1:
+                            raise ValueError("slide numbers start at 1")
+                    except ValueError:
+                        errors.append({"target": target, "error": "Invalid slide number"})
+                        continue
                     shape_identifier = parts[1] if len(parts) > 1 else None
 
                     if shape_identifier:
@@ -1171,7 +1218,7 @@ class OfficeUnifiedTools:
                 else:
                     results.append({
                         "target": target,
-                        "success": True,
+                        "success": result.get("success", True) and result.get("replacement_count", 1) > 0,
                         "value_preview": _preview_value(value),
                     })
 
