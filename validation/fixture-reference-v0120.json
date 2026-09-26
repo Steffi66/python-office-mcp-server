@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "scope": "Official v0.12 reference-only consumer repin; hardened release guards and existing lanes only",
+  "consumerParentCommit": "e04167d0cd78707d968c116db04082951b06b072",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.12.0",
+    "commit": "89518aa62c9515a7ccbe05ed9afc1bbc89e1118a",
+    "manifestSha256": "deef358591495f89e853a5ac3371a52032e263238c20d43e5deaa738768f9b0e"
+  },
+  "annotatedTagObject": "39342758704c37cf76303d30f0457c4389522b9a",
+  "priorAssetRecordsExactlyUnchanged": 143,
+  "totalAssetRecords": 144,
+  "verification": {
+    "python": "3.12",
+    "checksPassed": 82,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 5.339,
+    "junitSha256": "2815c9c3f4bc9b77939e4316e91bac5bbb332d47d51f98672295fbf8aecec84e",
+    "testPaths": [
+      "tests/test_shared_contract_inventory.py",
+      "tests/test_fixture_source_integrity.py",
+      "tests/acceptance",
+      "tests/xml_comparison",
+      "tests/package_admission"
+    ]
+  },
+  "lanes": {
+    "acceptance": {
+      "cases": 19,
+      "steps": 159,
+      "runId": "83fd9e3e-aa17-4850-839e-00b39ee5a87a",
+      "outcome": "passed",
+      "featureHashes": [
+        "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3"
+      ]
+    },
+    "xml-comparison": {
+      "cases": 10,
+      "steps": 40,
+      "runId": "605fa089-0f0e-453b-878f-a4deea0023e0",
+      "outcome": "passed",
+      "featureHashes": [
+        "b700a3da8670cb048aa3f836c193f4533908730c185847f63e167e59c48f5e93"
+      ]
+    },
+    "package-admission": {
+      "cases": 14,
+      "steps": 47,
+      "runId": "9db52c57-ba58-401b-8013-e67e605f2cd3",
+      "outcome": "passed",
+      "featureHashes": [
+        "19fa717632d689e7ff4e883fb2af3f31e018373dc79ddb78efecf7742ea14e91",
+        "28b1599e839f360929e689ff2d99e13599e000b98d6aa0d58c2e6a47b4efe696",
+        "eebe822867a6f83d77351a0590dd81d7e929dc13f2d1add0bfcbbc44c5e90ca7"
+      ]
+    }
+  },
+  "nativeTestsAndRuntimeUnchanged": true,
+  "catalogueReviewsUnchanged": true,
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "No full runtime matrix, full-suite, wheel or Bun semantic rerun for this reference-only update",
+    "No Python binding or execution credit for the new Bun existing-cell-style cases",
+    "Bun cell-style follow-up tests and runtime results were coordinator-reported, not independently retested here",
+    "Broader catalogue semantic reconciliation/generated-seed inventory incomplete",
+    "No production deployment"
+  ],
+  "docs": {
+    "localLinksAndAnchors": 100,
+    "pythonJsonSnippets": 40
+  }
+}
