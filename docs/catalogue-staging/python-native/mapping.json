@@ -8283,7 +8283,7 @@
       "sourceLine": 214,
       "sourceSha256": "9fa5ed5ba5f8618635e7d73519b0aeff06148f28fa20cced7945cba4ef8c297f",
       "feature": "features/test_final_coverage.feature",
-      "scenario": "Native check: list shapes with textbox [TestMorePptxShapeOperations]",
+      "scenario": "Shape listing returns at least two entries for a generated 1-inch-high text box",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -8296,10 +8296,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Only len(result.get(shapes, [])) >= 2 is asserted; no returned identity/type/text/geometry, exact count, error absence, source preservation or rendering assertion. Textbox creation is python-pptx setup, not a tested authoring tool operation."
+      ],
+      "semanticReviewCommit": "0229c1415ed436f4fea46acf0e5c812b6f7d8fcc",
+      "semanticReviewNotes": "pptx-textbox-listing-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-final-coverage-bfd772eea9",
@@ -28779,7 +28783,7 @@
       "sourceLine": 405,
       "sourceSha256": "1f19978357a9d981b830ce1f604ec58a1dc15d9bf27a86d8fb003b2382053e10",
       "feature": "features/test_workflow_coverage.feature",
-      "scenario": "Native check: pptx with textbox [TestMoreEdgeCases]",
+      "scenario": "Shape listing returns at least two entries for a generated 1.5-inch-high text box",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -28792,10 +28796,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Only len(result.get(shapes, [])) >= 2 is asserted; no returned identity/type/text/geometry, exact count, error absence, source preservation or rendering assertion. Textbox creation is python-pptx setup, not a tested authoring tool operation."
+      ],
+      "semanticReviewCommit": "0229c1415ed436f4fea46acf0e5c812b6f7d8fcc",
+      "semanticReviewNotes": "pptx-textbox-listing-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-workflow-coverage-92b2dab77e",
@@ -29215,7 +29223,7 @@
       "sourceLine": 254,
       "sourceSha256": "f9b0903b8b897d06c293fe385bfa301d7b860d05668404ff19d45fc5fee10c3c",
       "feature": "features/test_workflows.feature",
-      "scenario": "Native check: pptx with textbox [TestMoreEdgeCases]",
+      "scenario": "Shape listing returns at least two entries for a generated 1.5-inch-high text box",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -29229,10 +29237,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Only len(result.get(shapes, [])) >= 2 is asserted; no returned identity/type/text/geometry, exact count, error absence, source preservation or rendering assertion. Textbox creation is python-pptx setup, not a tested authoring tool operation."
+      ],
+      "semanticReviewCommit": "0229c1415ed436f4fea46acf0e5c812b6f7d8fcc",
+      "semanticReviewNotes": "pptx-textbox-listing-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-workflows-f0fa151177",
@@ -31007,6 +31019,27 @@
       "candidateScenarioId": "@candidate-python-patch-transactions-ccdfa52bb0",
       "gaps": [
         "Checks zero applied count and unchanged bytes for five explicit invalid addresses; no complete address grammar, success/status or diagnostic-code assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_final_coverage.py::TestMorePptxShapeOperations::test_list_shapes_with_textbox",
+      "candidateScenarioId": "@candidate-python-final-coverage-27a6c52a4c",
+      "gaps": [
+        "Only len(result.get(shapes, [])) >= 2 is asserted; no returned identity/type/text/geometry, exact count, error absence, source preservation or rendering assertion. Textbox creation is python-pptx setup, not a tested authoring tool operation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_workflow_coverage.py::TestMoreEdgeCases::test_pptx_with_textbox",
+      "candidateScenarioId": "@candidate-python-workflow-coverage-eaec7e7f6d",
+      "gaps": [
+        "Only len(result.get(shapes, [])) >= 2 is asserted; no returned identity/type/text/geometry, exact count, error absence, source preservation or rendering assertion. Textbox creation is python-pptx setup, not a tested authoring tool operation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_workflows.py::TestMoreEdgeCases::test_pptx_with_textbox",
+      "candidateScenarioId": "@candidate-python-workflows-980faaa900",
+      "gaps": [
+        "Only len(result.get(shapes, [])) >= 2 is asserted; no returned identity/type/text/geometry, exact count, error absence, source preservation or rendering assertion. Textbox creation is python-pptx setup, not a tested authoring tool operation."
       ]
     }
   ],

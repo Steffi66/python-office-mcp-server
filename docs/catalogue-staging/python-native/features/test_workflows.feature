@@ -132,19 +132,13 @@ Feature: workflows native behavior capture
 
   @candidate-python-workflows-980faaa900
   # Native: tests/test_workflows.py::TestMoreEdgeCases::test_pptx_with_textbox
-  Scenario: Native check: pptx with textbox [TestMoreEdgeCases]
-    Given Create an instance of PresentationAdvancedTools.
-    And an isolated writable temporary directory
-    And prs.save with temp dir under "textbox.pptx"
-    And prs is prepared as the result of Presentation with no arguments
-    And slide is prepared as the result of prs.slides.add slide with the result of Presentation with no arguments slide layouts at 5
-    And the result of prs.slides.add slide with the result of Presentation with no arguments slide layouts at 5 shapes title text is set to "Title"
-    And txBox is prepared as the result of slide.shapes.add textbox with the result of Inches with 1; the result of Inches with 2; the result of Inches with 4; the result of Inches with 1.5
-    And tf is prepared as the result of slide.shapes.add textbox with the result of Inches with 1; the result of Inches with 2; the result of Inches with 4; the result of Inches with 1.5 text frame
-    And the result of slide.shapes.add textbox with the result of Inches with 1; the result of Inches with 2; the result of Inches with 4; the result of Inches with 1.5 text frame text is set to "Textbox content"
-    And path is prepared as temp dir under "textbox.pptx"
-    When pptx advanced tools.tool pptx list shapes using str representation of temp dir under "textbox.pptx"; slide number 1
-    Then the number of entries in result field "shapes", defaulting to [] is at least 2
+  Scenario: Shape listing returns at least two entries for a generated 1.5-inch-high text box
+    Given an isolated writable temporary directory and the pptx_advanced_tools fixture returning PresentationAdvancedTools
+    And python-pptx creates a presentation with one slide using slide_layouts[5] and title text "Title"
+    And setup adds a text box at left 1 inch, top 2 inches, width 4 inches and height 1.5 inches
+    And its text frame is set to "Textbox content" and the presentation is saved as textbox.pptx
+    When tool_pptx_list_shapes reads the saved file with slide_number 1
+    Then len of result.get("shapes", []) is at least 2
 
   @candidate-python-workflows-f0fa151177
   # Native: tests/test_workflows.py::TestWordSectionEditing::test_patch_section_with_content

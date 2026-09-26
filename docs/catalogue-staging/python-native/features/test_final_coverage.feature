@@ -103,18 +103,13 @@ Feature: final coverage native behavior capture
 
   @candidate-python-final-coverage-27a6c52a4c
   # Native: tests/test_final_coverage.py::TestMorePptxShapeOperations::test_list_shapes_with_textbox
-  Scenario: Native check: list shapes with textbox [TestMorePptxShapeOperations]
-    Given an isolated writable temporary directory
-    And prs.save with temp dir under "shapes.pptx"
-    And prs is prepared as the result of Presentation with no arguments
-    And slide is prepared as the result of prs.slides.add slide with the result of Presentation with no arguments slide layouts at 5
-    And the result of prs.slides.add slide with the result of Presentation with no arguments slide layouts at 5 shapes title text is set to "Title"
-    And txBox is prepared as the result of slide.shapes.add textbox with the result of Inches with 1; the result of Inches with 2; the result of Inches with 4; the result of Inches with 1
-    And the result of slide.shapes.add textbox with the result of Inches with 1; the result of Inches with 2; the result of Inches with 4; the result of Inches with 1 text frame text is set to "Textbox"
-    And path is prepared as temp dir under "shapes.pptx"
-    And tools is prepared as the result of PresentationAdvancedTools with no arguments
-    When tools.tool pptx list shapes using str representation of temp dir under "shapes.pptx"; slide number 1
-    Then the number of entries in result field "shapes", defaulting to [] is at least 2
+  Scenario: Shape listing returns at least two entries for a generated 1-inch-high text box
+    Given an isolated writable temporary directory and a newly constructed PresentationAdvancedTools object
+    And python-pptx creates a presentation with one slide using slide_layouts[5] and title text "Title"
+    And setup adds a text box at left 1 inch, top 2 inches, width 4 inches and height 1 inches
+    And its text frame is set to "Textbox" and the presentation is saved as shapes.pptx
+    When tool_pptx_list_shapes reads the saved file with slide_number 1
+    Then len of result.get("shapes", []) is at least 2
 
   @candidate-python-final-coverage-bfd772eea9
   # Native: tests/test_final_coverage.py::TestWordSectionGuidance::test_get_section_guidance_missing

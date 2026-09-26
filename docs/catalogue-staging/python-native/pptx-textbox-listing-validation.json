@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "scope": "Three PowerPoint text-box listing descriptions; syntax/inventory only",
+  "reviewedSourceCommit": "0229c1415ed436f4fea46acf0e5c812b6f7d8fcc",
+  "sourceSha256": {
+    "tests/conftest.py": "1f3f8d173438c11be5a467004ac4504707d03f9e552c92ae3216b25adebd9e56",
+    "tests/test_final_coverage.py": "9fa5ed5ba5f8618635e7d73519b0aeff06148f28fa20cced7945cba4ef8c297f",
+    "tests/test_workflow_coverage.py": "1f19978357a9d981b830ce1f604ec58a1dc15d9bf27a86d8fb003b2382053e10",
+    "tests/test_workflows.py": "f9b0903b8b897d06c293fe385bfa301d7b860d05668404ff19d45fc5fee10c3c"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 3,
+    "recordedCases": 3,
+    "changedMappingRows": 3,
+    "scenarios": [
+      {
+        "candidateScenarioId": "@candidate-python-final-coverage-27a6c52a4c",
+        "steps": 6
+      },
+      {
+        "candidateScenarioId": "@candidate-python-workflow-coverage-eaec7e7f6d",
+        "steps": 6
+      },
+      {
+        "candidateScenarioId": "@candidate-python-workflows-980faaa900",
+        "steps": 6
+      }
+    ],
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 175,
+    "existingEntriesExtended": 0,
+    "newEntries": 3,
+    "totalEntries": 178
+  },
+  "localDocumentationLinks": 12,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "18b15b6d572996d793403bb8e0dc6b0880df03533cd4e42bb01d3c1ae2417174",
+    "docs/catalogue-staging/python-native/features/test_final_coverage.feature": "1edf3e862d89281ade98bcc921793fc52100907cf4abfc9da7b707cf13c030dd",
+    "docs/catalogue-staging/python-native/features/test_workflow_coverage.feature": "377c32d5a4a4e16a94e6336888332b6634aa40112c097df931065bc8d2622dc2",
+    "docs/catalogue-staging/python-native/features/test_workflows.feature": "4ba79a1ceca3cf58cc95aac833d74cbc6701993228a13824b4df4b3774bf18ac",
+    "docs/catalogue-staging/python-native/mapping.json": "20e1e339177e18e939b98d89bb789d7b4e96ba54b29cec8906eaf3d2f6bb3d5d",
+    "docs/catalogue-staging/python-native/pptx-textbox-listing-review.md": "683ef2149207415d388427e8a4fd44da16262f49c8dbe25aab9f38f188422747"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "No shape identity, geometry, text-box authoring or rendering execution credit",
+    "Central reconciliation and generated-seed inventory incomplete"
+  ]
+}

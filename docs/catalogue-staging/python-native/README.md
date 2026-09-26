@@ -46,9 +46,13 @@ The [formatting-analysis review](formatting-analysis-review.md) checks three def
 
 The [transaction review](patch-transactions-review.md) checks seven definitions and retains all 30 recorded parameter cases at `7aaa45b`. It restores before/after snapshot meanings, exact destination setup and saved-document observations. The range-refusal test checks only A1/B1/D1, strict result flags permit an empty list, and default-mode calls stay distinct from explicit mode arguments. No native execution or shared-lane binding was added.
 
+## PowerPoint text-box listing source review
+
+The [text-box listing review](pptx-textbox-listing-review.md) checks three definitions at `0229c14`. Each creates a text box with python-pptx as setup, then asserts only that shape listing returns at least two entries. Returned identity, type, text and geometry are untested; the cases provide no text-box authoring credit. Equivalent workflow checks retain their separate candidate IDs for central reconciliation.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 175 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries and seven transaction entries. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 178 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries and three text-box listing entries. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 
