@@ -54,7 +54,7 @@ web = [
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-markers = ["implemented: executable acceptance contract", "python: Python acceptance adapter", "planned: not executed"]
+markers = ["implemented: executable acceptance contract", "python: Python acceptance adapter", "planned: not executed", "oracle: requires independent LibreOffice calculation/rendering"]
 addopts = "-v --tb=short"
 filterwarnings = [
     "ignore::DeprecationWarning",

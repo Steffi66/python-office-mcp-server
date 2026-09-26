@@ -114,10 +114,12 @@ Verification: **106 passed in 3.86s**. See `docs/provenance/selected-enhancement
 
 ## Batch 10: larger subsystem decisions
 
-- [ ] Decide XLSX structural/reference adoption after dependency and compatibility analysis.
-- [ ] Record supported edit families and refusals before implementation.
-- [ ] Add independent calculation/rendering lanes where available.
-- [ ] Keep absent Office/LibreOffice validation explicitly unverified.
+- [x] Decide XLSX structural/reference adoption: retain upstream openpyxl; do not copy a partial preservation engine. Evidence and reconsideration gates in `docs/xlsx-adoption-decision.md`.
+- [x] Record supported cell/style/cache guarantees and separate structural-edit/refusal contracts.
+- [x] Add optional independent LibreOffice calculation/rendering tests and a provisioned manual CI lane.
+- [x] Keep absent Office/LibreOffice validation explicitly unverified.
+
+Verification: **5 passed, 3 skipped in 0.18s**. LibreOffice is absent locally; skipped calculation/PDF checks are not passes. Manual CI provisions LibreOffice and checks its executable before running. Native Microsoft Office and visual-layout parity remain unverified.
 
 ## Final integration and delivery
 
