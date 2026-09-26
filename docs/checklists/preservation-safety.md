@@ -52,11 +52,13 @@ Verification: **219 passed in 2.47s**, including opaque-part byte checks, custom
 
 ## Batch 4: transaction hardening
 
-- [ ] Add source fingerprints and stale-source decisions.
-- [ ] Serialise this server's writers; document external-editor limitations.
-- [ ] Cover in-place, absent-output and existing-output paths and aliases.
-- [ ] Inject save/validation failures; verify rollback and staging cleanup.
-- [ ] Run transaction/security tests and one full-suite pass; review and commit.
+- [x] Add source fingerprints and stale-source decisions.
+- [x] Serialise this process's staged writers; document external-editor limitations.
+- [x] Cover in-place, absent-output and existing-output paths and aliases.
+- [x] Inject save/validation failures; verify rollback and staging cleanup.
+- [x] Run transaction/security tests and full-suite pass; review and commit.
+
+Verification: **1,040 passed in 17.21s**. Source/destination fingerprint changes refuse publication; process-local per-path locks prevent lost updates through this staging path. Symlinks retain their link identity; hard-linked files refuse. Fault tests assert the injected failure was actually reached. Legacy specialised writers are not yet covered by these locks (Batch 7). Arbitrary external writers can still race after the final hash check; no cross-process locking guarantee is claimed.
 
 ## Batch 5: executable acceptance
 
