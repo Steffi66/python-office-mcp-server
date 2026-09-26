@@ -58,6 +58,20 @@ The native-source mapping retains the reviewed input pairs and source hashes. Ch
 
 `test-results/xml-comparison.json` resets before collection and records each step outcome, observed Boolean, feature/native implementation hashes, release pin, working status and a fresh run ID. Selecting only part of this lane leaves it incomplete and returns failure. The mutation report remains independent at `test-results/acceptance.json`; neither lane can overwrite the other's results. The canonical feature is read in place, with no accepted local feature copy.
 
+## Canonical package admission and semantic diff
+
+```sh
+PYTHON=.venv/bin/python bash tests/run_tests.sh \
+  tests/package_admission tests/test_package_admission_mapping.py \
+  tests/test_package_guard.py -q -o addopts=''
+```
+
+The package lane reads three sealed features under central `workflows/package/`: ZIP admission, XML-member admission and semantic diff. Five scenario IDs expand to 14 cases and 47 steps. The reviewed native mapping fixes member order, duplicate names, payload hashes/lengths, compression, caller limits and expected errors or result lists. It preserves the exact UTF-16 little-endian BOM input and limits `0/2/2/1`. Changed or ambiguous setup, operations or outcomes refuse before execution; mapping alone grants no passes.
+
+Bindings construct only temporary native test archives. Diff uses distinct original and modified paths. Admission asserts `PackageAdmissionError`, with a message fragment only for unsupported compression; semantic diff checks its four member lists, including an empty removed list. These are not ZIP writer, lexical-parser, allocation-measurement, network-isolation or Office rendering tests.
+
+`test-results/package-admission.json` resets before collection and records each case/step, observed refusal or diff result, input signatures, source hashes and the fixture release pin. A partial run fails completion rather than reporting unexecuted cases as passes. XML and mutation results remain in their separate reports. Canonical features are consumed from the submodule; the three accepted local copies were removed when v0.5.0 was adopted.
+
 ## Real MCP and wheel installation
 
 The mutation Gherkin cases call the server methods directly. Separate transport tests start a real stdio server, initialise MCP, list tools, preview edits, commit and read back results:
@@ -122,7 +136,9 @@ Before adopting a release, verify its annotated tag and expected commit, update 
 
 ## Fixture migration verification
 
-[Canonical XML comparison verification](../validation/canonical-xml-comparison.json) records official `v0.4.0` at `40eb26e684b12073956e4f24915444075a60c212`. The Python 3.12 default run passed **1,184 committed tests**, plus four preserved local-only tests, with three optional LibreOffice skips. XML comparison executed ten cases / 40 steps; mutation acceptance separately executed 19 cases / 159 steps. These are overlapping suite scopes, not additional passes to sum. The accepted local comparison feature was removed; reviewed native assertions and mapping provenance remain.
+[Canonical package-admission verification](../validation/canonical-package-admission.json) records official `v0.5.0` at `db913c65bb652c11c05eb40793be37b56761cb53`. The Python 3.12 default run passed **1,213 committed tests**, plus four preserved local-only tests, with three optional LibreOffice skips. The separate package lane executed 14 cases / 47 steps, alongside unchanged XML 10/40 and mutation 19/159 reports. A deliberate partial package run returned failure with 13 cases unexecuted. Native tests and runtime implementations retain their reviewed hashes.
+
+Historical [canonical XML comparison verification](../validation/canonical-xml-comparison.json) records official `v0.4.0` at `40eb26e684b12073956e4f24915444075a60c212`. The Python 3.12 default run passed **1,184 committed tests**, plus four preserved local-only tests, with three optional LibreOffice skips. XML comparison executed ten cases / 40 steps; mutation acceptance separately executed 19 cases / 159 steps. These are overlapping suite scopes, not additional passes to sum. The accepted local comparison feature was removed; reviewed native assertions and mapping provenance remain.
 
 Historical [minimal-contract release verification](../validation/fixture-contract-cleanup.json) records official `v0.3.0` at `a3048639f5b9c521852b9d126b83639c08eae056`. Python 3.12 passed **1,163 committed tests**, plus four preserved local-only tests; three optional LibreOffice checks remain skipped. All 19 shared cases / 159 steps and 13 installed-wheel checks passed. The earlier Python 3.10/3.12/3.13 matrix passed 1,163 native tests per runtime against candidate `29af401`; final fixture names and documentation changed afterwards without changing bytes or contract policies. The report keeps those source scopes separate.
 

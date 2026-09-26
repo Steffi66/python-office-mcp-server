@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "scope": "Official v0.5 persistent bounded package lane; normal consumer update, no runtime changes",
+  "consumerParentCommit": "10aedcb7e96d61442fdb5f3065e5fcb822892fb4",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.5.0",
+    "commit": "db913c65bb652c11c05eb40793be37b56761cb53",
+    "manifestSha256": "668f480b6bcd95e2a13b0b94cecfc19a5d2bd1e2648f59887bcb259184f127dc"
+  },
+  "annotatedTagObject": "17e75be3dc02f122b43d275356eb93d8c761a8a7",
+  "defaultReleaseRun": {
+    "python": "3.12",
+    "committedPassed": 1213,
+    "localOnlyPassed": 4,
+    "optionalLibreOfficeSkipped": 3,
+    "seconds": 35.81,
+    "junitSha256": "406ddb1960adff789fa09d9c0e865b56cb8b4b24b044ec0b299b09e5fedcec85"
+  },
+  "lanes": {
+    "package-admission": {
+      "cases": 14,
+      "steps": 47,
+      "outcome": "passed",
+      "runId": "c421c385-6946-4829-8df4-4d5b3b1f2cd3",
+      "featureHashes": [
+        "19fa717632d689e7ff4e883fb2af3f31e018373dc79ddb78efecf7742ea14e91",
+        "28b1599e839f360929e689ff2d99e13599e000b98d6aa0d58c2e6a47b4efe696",
+        "eebe822867a6f83d77351a0590dd81d7e929dc13f2d1add0bfcbbc44c5e90ca7"
+      ]
+    },
+    "xml-comparison": {
+      "cases": 10,
+      "steps": 40,
+      "outcome": "passed",
+      "runId": "cbc41254-dded-4f5f-abf5-a33af8ce2c7f",
+      "featureHashes": [
+        "b700a3da8670cb048aa3f836c193f4533908730c185847f63e167e59c48f5e93"
+      ]
+    },
+    "acceptance": {
+      "cases": 19,
+      "steps": 159,
+      "outcome": "passed",
+      "runId": "1807f2e9-ec56-4384-a38c-0e17953fcbbf",
+      "featureHashes": [
+        "9fb2cc7a913cb48b5e7c983e6f942ebf71942840a15a0b62ee9119d6878a87f3"
+      ]
+    }
+  },
+  "partialSelection": {
+    "exitCode": 1,
+    "executedCases": 1,
+    "unexecutedCases": 13,
+    "outcome": "incomplete-or-failed",
+    "reportSha256": "49588064c05d97f694bdc2243e5dbb9ff931077f0df67225a5191f8cd49a0bcb"
+  },
+  "nativeSourceAndImplementationHashesUnchanged": {
+    "source": "4bdf62929a1fe6c30693e4a9caf860d05ad638fe6512d16a738b740abfe7fb2a",
+    "implementations": {
+      "tools/package_guard.py": "cef6909192524c2dc427910f4c30536fb95a449737a2c738bdc40b5de7e1f322",
+      "tools/package_preservation.py": "e87c942b854a67d0780e688e9a9e53d289edbb46b35bc737d8ec5bf7897c4704"
+    }
+  },
+  "nativeMappingSha256": "22690c60517dde61c616b9e852b022cb3d1e9a3047e191bc7c968cc68ea9a9e6",
+  "acceptedLocalFeatureCopiesRemoved": 3,
+  "localOnlyFileHashes": {
+    "pptx_import_slide.py": "cd57eb41f0f74de80915186abfb3377cccb79417bc167eace3b205cc78305a3f",
+    "tests/test_pptx_import_slide_standalone.py": "e95532f0fd9bd1c81c6da8c76557a83025c983f4275d6cab31347478f8a28679"
+  },
+  "limits": [
+    "ZIP/XML admission and semantic diff only, not archive writer or lexical parser coverage",
+    "No network isolation, allocation measurement, removed-member detection or Office rendering claim",
+    "Three optional LibreOffice skips",
+    "Broader catalogue/generated-seed inventory incomplete",
+    "No production deployment"
+  ]
+}

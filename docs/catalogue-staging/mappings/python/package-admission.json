@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "proposed central reconciliation input; all feature lifecycles planned",
+  "status": "Reviewed native mapping for persistent canonical package lane; each execution is recorded separately",
   "consumer": "python",
   "sourceCommit": "e6fc76ca35dc378b35ab00a44fc5932eb5b9edaf",
   "sourcePath": "tests/test_package_guard.py",
@@ -10,9 +10,9 @@
     "tools/package_preservation.py": "e87c942b854a67d0780e688e9a9e53d289edbb46b35bc737d8ec5bf7897c4704"
   },
   "featureSha256": {
-    "docs/catalogue-staging/workflows/package/semantic-diff.feature": "eebe822867a6f83d77351a0590dd81d7e929dc13f2d1add0bfcbbc44c5e90ca7",
-    "docs/catalogue-staging/workflows/package/xml-member-admission.feature": "19fa717632d689e7ff4e883fb2af3f31e018373dc79ddb78efecf7742ea14e91",
-    "docs/catalogue-staging/workflows/package/zip-admission.feature": "28b1599e839f360929e689ff2d99e13599e000b98d6aa0d58c2e6a47b4efe696"
+    "workflows/package/semantic-diff.feature": "eebe822867a6f83d77351a0590dd81d7e929dc13f2d1add0bfcbbc44c5e90ca7",
+    "workflows/package/xml-member-admission.feature": "19fa717632d689e7ff4e883fb2af3f31e018373dc79ddb78efecf7742ea14e91",
+    "workflows/package/zip-admission.feature": "28b1599e839f360929e689ff2d99e13599e000b98d6aa0d58c2e6a47b4efe696"
   },
   "nativeDefinitionCount": 4,
   "nativeExpandedCaseCount": 14,
@@ -41,7 +41,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsafe_structure_refuses",
@@ -61,7 +61,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsafe_structure_refuses",
@@ -81,7 +81,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsafe_structure_refuses",
@@ -101,7 +101,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsafe_structure_refuses",
@@ -121,7 +121,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsafe_structure_refuses",
@@ -142,7 +142,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsafe_structure_refuses",
@@ -163,7 +163,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsafe_structure_refuses",
@@ -184,7 +184,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_limits_refuse_before_large_allocations",
@@ -207,7 +207,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_limits_refuse_before_large_allocations",
@@ -230,7 +230,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_limits_refuse_before_large_allocations",
@@ -253,7 +253,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_limits_refuse_before_large_allocations",
@@ -276,7 +276,7 @@
       "expectedOutcomes": {
         "pythonException": "PackageAdmissionError"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_unsupported_compression_refuses",
@@ -297,7 +297,7 @@
         "pythonException": "PackageAdmissionError",
         "messageContains": "compression"
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     },
     {
       "nativeId": "tests/test_package_guard.py::test_package_diff_distinguishes_real_and_equivalent_changes",
@@ -348,7 +348,7 @@
         ],
         "removed": []
       },
-      "temporaryBindingOutcome": "passed"
+      "priorTemporaryBindingOutcome": "passed"
     }
   ],
   "verification": {
@@ -369,6 +369,19 @@
     "Diff partitions modified members semantically; byte-identical payloads are skipped before equivalence checking",
     "Diff case does not assert hash receipts, ZIP serialization bytes or visual Office fidelity",
     "Native XML and package bytes are preserved; ZIP timestamps/container bytes are not pinned",
-    "Central deduplication and proposed scenario IDs remain subject to reconciliation"
-  ]
+    "Only four native package-guard definitions are bound; broader profiles and catalogue reconciliation remain separate"
+  ],
+  "historicalStaging": {
+    "commit": "10aedcb7e96d61442fdb5f3065e5fcb822892fb4",
+    "featureSha256": {
+      "docs/catalogue-staging/workflows/package/semantic-diff.feature": "eebe822867a6f83d77351a0590dd81d7e929dc13f2d1add0bfcbbc44c5e90ca7",
+      "docs/catalogue-staging/workflows/package/xml-member-admission.feature": "19fa717632d689e7ff4e883fb2af3f31e018373dc79ddb78efecf7742ea14e91",
+      "docs/catalogue-staging/workflows/package/zip-admission.feature": "28b1599e839f360929e689ff2d99e13599e000b98d6aa0d58c2e6a47b4efe696"
+    },
+    "qualification": "Accepted local features removed after v0.5.0 canonical release. Temporary verification below is historical evidence."
+  },
+  "canonicalRelease": {
+    "tag": "v0.5.0",
+    "commit": "db913c65bb652c11c05eb40793be37b56761cb53"
+  }
 }
