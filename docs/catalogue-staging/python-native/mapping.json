@@ -25929,7 +25929,7 @@
       "sourceLine": 72,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: t1 get comments includes mixed done state",
+      "scenario": "Resolving the first of two comments leaves mixed readback states",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25944,10 +25944,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks two done values in unfiltered readback; does not inspect serialized XML or unrelated-part preservation."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-a31be46775",
@@ -25956,7 +25960,7 @@
       "sourceLine": 91,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: t2 resolve comment sets done and rereads true",
+      "scenario": "Resolution returns done true and the resolved filter contains the target",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25971,10 +25975,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks success/done and target membership in resolved readback; does not inspect commentsExtended XML despite the docstring."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-d243f1fea2",
@@ -25983,7 +25991,7 @@
       "sourceLine": 105,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: t3 reopen comment sets done false",
+      "scenario": "Reopening a resolved comment returns done false and makes it visible in the open filter",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25998,10 +26006,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks reopen result and target membership in open readback; does not inspect serialized w15:done=\"0\" despite the docstring."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-78d1a129df",
@@ -26010,7 +26022,7 @@
       "sourceLine": 120,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: t4 resolve reply updates root thread state",
+      "scenario": "Resolving a reply reports its root and marks the root done on readback",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26025,10 +26037,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks root identity and root done after resolving a reply; does not assert reply done state or that only the root changed."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-2e2621a412",
@@ -26037,7 +26053,7 @@
       "sourceLine": 154,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: t5 fallback to comments ids when paraid missing",
+      "scenario": "A crafted commentsIds mapping supplies a missing first-paragraph ID",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26052,10 +26068,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Crafts a single-paragraph missing-paraId/commentsIds mapping; does not establish first-versus-last precedence, metadata repair or relationship/content-type validity."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-8d2f1be135",
@@ -26064,7 +26084,7 @@
       "sourceLine": 204,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: t6 create comments extended entry when missing",
+      "scenario": "Resolution creates an absent commentsExtended part with a matching done entry",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26079,10 +26099,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks absent-to-present commentsExtended and a matching done=\"1\" entry; does not check relationships/content types, entry count, exact generated ID or unrelated parts."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-6e862657a6",
@@ -26091,7 +26115,7 @@
       "sourceLine": 237,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: t7 roundtrip resolve then reopen",
+      "scenario": "A resolve and reopen sequence has a nonzero resolved count and returns the target as open",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26106,10 +26130,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Intermediate resolved check asserts comment_count >= 1, not target membership; final open check does assert target membership and done false. No XML state assertion."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-53363ffd9d",
@@ -26118,7 +26146,7 @@
       "sourceLine": 251,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: word get comments exposes new metadata and filters",
+      "scenario": "Metadata keys are present and any filtered entries satisfy their predicates",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26133,10 +26161,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Filter predicates allow empty results; no cardinality or completeness assertion. Metadata check is key presence only; no case-varied author query is supplied."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-6940bf041d",
@@ -26145,7 +26177,7 @@
       "sourceLine": 271,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: word get comments threaded format groups replies",
+      "scenario": "Threaded output places the created reply under the first thread's root",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26160,10 +26192,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks at least one thread and reply membership under the first root; does not assert exact counts, deeper nesting or duplicate exclusion."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-18ccc72cf3",
@@ -26172,7 +26208,7 @@
       "sourceLine": 296,
       "sourceSha256": "30d3e291f77249e42b84f54506315bf344e1f432f5ba93ffa0a49cc581f4bc4d",
       "feature": "features/test_word_comment_resolution.feature",
-      "scenario": "Native check: word reply auto resolve marks thread done",
+      "scenario": "Reply auto-resolution reports resolved true and returns the root in the resolved filter",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26187,10 +26223,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks reply success/resolved and root membership in resolved readback; does not assert independent reply done state or serialized commentsExtended."
+      ],
+      "semanticReviewCommit": "1b74a40eae2389b7bbfd5d3586f53de014b5c6aa",
+      "semanticReviewNotes": "comment-resolution-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-roundtrip-fixture-96e109e5b6",
@@ -30619,6 +30659,76 @@
       "gaps": [
         "Conditional assertion: the native test may not exercise every branch"
       ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_t1_get_comments_includes_mixed_done_state",
+      "gaps": [
+        "Checks two done values in unfiltered readback; does not inspect serialized XML or unrelated-part preservation."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-be256c979c"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_t2_resolve_comment_sets_done_and_rereads_true",
+      "gaps": [
+        "Checks success/done and target membership in resolved readback; does not inspect commentsExtended XML despite the docstring."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-a31be46775"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_t3_reopen_comment_sets_done_false",
+      "gaps": [
+        "Checks reopen result and target membership in open readback; does not inspect serialized w15:done=\"0\" despite the docstring."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-d243f1fea2"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_t4_resolve_reply_updates_root_thread_state",
+      "gaps": [
+        "Checks root identity and root done after resolving a reply; does not assert reply done state or that only the root changed."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-78d1a129df"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_t5_fallback_to_comments_ids_when_paraid_missing",
+      "gaps": [
+        "Crafts a single-paragraph missing-paraId/commentsIds mapping; does not establish first-versus-last precedence, metadata repair or relationship/content-type validity."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-2e2621a412"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_t6_create_comments_extended_entry_when_missing",
+      "gaps": [
+        "Checks absent-to-present commentsExtended and a matching done=\"1\" entry; does not check relationships/content types, entry count, exact generated ID or unrelated parts."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-8d2f1be135"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_t7_roundtrip_resolve_then_reopen",
+      "gaps": [
+        "Intermediate resolved check asserts comment_count >= 1, not target membership; final open check does assert target membership and done false. No XML state assertion."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-6e862657a6"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_word_get_comments_exposes_new_metadata_and_filters",
+      "gaps": [
+        "Filter predicates allow empty results; no cardinality or completeness assertion. Metadata check is key presence only; no case-varied author query is supplied."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-53363ffd9d"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_word_get_comments_threaded_format_groups_replies",
+      "gaps": [
+        "Checks at least one thread and reply membership under the first root; does not assert exact counts, deeper nesting or duplicate exclusion."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-6940bf041d"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_resolution.py::test_word_reply_auto_resolve_marks_thread_done",
+      "gaps": [
+        "Checks reply success/resolved and root membership in resolved readback; does not assert independent reply done state or serialized commentsExtended."
+      ],
+      "candidateScenarioId": "@candidate-python-word-comment-resolution-18ccc72cf3"
     }
   ],
   "captureMethod": "Native AST assertions, fixture documentation, concrete calls, parameter collection; selected manual/oracle/HTTP/fault semantic overrides; central human/agent reconciliation required",

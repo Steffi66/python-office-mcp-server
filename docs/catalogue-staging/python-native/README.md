@@ -26,9 +26,13 @@ An independent bounded review found lost intermediate-value meanings, conditiona
 
 The [XML-family review](xml-family-review.md) separates Boolean XML equivalence, package admission and package diffing. Nine native definitions were checked directly; two staging prose values were corrected without changing tests. The mapping marks these entries `native-source-reviewed`. Five of those native definitions now have an accepted central comparison feature, bound locally in `tests/xml_comparison/`; its ten-case execution report is separate from this broader staging inventory. The accepted local comparison feature was removed after adopting v0.4.0. Four package-guard definitions also have a canonical v0.5 package lane (14 cases / 47 steps) with its own execution report; the three accepted local package feature copies were removed. Other staging descriptions still confer no execution credit.
 
+## Comment-resolution source review
+
+The [comment-resolution review](comment-resolution-review.md) checks ten native definitions against source at `1b74a40`. The rewritten candidate feature preserves its IDs and describes reply-to-root resolution, the crafted first-paragraph/commentsIds fallback, absent commentsExtended creation and the exact filter/readback assertions. Empty-filter predicates and other assertion limits are explicit. These entries now carry `native-source-reviewed`; their catalogue execution status is unchanged. The Python behaviours remain distinct from Bun's selected-existing-entry operation.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 140 entries with explicit gaps. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 150 entries with explicit gaps: all 140 earlier entries and ten comment-resolution entries added by source review. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 
