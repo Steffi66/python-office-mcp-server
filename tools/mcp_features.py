@@ -8,7 +8,7 @@ import os
 from contextvars import ContextVar
 from typing import Literal
 
-from umcp_shared import MCPPrincipal
+from umcp_shared import MCPPrincipal, get_request_context
 
 from .discovery_tools import CORE_TOOLS, WORKFLOW_GUIDANCE
 
@@ -94,6 +94,19 @@ class OfficeMCPFeatures:
     async def _mark_request_cancelled(self, cancel_key):
         if isinstance(cancel_key, (str, int)) and not isinstance(cancel_key, bool):
             await super()._mark_request_cancelled(self._cancel_key(cancel_key))
+
+    async def _send_notification_async(self, method, params=None, session_ids=None):
+        # Upstream notifications broadcast unless given targets. Progress/logging
+        # belongs to the originating request, never to neighbouring HTTP sessions.
+        if method in {"notifications/progress", "notifications/message"}:
+            context = get_request_context()
+            if context.transport in {"streamable-http", "sse"}:
+                if not context.session_id:
+                    return  # Stateless HTTP has no notification channel.
+                session_ids = {context.session_id}
+            elif context.transport == "tcp":
+                return  # Legacy TCP exposes no request-local notification writer.
+        return await super()._send_notification_async(method, params, session_ids)
 
     @staticmethod
     def _infer_tool_annotations(tool_name, _method):

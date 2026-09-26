@@ -3,6 +3,7 @@
 import asyncio
 import json
 import threading
+import time
 
 from openpyxl import Workbook
 
@@ -165,4 +166,25 @@ def test_cancellation_ids_are_isolated_between_http_sessions():
                 if not task.done():
                     task.cancel()
             await asyncio.gather(*tasks, return_exceptions=True)
+    asyncio.run(check())
+
+
+def test_http_progress_routes_only_to_originating_session():
+    from aioumcp import _AsyncStreamableHTTPSession
+
+    async def check():
+        server = OfficeServer()
+        server._streamable_http_active = True
+        sessions = {}
+        for sid in ['a', 'b']:
+            session = _AsyncStreamableHTTPSession('same', '2025-03-26', time.monotonic(), time.monotonic(), asyncio.Event(), asyncio.Queue())
+            session.writer = object()
+            sessions[sid] = session
+        server._streamable_http_sessions.update(sessions)
+        await server.process_request_async(request('tools/call', {'name': 'office_help', '_meta': {'progressToken': 'private'}}, ident=9), context=MCPRequestContext(transport='streamable-http', session_id='a', principal='same'))
+        assert sessions['a'].queue.qsize() == 2
+        assert sessions['b'].queue.empty()
+        await server.process_request_async(request('tools/call', {'name': 'office_help', '_meta': {'progressToken': 'stateless'}}, ident=10), context=MCPRequestContext(transport='streamable-http', principal='same'))
+        assert sessions['a'].queue.qsize() == 2
+        assert sessions['b'].queue.empty()
     asyncio.run(check())
