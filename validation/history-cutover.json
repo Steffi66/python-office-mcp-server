@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "scope": "Rewritten-history recursive clean-clone verification",
+  "testedCommit": "2abc85e9426077f4c72b3a44f728484fad796a16",
+  "expectedPreviousRemoteMain": "6b3863ce21d3512df031fba68ce508dc7d8dfc13",
+  "fixturePin": {
+    "schemaVersion": 1,
+    "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
+    "path": "references/fixtures-ooxml",
+    "tag": "v0.2.0",
+    "commit": "631b1136c9d65451d21746db2ae2635866902cb4",
+    "manifestSha256": "9262a572e6fed0314fbe1fc957ba283d530b651a27649e902a3d47183940736a",
+    "sharedPackManifestSha256": "a718444dfd2c88c03f10e07d0f0c18dcb8234425535f563ac125916ddce50848",
+    "distributionRevision": "fixtures-ooxml-v0.2.0"
+  },
+  "cleanClone": {
+    "runtime": "3.12",
+    "committedPassed": 1156,
+    "skipped": 3,
+    "seconds": 35.293,
+    "junitSha256": "09bcf3809ff37aa64622e1fa74ffeda2488f5137a4bf993807302839133d4cf9",
+    "freshDependencyInstall": true,
+    "submodulesRecursive": true,
+    "trackedFilesUnchanged": true
+  },
+  "installedWheelChecksPassed": 13,
+  "historyAudit": {
+    "historicalBlobsScanned": 501,
+    "sourceReferenceMatches": 0,
+    "headTreeMatchesVerifiedPreRewriteMigration": true,
+    "purgedHistoricalRoots": [
+      "aioumcp.py",
+      "umcp_shared.py",
+      "vendor/umcp/",
+      "tests/_templates/",
+      "tests/contracts/shared/",
+      "tests/acceptance/features/",
+      "docs/provenance/paper-package-references.json"
+    ],
+    "publishedRefs": [
+      "refs/heads/main"
+    ],
+    "consumerTags": [],
+    "mandatoryNotices": "Fixture provenance/licences retained centrally; installed transport dependency includes licence and source metadata.",
+    "historyEvidence": "Original source IDs in older validation records remain historical evidence; no old run is relabelled as a new execution."
+  },
+  "limits": [
+    "Three optional LibreOffice skips",
+    "Windows/native Office runtime unverified",
+    "Native catalogue semantic reconciliation and generated-seed inventory remain incomplete",
+    "No production deployment"
+  ]
+}
