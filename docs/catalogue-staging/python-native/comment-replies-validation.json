@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "scope": "Ten reply/roundtrip catalogue descriptions; parser and inventory validation only",
+  "reviewedSourceCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+  "sourceSha256": {
+    "tests/test_word_comment_replies.py": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
+    "tests/test_word_comment_roundtrip_fixture.py": "854f811838bb33222190f89f95e6d61549880d4f85518b5f47a3771e615e801e"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 10,
+    "recordedCases": 10,
+    "compiledCases": 10,
+    "features": [
+      {
+        "feature": "docs/catalogue-staging/python-native/features/test_word_comment_replies.feature",
+        "cases": 7,
+        "compiledStepsIncludingBackground": 66
+      },
+      {
+        "feature": "docs/catalogue-staging/python-native/features/test_word_comment_roundtrip_fixture.feature",
+        "cases": 3,
+        "compiledStepsIncludingBackground": 47
+      }
+    ],
+    "changedMappingRows": 10,
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 150,
+    "newAssertionLimitEntries": 10,
+    "totalEntries": 160
+  },
+  "localDocumentationLinks": 6,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "2efe5eef392e367bf0e76af08dd2b52c90ae3980504d245e53b9fe30f0a4d49f",
+    "docs/catalogue-staging/python-native/comment-replies-review.md": "5a67914beef3b470e56661f066603650453e5956b7e396cee1c9efc118fc8700",
+    "docs/catalogue-staging/python-native/features/test_word_comment_replies.feature": "507b48d16c0c23fc61f7560b6aabdbc52cd4a795816ba0dc7af422c9a1ca09ec",
+    "docs/catalogue-staging/python-native/features/test_word_comment_roundtrip_fixture.feature": "b81f6be178f85b3b36ae59783e1cd23f48389f0b95ddbdf0b465c3cb0612286a",
+    "docs/catalogue-staging/python-native/mapping.json": "d461bf211c19caa44676f8be469cd0ac991b3c932ddcccc59bc4fe5a3b46660d"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "Central reconciliation and generated-seed inventory incomplete",
+    "Parsing Gherkin does not execute native tests or Office operations"
+  ]
+}

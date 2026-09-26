@@ -1,76 +1,64 @@
 @captured @python_candidate
-Feature: word comment roundtrip fixture native behavior capture
+Feature: Python direct and unified comment roundtrip observations
 
-  These candidate descriptions need central reconciliation.
-  Captured text grants no execution credit.
+  These three native checks use generated DOCX files in a writable temporary directory.
+  Candidate descriptions need central reconciliation and grant no execution credit.
+
+  Background:
+    Given a saved document with paragraphs "Roundtrip scope item" and "Secondary note"
 
   @candidate-python-word-comment-roundtrip-fixture-96e109e5b6
   # Native: tests/test_word_comment_roundtrip_fixture.py::test_word_comment_roundtrip_direct_tools
-  Scenario: Native check: word comment roundtrip direct tools
-    Given an isolated writable temporary directory
-    And Create an instance of WordAdvancedTools.
-    And Create an instance of WordTools.
-    And path is prepared as the result of build roundtrip doc with temp dir
-    When word advanced tools.tool word add comment using file path str representation of the result of build roundtrip doc with temp dir; target text "Roundtrip scope item"; comment text "Please confirm scope wording"; author "Manuel"
-    And word tools.tool word get comments using str representation of the result of build roundtrip doc with temp dir; format "threaded"
-    And word tools.tool word reply to comment using file path str representation of the result of build roundtrip doc with temp dir; comment id initial at "threads" at 0 at "root" at "id"; text "Done — wording updated"; author "Rui Carmo"; auto resolve true
-    And word tools.tool word resolve comment using file path str representation of the result of build roundtrip doc with temp dir; comment id reply field "reply_comment_id"; resolved false
-    And word tools.tool word get comments using str representation of the result of build roundtrip doc with temp dir; filter "open"
-    Then add field "success" is true
-    And initial field "thread_count", defaulting to 0 equals 1
-    And initial at "threads" at 0 at "root" field "done" is false
-    And reply field "success" is true
-    And reply field "resolved" is true
-    And after reply at "threads" at 0 at "root" at "id" equals initial at "threads" at 0 at "root" at "id"
-    And after reply at "threads" at 0 at "root" at "done" is true
-    And at least one item satisfies r at "id" equals reply field "reply_comment_id" for each r in after reply at "threads" at 0 at "replies"
-    And reopen field "success" is true
-    And reopen field "thread_root_comment_id" equals initial at "threads" at 0 at "root" at "id"
-    And at least one item satisfies c at "id" equals initial at "threads" at 0 at "root" at "id" and c field "done" is false for each c in open only field "comments", defaulting to []
+  Scenario: Direct tools auto-resolve a root and reopen it through the reply ID
+    When the direct add-comment tool adds "Please confirm scope wording" by "Manuel" to "Roundtrip scope item"
+    Then the add result has success true
+    When the direct get-comments tool reads format "threaded"
+    Then thread_count equals 1 and that thread's root has done false
+    And that root ID is captured
+    When the direct reply tool replies to the root with "Done — wording updated" by "Rui Carmo" and auto_resolve true
+    Then the reply result has success true and resolved true
+    When the direct get-comments tool reads format "threaded" again
+    Then the first thread's root has the captured ID and done true
+    And at least one entry in that thread's replies has the returned reply_comment_id
+    When the direct resolve tool reopens the returned reply ID with resolved false
+    Then the reopening result has success true and thread_root_comment_id equal to the captured root ID
+    When the direct get-comments tool reads filter "open"
+    Then at least one returned comment has the captured root ID and done false
 
   @candidate-python-word-comment-roundtrip-fixture-cf0e06a82a
   # Native: tests/test_word_comment_roundtrip_fixture.py::test_word_comment_roundtrip_unified_tool
-  Scenario: Native check: word comment roundtrip unified tool
-    Given an isolated writable temporary directory
-    And combined tools
-    And path is prepared as the result of build roundtrip doc with temp dir
-    When combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "add"; target "Roundtrip scope item"; text "Initial review note"; author "Reviewer"
-    And combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "get"; format "threaded"
-    And combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "reply"; target str representation of got at "threads" at 0 at "root" at "id"; text "Acknowledged"; author "Rui Carmo"
-    And combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "resolve"; target str representation of got at "threads" at 0 at "root" at "id"
-    And combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "get"; filter "resolved"
-    And combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "reopen"; target str representation of got at "threads" at 0 at "root" at "id"
-    And combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "get"; filter "open"
-    And combined tools.tool office comment using file path str representation of the result of build roundtrip doc with temp dir; operation "delete"; target str representation of got at "threads" at 0 at "root" at "id"
-    Then add field "success" is true
-    And got field "thread_count", defaulting to 0 equals 1
-    And reply field "success" is true
-    And resolved field "success" is true
-    And resolved field "done" is true
-    And at least one item satisfies c at "id" equals str representation of got at "threads" at 0 at "root" at "id" and c field "done" is true for each c in resolved view field "comments", defaulting to []
-    And reopened field "success" is true
-    And reopened field "done" is false
-    And at least one item satisfies c at "id" equals str representation of got at "threads" at 0 at "root" at "id" and c field "done" is false for each c in open view field "comments", defaulting to []
-    And deleted field "success" is true
+  Scenario: The unified comment tool resolves and reopens a root then reports deletion success
+    Given a combined tools object composed from TOOL_CLASSES
+    When tool_office_comment adds "Initial review note" by "Reviewer" to "Roundtrip scope item"
+    Then the add result has success true
+    When tool_office_comment gets format "threaded"
+    Then thread_count equals 1 and the first thread's root ID is captured
+    When tool_office_comment replies to that root with "Acknowledged" by "Rui Carmo"
+    Then the reply result has success true
+    When tool_office_comment resolves that root
+    Then the resolution result has success true and done true
+    When tool_office_comment gets filter "resolved"
+    Then at least one returned comment has the captured root ID as a string and done true
+    When tool_office_comment reopens that root
+    Then the reopening result has success true and done false
+    When tool_office_comment gets filter "open"
+    Then at least one returned comment has the captured root ID as a string and done false
+    When tool_office_comment deletes that root
+    Then the deletion result has success true
 
   @candidate-python-word-comment-roundtrip-fixture-ec40884570
   # Native: tests/test_word_comment_roundtrip_fixture.py::test_word_resolve_roundtrip_with_output_path
-  Scenario: Native check: word resolve roundtrip with output path
-    Given an isolated writable temporary directory
-    And Create an instance of WordAdvancedTools.
-    And Create an instance of WordTools.
-    And source is prepared as the result of build roundtrip doc with temp dir
-    And output is prepared as temp dir under "comment_roundtrip_out.docx"
-    When word advanced tools.tool word add comment using file path str representation of the result of build roundtrip doc with temp dir; target text "Roundtrip scope item"; comment text "Track this"
-    And word tools.tool word get comments using str representation of the result of build roundtrip doc with temp dir
-    And word tools.tool word resolve comment using file path str representation of the result of build roundtrip doc with temp dir; comment id source get at "comments" at 0 at "id"; resolved true; output path str representation of temp dir under "comment_roundtrip_out.docx"
-    And word tools.tool word get comments using str representation of temp dir under "comment_roundtrip_out.docx"
-    And word tools.tool word resolve comment using file path str representation of temp dir under "comment_roundtrip_out.docx"; comment id source get at "comments" at 0 at "id"; resolved false
-    And word tools.tool word get comments using str representation of temp dir under "comment_roundtrip_out.docx"; filter "open"
-    Then add field "success" is true
-    And source get at "comments" at 0 at "done" is false
-    And resolved field "success" is true
-    And at least one item satisfies c at "id" equals source get at "comments" at 0 at "id" and c field "done" is false for each c in source after field "comments", defaulting to []
-    And at least one item satisfies c at "id" equals source get at "comments" at 0 at "id" and c field "done" is true for each c in output after field "comments", defaulting to []
-    And reopened field "success" is true
-    And at least one item satisfies c at "id" equals source get at "comments" at 0 at "id" and c field "done" is false for each c in output reopen field "comments", defaulting to []
+  Scenario: Resolve to a copy leaves the source comment open and allows the copy to reopen
+    When the direct add-comment tool adds "Track this" to "Roundtrip scope item"
+    Then the add result has success true
+    When source comments are read without a filter
+    Then the first returned comment has done false and its ID is captured
+    When the direct resolve tool resolves that ID to a distinct comment_roundtrip_out.docx
+    Then the resolution result has success true
+    When source and output comments are read separately without filters
+    Then at least one source comment has the captured ID and done false
+    And at least one output comment has the captured ID and done true
+    When the direct resolve tool reopens that ID in the output file with resolved false
+    Then the reopening result has success true
+    When output comments are read with filter "open"
+    Then at least one returned comment has the captured ID and done false

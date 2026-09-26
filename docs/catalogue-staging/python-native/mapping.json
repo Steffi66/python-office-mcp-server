@@ -25733,7 +25733,7 @@
       "sourceLine": 68,
       "sourceSha256": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
       "feature": "features/test_word_comment_replies.feature",
-      "scenario": "Native check: reply to existing comment",
+      "scenario": "A reply links its first paragraph to the parent's paragraph ID",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25749,10 +25749,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Checks parent/reply XML nodes and parent-link ID; no reply text/author readback, ordering or nonempty reply-owned paraId assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-replies-aa375068b3",
@@ -25761,7 +25765,7 @@
       "sourceLine": 100,
       "sourceSha256": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
       "feature": "features/test_word_comment_replies.feature",
-      "scenario": "Native check: reply invalid comment id returns valid ids",
+      "scenario": "A reply to ID 999 returns an error and a list-shaped ID field",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25777,10 +25781,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Invalid ID 999 yields an error containing Valid IDs and a list-typed field; no exact/list contents or unchanged-byte assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-replies-450fd39171",
@@ -25789,7 +25797,7 @@
       "sourceLine": 114,
       "sourceSha256": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
       "feature": "features/test_word_comment_replies.feature",
-      "scenario": "Native check: reply preserves existing replies",
+      "scenario": "Two successful replies return different IDs and both texts remain readable",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25805,10 +25813,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Two successful replies return distinct IDs and both texts appear; no exact count, ordering, thread structure or duplicate-exclusion assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-replies-93084aabed",
@@ -25817,7 +25829,7 @@
       "sourceLine": 131,
       "sourceSha256": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
       "feature": "features/test_word_comment_replies.feature",
-      "scenario": "Native check: reply adds parent paraid when missing",
+      "scenario": "Replying after removing the parent's paragraph ID restores a linkable ID",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25833,10 +25845,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "After removing the first parent paragraph ID, checks a truthy restored ID and matching reply parent link; no deterministic ID, reply-owned paraId or package-preservation assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-replies-b01d533716",
@@ -25845,7 +25861,7 @@
       "sourceLine": 167,
       "sourceSha256": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
       "feature": "features/test_word_comment_replies.feature",
-      "scenario": "Native check: multiple replies have unique ids and paraids",
+      "scenario": "Three sequential replies have pairwise distinct returned IDs and paragraph-ID values",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25861,10 +25877,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Three sequential successes and pairwise uniqueness checks; these do not independently require non-null IDs. Saved comment/paragraph lookup must succeed, but one missing paraId can pass its uniqueness check."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-replies-f0ffd6d6a9",
@@ -25873,7 +25893,7 @@
       "sourceLine": 194,
       "sourceSha256": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
       "feature": "features/test_word_comment_replies.feature",
-      "scenario": "Native check: reply author fallback from identity",
+      "scenario": "An omitted reply author permits either the configured identity or the default",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25889,10 +25909,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Author fallback accepts either Fixture Reviewer or DEFAULT_COMMENT_AUTHOR; no identity-precedence or serialized author assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-replies-73beff4b9c",
@@ -25901,7 +25925,7 @@
       "sourceLine": 210,
       "sourceSha256": "a002e19acd8c276ef68efffccf828f8cc0f964fdfb5b908c14565af3398662ab",
       "feature": "features/test_word_comment_replies.feature",
-      "scenario": "Native check: reply to output path leaves source unchanged",
+      "scenario": "Replying to an output copy preserves the source count and increases the output count",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -25917,10 +25941,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Output exists and counts differ by one while source count stays equal; no source-byte/comment-content preservation or output text/linkage assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-resolution-be256c979c",
@@ -26239,7 +26267,7 @@
       "sourceLine": 28,
       "sourceSha256": "854f811838bb33222190f89f95e6d61549880d4f85518b5f47a3771e615e801e",
       "feature": "features/test_word_comment_roundtrip_fixture.feature",
-      "scenario": "Native check: word comment roundtrip direct tools",
+      "scenario": "Direct tools auto-resolve a root and reopen it through the reply ID",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26254,10 +26282,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Root state and reply membership are checked at intermediate reads; no exact post-reply counts, reply text/author or package-byte preservation assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-roundtrip-fixture-cf0e06a82a",
@@ -26266,7 +26298,7 @@
       "sourceLine": 74,
       "sourceSha256": "854f811838bb33222190f89f95e6d61549880d4f85518b5f47a3771e615e801e",
       "feature": "features/test_word_comment_roundtrip_fixture.feature",
-      "scenario": "Native check: word comment roundtrip unified tool",
+      "scenario": "The unified comment tool resolves and reopens a root then reports deletion success",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26280,10 +26312,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Unified deletion only returns success; no post-delete readback, persistence, cascade policy or reply-linkage assertion."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-comment-roundtrip-fixture-ec40884570",
@@ -26292,7 +26328,7 @@
       "sourceLine": 142,
       "sourceSha256": "854f811838bb33222190f89f95e6d61549880d4f85518b5f47a3771e615e801e",
       "feature": "features/test_word_comment_roundtrip_fixture.feature",
-      "scenario": "Native check: word resolve roundtrip with output path",
+      "scenario": "Resolve to a copy leaves the source comment open and allows the copy to reopen",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -26307,10 +26343,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Source/copy done states are checked, not source bytes or preserved output members; source is not reread after reopening the copy."
+      ],
+      "semanticReviewCommit": "af579a032642cac57bd2616eee9583fd3f7f1a73",
+      "semanticReviewNotes": "comment-replies-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-word-coverage-08173e1b44",
@@ -30729,6 +30769,76 @@
         "Checks reply success/resolved and root membership in resolved readback; does not assert independent reply done state or serialized commentsExtended."
       ],
       "candidateScenarioId": "@candidate-python-word-comment-resolution-18ccc72cf3"
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_replies.py::test_reply_to_existing_comment",
+      "candidateScenarioId": "@candidate-python-word-comment-replies-634c069b81",
+      "gaps": [
+        "Checks parent/reply XML nodes and parent-link ID; no reply text/author readback, ordering or nonempty reply-owned paraId assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_replies.py::test_reply_invalid_comment_id_returns_valid_ids",
+      "candidateScenarioId": "@candidate-python-word-comment-replies-aa375068b3",
+      "gaps": [
+        "Invalid ID 999 yields an error containing Valid IDs and a list-typed field; no exact/list contents or unchanged-byte assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_replies.py::test_reply_preserves_existing_replies",
+      "candidateScenarioId": "@candidate-python-word-comment-replies-450fd39171",
+      "gaps": [
+        "Two successful replies return distinct IDs and both texts appear; no exact count, ordering, thread structure or duplicate-exclusion assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_replies.py::test_reply_adds_parent_paraid_when_missing",
+      "candidateScenarioId": "@candidate-python-word-comment-replies-93084aabed",
+      "gaps": [
+        "After removing the first parent paragraph ID, checks a truthy restored ID and matching reply parent link; no deterministic ID, reply-owned paraId or package-preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_replies.py::test_multiple_replies_have_unique_ids_and_paraids",
+      "candidateScenarioId": "@candidate-python-word-comment-replies-b01d533716",
+      "gaps": [
+        "Three sequential successes and pairwise uniqueness checks; these do not independently require non-null IDs. Saved comment/paragraph lookup must succeed, but one missing paraId can pass its uniqueness check."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_replies.py::test_reply_author_fallback_from_identity",
+      "candidateScenarioId": "@candidate-python-word-comment-replies-f0ffd6d6a9",
+      "gaps": [
+        "Author fallback accepts either Fixture Reviewer or DEFAULT_COMMENT_AUTHOR; no identity-precedence or serialized author assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_replies.py::test_reply_to_output_path_leaves_source_unchanged",
+      "candidateScenarioId": "@candidate-python-word-comment-replies-73beff4b9c",
+      "gaps": [
+        "Output exists and counts differ by one while source count stays equal; no source-byte/comment-content preservation or output text/linkage assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_roundtrip_fixture.py::test_word_comment_roundtrip_direct_tools",
+      "candidateScenarioId": "@candidate-python-word-comment-roundtrip-fixture-96e109e5b6",
+      "gaps": [
+        "Root state and reply membership are checked at intermediate reads; no exact post-reply counts, reply text/author or package-byte preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_roundtrip_fixture.py::test_word_comment_roundtrip_unified_tool",
+      "candidateScenarioId": "@candidate-python-word-comment-roundtrip-fixture-cf0e06a82a",
+      "gaps": [
+        "Unified deletion only returns success; no post-delete readback, persistence, cascade policy or reply-linkage assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_word_comment_roundtrip_fixture.py::test_word_resolve_roundtrip_with_output_path",
+      "candidateScenarioId": "@candidate-python-word-comment-roundtrip-fixture-ec40884570",
+      "gaps": [
+        "Source/copy done states are checked, not source bytes or preserved output members; source is not reread after reopening the copy."
+      ]
     }
   ],
   "captureMethod": "Native AST assertions, fixture documentation, concrete calls, parameter collection; selected manual/oracle/HTTP/fault semantic overrides; central human/agent reconciliation required",

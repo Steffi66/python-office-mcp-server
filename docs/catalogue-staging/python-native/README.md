@@ -30,9 +30,13 @@ The [XML-family review](xml-family-review.md) separates Boolean XML equivalence,
 
 The [comment-resolution review](comment-resolution-review.md) checks ten native definitions against source at `1b74a40`. The rewritten candidate feature preserves its IDs and describes reply-to-root resolution, the crafted first-paragraph/commentsIds fallback, absent commentsExtended creation and the exact filter/readback assertions. Empty-filter predicates and other assertion limits are explicit. These entries now carry `native-source-reviewed`; their catalogue execution status is unchanged. The Python behaviours remain distinct from Bun's selected-existing-entry operation.
 
+## Comment-reply and roundtrip source review
+
+The [reply and roundtrip review](comment-replies-review.md) checks seven reply definitions and three workflow definitions at `af579a0`. It restores the three-reply uniqueness loop, missing-parent-ID setup and intermediate readback order. Source preservation is bounded to observed counts or done states, author fallback retains its two accepted values, and deletion has only a success assertion. Candidate IDs and native case counts are unchanged; no native tests were run for the review.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 150 entries with explicit gaps: all 140 earlier entries and ten comment-resolution entries added by source review. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 160 entries with explicit gaps: all 140 original entries, ten comment-resolution entries and ten reply/roundtrip entries added by source review. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 
