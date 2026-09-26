@@ -1,78 +1,69 @@
 @captured @python_candidate
-Feature: pptx slide transfer tools native behavior capture
+Feature: Native Python slide transfer responses and saved-deck observations
 
-  These candidate descriptions need central reconciliation.
-  Captured text grants no execution credit.
+  Five native definitions use generated source and receiver decks in temporary directories.
+  Candidate descriptions need central reconciliation and grant no execution credit.
+
+  Background:
+    Given the pptx_slide_transfer_tools fixture returns PresentationSlideTransferTools
+    And an isolated writable temporary directory
 
   @candidate-python-pptx-slide-transfer-tools-7d96a9f151
   # Native: tests/test_pptx_slide_transfer_tools.py::test_import_slide_copies_slide_assets_and_reuses_default_layout_master
-  Scenario: Native check: import slide copies slide assets and reuses default layout master
-    Given Create an instance of PresentationSlideTransferTools.
-    And an isolated writable temporary directory
-    And image path.write bytes with MINIMAL PNG
-    And image path is prepared as temp dir under "tiny.png"
-    And source is prepared as temp dir under "source.pptx"
-    And target is prepared as temp dir under "target.pptx"
-    And masters before is prepared as the result of count package members with temp dir under "target.pptx"; "ppt/slideMasters/slideMaster"
-    And media before is prepared as the result of count package members with temp dir under "target.pptx"; "ppt/media/"
-    When pptx slide transfer tools.tool pptx import slide using str representation of temp dir under "source.pptx"; 1; str representation of temp dir under "target.pptx"
-    Then result at "success" is true
-    And result at "new_slide_number" equals 2
-    And result at "master_copied" is false
-    And result at "layout_reused" is true
-    And the number of entries in the result of Presentation with str representation of temp dir under "target.pptx" slides equals 2
-    And the result of Presentation with str representation of temp dir under "target.pptx" slides at 1 shapes title text equals "Imported Title"
-    And at least one item satisfies shape attribute "shape_type" equals 13 for each shape in the result of Presentation with str representation of temp dir under "target.pptx" slides at 1 shapes
-    And the result of count package members with temp dir under "target.pptx"; "ppt/slideMasters/slideMaster" equals the result of count package members with temp dir under "target.pptx"; "ppt/slideMasters/slideMaster"
-    And the result of count package members with temp dir under "target.pptx"; "ppt/media/" is at least the result of count package members with temp dir under "target.pptx"; "ppt/media/" joined with 1
+  Scenario: Default import reports layout reuse and adds a saved picture-bearing slide
+    Given tiny.png is written from the test's embedded one-pixel PNG bytes
+    And a saved source has one slide using slide_layouts[1], title "Imported Title" and body "Imported body"
+    And its picture is placed at left 1 inch, top 1.5 inches, width 1.5 inches and height 1.5 inches
+    And a saved receiver has one slide using slide_layouts[1], title "Target One" and body "Body for Target One"
+    And receiver ZIP counts for prefixes "ppt/slideMasters/slideMaster" and "ppt/media/" are captured before import
+    When tool_pptx_import_slide imports source slide 1 into the receiver with position arguments omitted
+    Then success is true, new_slide_number equals 2, master_copied is false and layout_reused is true
+    When the receiver is reopened with Presentation
+    Then it has exactly two slides and slide 2 title equals "Imported Title"
+    And at least one shape on slide 2 has shape_type equal to 13
+    When receiver ZIP members are counted again with the same prefixes
+    Then the master-prefix count equals the captured pre-import count
+    And the media-prefix count is at least the captured pre-import count plus 1
 
   @candidate-python-pptx-slide-transfer-tools-2a2bc4e9c9
   # Native: tests/test_pptx_slide_transfer_tools.py::test_import_slide_after_specific_position_preserves_order
-  Scenario: Native check: import slide after specific position preserves order
-    Given Create an instance of PresentationSlideTransferTools.
-    And an isolated writable temporary directory
-    And image path.write bytes with MINIMAL PNG
-    And image path is prepared as temp dir under "tiny.png"
-    And source is prepared as temp dir under "source_order.pptx"
-    And target is prepared as temp dir under "target_order.pptx"
-    When pptx slide transfer tools.tool pptx import slide using str representation of temp dir under "source_order.pptx"; 1; str representation of temp dir under "target_order.pptx"; position "after"; after slide number 1
-    Then result at "success" is true
-    And result at "new_slide_number" equals 2
-    And slide shapes title text for each slide in the result of Presentation with str representation of temp dir under "target_order.pptx" slides equals ["First", "Imported Title", "Second"]
+  Scenario: Explicit after-position import yields the expected saved title sequence
+    Given tiny.png is written from the test's embedded one-pixel PNG bytes
+    And a saved source has one slide using slide_layouts[1], title "Imported Title" and body "Imported body"
+    And its picture is placed at left 1 inch, top 1.5 inches, width 1.5 inches and height 1.5 inches
+    And a saved receiver has slide_layouts[1] slides titled "First" and "Second", each with body "Body for " followed by its title
+    When tool_pptx_import_slide imports source slide 1 with position "after" and after_slide_number 1
+    Then success is true and new_slide_number equals 2
+    When the receiver is reopened with Presentation
+    Then all slide titles in order equal ["First", "Imported Title", "Second"]
 
   @candidate-python-pptx-slide-transfer-tools-8e7e42b10e
   # Native: tests/test_pptx_slide_transfer_tools.py::test_importing_same_source_slide_twice_does_not_duplicate_default_master
-  Scenario: Native check: importing same source slide twice does not duplicate default master
-    Given Create an instance of PresentationSlideTransferTools.
-    And an isolated writable temporary directory
-    And image path.write bytes with MINIMAL PNG
-    And image path is prepared as temp dir under "tiny.png"
-    And source is prepared as temp dir under "source_twice.pptx"
-    And target is prepared as temp dir under "target_twice.pptx"
-    When pptx slide transfer tools.tool pptx import slide using str representation of temp dir under "source_twice.pptx"; 1; str representation of temp dir under "target_twice.pptx"
-    Then result1 at "success" is true
-    And result2 at "success" is true
-    And the number of entries in the result of Presentation with str representation of temp dir under "target_twice.pptx" slides equals 3
-    And the result of count package members with temp dir under "target_twice.pptx"; "ppt/slideMasters/slideMaster" equals 1
+  Scenario: Two default imports produce three saved slides and one counted master member
+    Given tiny.png is written from the test's embedded one-pixel PNG bytes
+    And a saved source has one slide using slide_layouts[1], title "Imported Title" and body "Imported body"
+    And its picture is placed at left 1 inch, top 1.5 inches, width 1.5 inches and height 1.5 inches
+    And a saved receiver has one slide using slide_layouts[1], title "Seed" and body "Body for Seed"
+    When tool_pptx_import_slide imports source slide 1 into that receiver with position arguments omitted
+    And tool_pptx_import_slide imports the same source slide 1 into the same receiver a second time
+    Then both results have success true
+    When the receiver is reopened with Presentation
+    Then it has exactly three slides
+    And its ZIP has exactly one member whose name starts with "ppt/slideMasters/slideMaster"
 
   @candidate-python-pptx-slide-transfer-tools-e13dc9ed52
   # Native: tests/test_pptx_slide_transfer_tools.py::test_import_slide_rejects_invalid_source_slide_number
-  Scenario: Native check: import slide rejects invalid source slide number
-    Given Create an instance of PresentationSlideTransferTools.
-    And an isolated writable temporary directory
-    And source is prepared as temp dir under "source_invalid.pptx"
-    And target is prepared as temp dir under "target_invalid.pptx"
-    When pptx slide transfer tools.tool pptx import slide using str representation of temp dir under "source_invalid.pptx"; 2; str representation of temp dir under "target_invalid.pptx"
-    Then "error" occurs in result
-    And "Presentation has 1 slides" occurs in result at "error"
+  Scenario: Importing source slide 2 from a one-slide deck returns a count-bearing error
+    Given a saved one-slide source using slide_layouts[1], title "Only" and body "Body for Only"
+    And a saved one-slide receiver using slide_layouts[1], title "Target" and body "Body for Target"
+    When tool_pptx_import_slide requests source slide 2 into that receiver
+    Then the result contains error and its text includes "Presentation has 1 slides"
 
   @candidate-python-pptx-slide-transfer-tools-c74fe18267
   # Native: tests/test_pptx_slide_transfer_tools.py::test_import_slide_requires_after_slide_number_for_after_mode
-  Scenario: Native check: import slide requires after slide number for after mode
-    Given Create an instance of PresentationSlideTransferTools.
-    And an isolated writable temporary directory
-    And source is prepared as temp dir under "source_after.pptx"
-    And target is prepared as temp dir under "target_after.pptx"
-    When pptx slide transfer tools.tool pptx import slide using str representation of temp dir under "source_after.pptx"; 1; str representation of temp dir under "target_after.pptx"; position "after"
-    Then result at "error" equals "after_slide_number is required when position='after'."
-    And result at "changes_applied" equals 0
+  Scenario: After mode with no after_slide_number returns the exact error and zero applied changes
+    Given a saved one-slide source using slide_layouts[1], title "Source" and body "Body for Source"
+    And a saved one-slide receiver using slide_layouts[1], title "Target" and body "Body for Target"
+    When tool_pptx_import_slide requests source slide 1 with position "after" and no after_slide_number
+    Then error equals "after_slide_number is required when position='after'."
+    And changes_applied equals 0

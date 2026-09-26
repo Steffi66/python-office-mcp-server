@@ -20291,7 +20291,7 @@
       "sourceLine": 45,
       "sourceSha256": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
       "feature": "features/test_pptx_slide_transfer_tools.feature",
-      "scenario": "Native check: import slide copies slide assets and reuses default layout master",
+      "scenario": "Default import reports layout reuse and adds a saved picture-bearing slide",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -20305,10 +20305,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Picture-type presence, reported reuse flags and member-prefix counts only; no image payload/geometry/body, exact media count, relationship identity, source/old-target bytes or rendering assertion."
+      ],
+      "semanticReviewCommit": "24ade759541e4dd727222b88ac4c8488840362bb",
+      "semanticReviewNotes": "slide-transfer-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-2a2bc4e9c9",
@@ -20317,7 +20321,7 @@
       "sourceLine": 82,
       "sourceSha256": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
       "feature": "features/test_pptx_slide_transfer_tools.feature",
-      "scenario": "Native check: import slide after specific position preserves order",
+      "scenario": "Explicit after-position import yields the expected saved title sequence",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -20331,10 +20335,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Saved title order only with response success/new slide number; no other content, asset or relationship validation."
+      ],
+      "semanticReviewCommit": "24ade759541e4dd727222b88ac4c8488840362bb",
+      "semanticReviewNotes": "slide-transfer-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-8e7e42b10e",
@@ -20343,7 +20351,7 @@
       "sourceLine": 109,
       "sourceSha256": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
       "feature": "features/test_pptx_slide_transfer_tools.feature",
-      "scenario": "Native check: importing same source slide twice does not duplicate default master",
+      "scenario": "Two default imports produce three saved slides and one counted master member",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -20357,10 +20365,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Two sequential successes, saved slide count=3 and one master-prefix member; no media deduplication, repeated title/body or exhaustive graph validation."
+      ],
+      "semanticReviewCommit": "24ade759541e4dd727222b88ac4c8488840362bb",
+      "semanticReviewNotes": "slide-transfer-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-e13dc9ed52",
@@ -20369,7 +20381,7 @@
       "sourceLine": 131,
       "sourceSha256": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
       "feature": "features/test_pptx_slide_transfer_tools.feature",
-      "scenario": "Native check: import slide rejects invalid source slide number",
+      "scenario": "Importing source slide 2 from a one-slide deck returns a count-bearing error",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -20383,10 +20395,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Error field and substring only; no success/status/changes count, donor/target byte preservation or partial-write assertion."
+      ],
+      "semanticReviewCommit": "24ade759541e4dd727222b88ac4c8488840362bb",
+      "semanticReviewNotes": "slide-transfer-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-c74fe18267",
@@ -20395,7 +20411,7 @@
       "sourceLine": 149,
       "sourceSha256": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
       "feature": "features/test_pptx_slide_transfer_tools.feature",
-      "scenario": "Native check: import slide requires after slide number for after mode",
+      "scenario": "After mode with no after_slide_number returns the exact error and zero applied changes",
       "parameterGroups": [],
       "collectedCases": [
         {
@@ -20409,10 +20425,14 @@
           ]
         }
       ],
-      "captureStatus": "captured-for-reconciliation",
-      "semanticReview": "unreviewed-extraction",
+      "captureStatus": "needs-reconciliation",
+      "semanticReview": "native-source-reviewed",
       "executionStatus": "not-executed-by-catalogue",
-      "gaps": []
+      "gaps": [
+        "Exact missing-after-argument error and zero applied count only; no file-byte/filesystem preservation, success/status or validation-order assertion."
+      ],
+      "semanticReviewCommit": "24ade759541e4dd727222b88ac4c8488840362bb",
+      "semanticReviewNotes": "slide-transfer-review.md"
     },
     {
       "candidateScenarioId": "@candidate-python-pptx-tools-26657b7a42",
@@ -31426,6 +31446,41 @@
       "candidateScenarioId": "@candidate-python-mutation-modes-a5aa9665b7",
       "gaps": [
         "Best-effort saved output checks A3=Engineer only; no B3 value, table metadata/full row or source-byte preservation assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_pptx_slide_transfer_tools.py::test_import_slide_copies_slide_assets_and_reuses_default_layout_master",
+      "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-7d96a9f151",
+      "gaps": [
+        "Picture-type presence, reported reuse flags and member-prefix counts only; no image payload/geometry/body, exact media count, relationship identity, source/old-target bytes or rendering assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_pptx_slide_transfer_tools.py::test_import_slide_after_specific_position_preserves_order",
+      "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-2a2bc4e9c9",
+      "gaps": [
+        "Saved title order only with response success/new slide number; no other content, asset or relationship validation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_pptx_slide_transfer_tools.py::test_importing_same_source_slide_twice_does_not_duplicate_default_master",
+      "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-8e7e42b10e",
+      "gaps": [
+        "Two sequential successes, saved slide count=3 and one master-prefix member; no media deduplication, repeated title/body or exhaustive graph validation."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_pptx_slide_transfer_tools.py::test_import_slide_rejects_invalid_source_slide_number",
+      "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-e13dc9ed52",
+      "gaps": [
+        "Error field and substring only; no success/status/changes count, donor/target byte preservation or partial-write assertion."
+      ]
+    },
+    {
+      "nativeDefinition": "tests/test_pptx_slide_transfer_tools.py::test_import_slide_requires_after_slide_number_for_after_mode",
+      "candidateScenarioId": "@candidate-python-pptx-slide-transfer-tools-c74fe18267",
+      "gaps": [
+        "Exact missing-after-argument error and zero applied count only; no file-byte/filesystem preservation, success/status or validation-order assertion."
       ]
     }
   ],

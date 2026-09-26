@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "scope": "Five native slide-transfer descriptions; parser and inventory validation only",
+  "reviewedSourceCommit": "24ade759541e4dd727222b88ac4c8488840362bb",
+  "sourceSha256": {
+    "tests/test_pptx_slide_transfer_tools.py": "569cc9f940a3e3c82ed0009fa57e88d85847c134273c4376b4b52d161f1c9721",
+    "tests/conftest.py": "1f3f8d173438c11be5a467004ac4504707d03f9e552c92ae3216b25adebd9e56"
+  },
+  "recordedDenominator": {
+    "nativeDefinitions": 1022,
+    "nativeCases": 1147,
+    "sharedCases": 19,
+    "currentCollectionRefreshed": false
+  },
+  "catalogueSyntax": {
+    "features": 67,
+    "scenarios": 1022,
+    "compiledCases": 1022,
+    "uniqueCandidateIds": 1022
+  },
+  "boundedReview": {
+    "definitions": 5,
+    "recordedCases": 5,
+    "compiledCases": 5,
+    "features": [
+      {
+        "feature": "docs/catalogue-staging/python-native/features/test_pptx_slide_transfer_tools.feature",
+        "cases": 5,
+        "compiledStepsIncludingBackground": 50
+      }
+    ],
+    "changedMappingRows": 5,
+    "stableIdsAndCollectedCases": true,
+    "sourceUnchanged": true
+  },
+  "gaps": {
+    "priorEntriesRetained": 212,
+    "newAssertionLimitEntries": 5,
+    "totalEntries": 217
+  },
+  "localDocumentationLinks": 16,
+  "nativeRuntimePinEarlierReviewsAndUserFilesUnchanged": true,
+  "nativeTestsRun": false,
+  "executionCredit": false,
+  "parityCredit": false,
+  "artifactSha256": {
+    "docs/catalogue-staging/python-native/README.md": "83f6637144c1a0a27f28c9babcdda13477aa8834e1026efa036d47673ba600ce",
+    "docs/catalogue-staging/python-native/features/test_pptx_slide_transfer_tools.feature": "75fa5a41a16c0654d17a841e05930d7c34db1de5e29d17fd0ba3e4bbd1c781f9",
+    "docs/catalogue-staging/python-native/mapping.json": "580ccd51b140f4178c308b81fb964c09f0331a923094038a3e1e19546b3b5793",
+    "docs/catalogue-staging/python-native/slide-transfer-review.md": "851f8b5b17fac98a8cf7c90115078dd2b2d932e4b2e12ae94689ef4b7dfed6a4"
+  },
+  "limits": [
+    "Historical inventory not refreshed",
+    "Central reconciliation and generated-seed inventory incomplete",
+    "Parsing Gherkin does not execute native tests or Office operations"
+  ]
+}

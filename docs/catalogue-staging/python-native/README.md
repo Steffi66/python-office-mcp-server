@@ -70,9 +70,13 @@ The [tracked workflow review](tracked-workflows-review.md) checks the other ten 
 
 The [diagnostics and modes review](mutation-diagnostics-modes-review.md) checks eleven definitions at `a44009f`. Response fields remain distinct from saved-file evidence; safe cases omit output_path rather than test path aliases, dry-run cases compare source bytes only, and best_effort reopens only A3. Alternative Word failure statuses and the two table fixtures are retained.
 
+## Slide-transfer source review
+
+The [slide-transfer review](slide-transfer-review.md) checks five definitions at `24ade75`. It restores both repeated imports and before/after package-prefix counts, keeps reported layout/master reuse separate from observed counts, and bounds refusal claims to error fields. User-local standalone files were not part of the review.
+
 ## Remaining reconciliation
 
-`mapping.json` lists 212 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries, three new XLSX dependency entries, five text/clone entries, six tracked-XML entries, nine new tracked-workflow entries and eleven diagnostics/mode entries. The tracked-workflow review also corrects one existing gap while retaining its original text. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
+`mapping.json` lists 217 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries, three new XLSX dependency entries, five text/clone entries, six tracked-XML entries, nine new tracked-workflow entries, eleven diagnostics/mode entries and five slide-transfer entries. The tracked-workflow review also corrects one existing gap while retaining its original text. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
 The central reconciliation must:
 
