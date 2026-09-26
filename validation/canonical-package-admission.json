@@ -76,5 +76,28 @@
     "Three optional LibreOffice skips",
     "Broader catalogue/generated-seed inventory incomplete",
     "No production deployment"
-  ]
+  ],
+  "cleanRecursiveClone": {
+    "testedConsumerCommit": "c866b447ec2a61ee55f2ba3cc0d02ad48b8c2ee6",
+    "fixtureTag": "v0.5.0",
+    "fixtureCommit": "db913c65bb652c11c05eb40793be37b56761cb53",
+    "freshDependencyInstall": true,
+    "python": "3.12",
+    "scopedChecksPassed": 131,
+    "seconds": 5.064,
+    "junitSha256": "14d64a9ef7899d0c50fed7e2f68982b56c0b0d803d0d6de14be6f55e2e78c676",
+    "scope": "Package/XML/mutation lanes, native package guard, mapping/integrity/fixture/policy checks and pinned transport dependency; not a second full-suite run",
+    "packageCases": 14,
+    "packageSteps": 47,
+    "xmlCases": 10,
+    "xmlSteps": 40,
+    "mutationCases": 19,
+    "mutationSteps": 159,
+    "acceptedLocalFeaturesAbsent": true,
+    "trackedFilesUnchanged": true
+  },
+  "docs": {
+    "linksAndAnchors": 64,
+    "pythonJsonSnippets": 40
+  }
 }
