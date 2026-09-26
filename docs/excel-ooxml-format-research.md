@@ -1,15 +1,12 @@
 # Excel OOXML Format Research (XLSX/XLSM)
 
-## Executive Summary
+## Scope and current implementation
 
-This document provides comprehensive research on Excel Open XML formats (XLSX and XLSM), based on the ECMA-376 standard and practical implementation with openpyxl. This research supports the development of advanced Excel tooling for the MCP Office Server.
+XLSX/XLSM packages contain SpreadsheetML parts and relationships. These notes illustrate selected structures and openpyxl APIs; the fragments are not complete schema-validation fixtures. Current server guarantees are narrower: see [writer scope](writer-scope.md) and the [XLSX decision](xlsx-adoption-decision.md).
 
-**Key Findings:**
-- XLSX/XLSM files are ZIP archives containing XML parts following the SpreadsheetML vocabulary
-- XLSM differs from XLSX only by including a VBA binary part for macros
-- Workbook structure uses sheets, named ranges, tables (ListObjects), and defined names
-- openpyxl provides comprehensive support for most features except VBA and some chart types
-- Excel does NOT support OOXML-level track changes like Word; change tracking is application-specific
+Macro-enabled packages use different workbook content types and may contain VBA parts and relationships. Adding a binary file alone does not make a valid XLSM package. openpyxl supports many common features, but loading/saving can drop unsupported parts or extensions.
+
+SpreadsheetML includes shared-workbook revision-log structures. They differ from Word's inline insertion/deletion markup, and this server does not maintain an Excel revision log or reproduce Excel's application history.
 
 ---
 
@@ -60,7 +57,7 @@ myworkbook.xlsx
 
 ### 1.3 XLSM Additional Parts
 
-XLSM adds:
+A workbook containing VBA can include the following parts; the relationship file is optional. Workbook content types and the VBA relationship must also agree:
 ```
 xl/
 ├── vbaProject.bin          # Binary VBA project
@@ -227,7 +224,7 @@ Cell content within `<sheetData>`:
 | `inlineStr` | Inline string | `<is><t>text</t></is>` |
 | `n` | Number (default) | `<v>123.45</v>` |
 | `s` | Shared string | `<v>5</v>` (index) |
-| `str` | Formula string | `<f>A1&B1</f>` |
+| `str` | Cached formula string result | `<f>A1&amp;B1</f><v>combined text</v>` |
 
 #### Element: `f` (Formula)
 
@@ -336,7 +333,7 @@ Centralized formatting definitions:
 
 #### Style Index Resolution
 
-Cell `s="1"` → `cellXfs[1]` → applies `numFmtId="164"`, `fontId="1"`
+Cell `s="1"` selects `cellXfs[1]`, which refers to number format 164 and font 1 in this example. If `s` is omitted, the cell uses index 0; that index must still resolve.
 
 ---
 
@@ -570,8 +567,8 @@ It can span multiple lines.</t>
 | `sheet` | Protect sheet structure |
 | `objects` | Protect drawing objects |
 | `scenarios` | Protect scenarios |
-| `formatCells` | Allow cell formatting (1=allow, 0=protect) |
-| `insertRows` | Allow row insertion |
+| `formatCells` | Restrict formatting when sheet protection is active (1=restricted, 0=allowed) |
+| `insertRows` | Restrict row insertion when protection is active (1=restricted, 0=allowed) |
 
 ### 7.2 Workbook Protection
 
@@ -646,7 +643,7 @@ from openpyxl import Workbook, load_workbook
 
 # Load workbook
 wb = load_workbook("template.xlsx", data_only=False)  # Keep formulas
-# wb = load_workbook("template.xlsx", data_only=True)  # Computed values only
+# wb = load_workbook("template.xlsx", data_only=True)  # Stored cached values; no calculation
 
 # Access sheets
 ws = wb.active
@@ -666,7 +663,7 @@ cell.value = "=SUM(B1:B10)"
 
 # Read value vs formula
 print(cell.value)  # Formula: "=SUM(B1:B10)"
-# Use data_only=True to get computed value
+# data_only=True reads a previously cached value, which may be stale or absent
 
 # Range operations
 for row in ws.iter_rows(min_row=1, max_row=10, min_col=1, max_col=5):
@@ -699,8 +696,8 @@ new_name = DefinedName("DataRange", attr_text="Data!$A$1:$D$100")
 wb.defined_names.add(new_name)
 
 # Workbook-scoped vs sheet-scoped
-sheet_scope_name = DefinedName("LocalName", attr_text="Sheet1!$A$1", localSheetId=0)
-wb.defined_names.add(sheet_scope_name)
+sheet_scope_name = DefinedName("LocalName", attr_text="Sheet1!$A$1")
+wb["Sheet1"].defined_names.add(sheet_scope_name)
 ```
 
 ### 9.3 Working with Tables
@@ -805,6 +802,7 @@ dv.showErrorMessage = True
 
 ```python
 from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
 from openpyxl.formatting.rule import (
     ColorScaleRule, DataBarRule, IconSetRule,
     FormulaRule, CellIsRule
@@ -865,6 +863,7 @@ del wb["OldSheet"]
 
 ```python
 from openpyxl import load_workbook
+from openpyxl.styles import Protection
 
 wb = load_workbook("workbook.xlsx")
 ws = wb.active
@@ -892,10 +891,10 @@ wb.security.workbookPassword = "secret"
 | Feature | XLSX | DOCX | PPTX |
 |---------|------|------|------|
 | Primary unit | Cell | Paragraph | Shape |
-| Track changes | ❌ Not in OOXML | ✅ `w:ins`/`w:del` | ❌ No |
+| Revision representation | Shared-workbook revision parts; not maintained here | Inline and other revision structures | Application-specific history; not implemented here |
 | Comments | ✅ Cell-anchored | ✅ Range-anchored | ✅ Position-anchored |
 | Threaded comments | ✅ Modern Excel | ✅ `commentsExtended` | ✅ Extensions |
-| Formulas | ✅ Rich formula engine | ❌ Fields only | ❌ No |
+| Stored calculations | Formulas and cached results; openpyxl does not calculate | Fields | Charts can reference embedded workbooks |
 | Tables | ✅ ListObjects | ✅ Tables | ✅ Slide tables |
 | Named ranges | ✅ Yes | ❌ Bookmarks | ❌ No |
 | Data validation | ✅ Rich validation | ❌ Limited | ❌ No |
@@ -907,7 +906,7 @@ wb.security.workbookPassword = "secret"
 
 ## 11. Track Changes Alternative
 
-Excel OOXML does not support track changes at the XML level like Word. Instead, alternatives include:
+The server does not write Excel shared-workbook revision parts. For application-level audit trails, callers can use comments, a log sheet or explicit before/after reports. The examples below are library sketches; they do not run automatically when `office_patch` is called.
 
 ### 11.1 Change Tracking via Comments
 
@@ -1003,19 +1002,17 @@ wb.save("output.xlsm")
 
 ---
 
-## Assumptions
+## Implementation and validation status
 
-- Research based on ECMA-376 5th Edition and ISO/IEC 29500
-- Tested with openpyxl 3.1.x and Microsoft 365 Excel
-- XLSM VBA handling limited to preservation only
-- Modern threaded comments require Excel 2016+
+The server implements sheet/range inspection, cell patches, tables, comments and placeholder audits in `tools/excel_advanced_tools.py` and the unified tools. Public callers should prefer `office_inspect`, `office_read`, `office_patch`, `office_table` and `office_audit`; several direct helpers are hidden from MCP discovery.
 
-## Next Steps
+Excel add/get/delete comments operate on legacy notes. Modern threaded comments, revision-log editing and a formula calculation engine are unsupported by these workflows. XLSM handling preserves VBA bytes on supported paths but does not edit or execute VBA. Sheet protection is an application editing restriction, not file encryption or a server authorisation boundary.
 
-- [ ] Implement Phase 1 tools in `excel_advanced_tools.py`
-- [ ] Add `excel_list_sheets` for workbook introspection
-- [ ] Add `excel_get_range` for targeted data extraction
-- [ ] Add `excel_patch_cell` with change logging
-- [ ] Add `excel_replace_placeholders` for template filling
-- [ ] Add `excel_audit_placeholders` for QA
-- [ ] Test with ECIF Request Work Scope template
+Recorded tests use openpyxl and package assertions; current Microsoft Excel validation is not recorded. See [testing](testing.md) for runtime results and the optional LibreOffice lane.
+
+## References
+
+* [ECMA-376 specification](https://ecma-international.org/publications-and-standards/standards/ecma-376/)
+* [openpyxl load/save guidance](https://openpyxl.readthedocs.io/en/stable/tutorial.html)
+* [openpyxl protection semantics](https://openpyxl.readthedocs.io/en/stable/protection.html)
+* [openpyxl defined names](https://openpyxl.readthedocs.io/en/stable/defined_names.html)

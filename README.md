@@ -1,12 +1,12 @@
 # Office Document MCP Server
 
-This is a sanitized version of a prototype Model Context Protocol (MCP) server providing tools to extract, convert, and generate Microsoft Office documents (Word, Excel, PowerPoint) that I developed. 
+I developed this Python MCP server to read, edit and generate Word, Excel and PowerPoint documents. It defaults to local stdio; the bundled transport also has opt-in legacy HTTP/SSE and raw TCP modes.
 
-Since the server itself is pretty generic code and does not support enterprise features like Information Rights Management, I have decided to carve it out into a standalone repository to have its own CI/CD workflows and making it easier to install via `uv`.
+This standalone version has its own build workflows and can be installed with `uv`. It works with unencrypted `.docx`, `.xlsx`, `.xlsm` and `.pptx` files. Legacy binary `.doc`/`.xls`/`.ppt` files, password-encrypted packages and Information Rights Management are unsupported.
 
 The code is considered _stable_, so it will not be maintained other than patches/hotfixes and there is _zero_ support or issue tracking.
 
-The current `main` includes staged edits for existing documents: preview on a private copy, validate the saved result, then replace the destination once. Excel cell patches preserve style dependencies and invalidate stale formula caches; Word and PowerPoint literal replacements preserve formatting across adjacent text runs. See [writer scope](docs/writer-scope.md) for the covered tools and [testing](docs/testing.md) for reproducible checks and known limits.
+The current `main` stages covered edits on a private copy, checks that the saved package reopens, then replaces the destination once. Tools exposing `mode` also offer preview and strict matching. Excel cell patches preserve style dependencies and invalidate stale formula caches; Word and PowerPoint literal replacements preserve formatting across adjacent text runs. See the [documentation index](docs/README.md) for operating guidance, writer limits, test instructions and format notes.
 
 ## Available Tools
 
@@ -32,7 +32,7 @@ For systems architecture and consulting workflows, treat the server as **core-fi
 
 ### Unified Tools (Primary Interface)
 
-These 9 tools auto-detect document format from file extension or provide cross-format workflow guidance:
+These tools select document handlers from the file extension or provide cross-format workflow guidance. `office_set_comment_identity` configures default comment attribution separately.
 
 | Tool | Description |
 |------|-------------|
@@ -41,7 +41,7 @@ These 9 tools auto-detect document format from file extension or provide cross-f
 | `office_inspect` | Get document structure (sheets, slides, sections, tables, comments) |
 | `office_patch` | Edit cells, shapes, sections, or replace placeholders |
 | `office_comment` | Add/get/reply/delete comments; Word also supports resolve/reopen, threaded get, and reply threading |
-| `office_table` | Table operations: add rows, create tables, add bullets |
+| `office_table` | Read tables, add/update rows, and create Word/PowerPoint tables |
 | `office_template` | Copy templates or analyze template structure |
 | `office_audit` | Audit for placeholders, completion, or tracking status |
 | `office_image` | Insert images into Word, Excel, or PowerPoint documents |
@@ -67,7 +67,7 @@ These were a proof-of-concept approach for managing and updating specific docume
 | `word_document_map` | Return a lightweight map of sections, tables, placeholders, anchors, and warnings |
 | `word_enable_track_changes` | Enable Word's track changes mode |
 | `word_patch_with_track_changes` | Replace text with revision marks |
-| `word_accept_all_changes` | Accept tracked insertions/deletions and normalize the document content |
+| `word_accept_all_changes` | Accept insertion/deletion wrappers in the main document XML; see revision limits below |
 
 #### PowerPoint Slide Management
 
@@ -146,7 +146,7 @@ office_read(file_path="data.xlsx", scope="Sheet1!A1:D10")
 # Read a single worksheet
 office_read(file_path="data.xlsx", scope="Sheet1")
 
-# Read Excel formulas instead of cached values
+# Read Excel formulas instead of cached values (reading never recalculates)
 office_read(file_path="model.xlsx", include_formulas=True)
 
 # Read Word document
@@ -207,7 +207,7 @@ office_patch(
 )
 ```
 
-Mutation tools now expose a common diagnostics shape for covered Word/Excel workflows and support explicit execution modes on selected high-value paths (`best_effort`, `safe`, `strict`, `dry_run`).
+Covered mutation tools return per-target diagnostics. `office_patch`, `office_table` and `office_comment` accept `best_effort`, `safe`, `strict` and `dry_run`; other tools accept a mode only if it appears in their schema. Fields depend on the tool and how early validation fails:
 
 - `success`
 - `status` (`success`, `partial_success`, `failed`, `skipped`)
@@ -218,8 +218,6 @@ Mutation tools now expose a common diagnostics shape for covered Word/Excel work
 - `diagnostics`
 - `next_tools`
 
-That makes partial success and recovery paths explicit instead of relying on generic success messages.
-
 - `best_effort`: current compatibility-oriented behavior
 - `safe`: requires a distinct output path for covered mutation flows
 - `strict`: for `office_patch`, any missing or failed target prevents the entire batch commit
@@ -229,9 +227,9 @@ For `office_patch`, `safe` requires a distinct destination but may commit the ac
 
 Source/destination fingerprint changes prevent publication. Process-local writer locks cover staged patches and the enrolled existing-document writers in [writer scope](docs/writer-scope.md); arbitrary external editors are not locked. Hard-linked document paths refuse mutation. Tables and comments share staged publication, but their XLSX serialisation does not preserve every opaque part as `office_patch` does. Output-only generation paths retain separate contracts.
 
-Excel cell patches preserve append-only style dependencies and invalidate formula caches across the workbook. `calculation_state="recalculation-required"` means an external calculation engine must refresh results; no recalculation runs here. Unsupported style registry rewrites refuse before commit. Word read-back includes tracked insertions and excludes tracked deletions.
+Excel cell patches preserve append-only style dependencies and invalidate formula caches on cell-level formula elements across worksheets. `calculation_state="recalculation-required"` means an external calculation engine must refresh results; no recalculation runs here. Unsupported style registry rewrites refuse before commit. Word read-back includes tracked insertions and excludes tracked deletions.
 
-Start with `office_help`, then inspect, preview, patch to a new output, and reopen/audit the result.
+Start with `office_help`, then inspect, preview, patch to a new output, and reopen/audit the result. Excel value patches coerce numeric-looking strings, currencies and percentages; this API has no force-text option for numeric identifiers. See [operating limits](docs/operations.md) before processing untrusted or complex files.
 
 ### Verification
 
@@ -290,12 +288,14 @@ word_patch_with_track_changes(
   output_path="draft-review.docx"
 )
 
-# Accept tracked changes and normalize the final document
+# Accept main-document insertion/deletion wrappers
 word_accept_all_changes(
   file_path="draft-review.docx",
   output_path="draft-final.docx"
 )
 ```
+
+`word_accept_all_changes` traverses the main document XML, including its tables. It does not resolve revisions in separate headers, footers, footnotes or other story parts, and it does not implement move/format revision resolution or reject-all. Despite its name, it is not a complete Word revision engine. The `office_patch(track_changes=...)` compatibility parameter currently does not control Word dispatch; use the documented tracked workflow and inspect its output.
 
 ### Image Support
 
@@ -477,25 +477,28 @@ Preview reports planned changes; strict commit requires every requested target t
 Using [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv pip install "git+https://github.com/rcarmo/python-office-mcp-server.git"
+uv tool install "git+https://github.com/rcarmo/python-office-mcp-server.git"
 ```
 
 Using pip:
 
 ```bash
-pip install "git+https://github.com/rcarmo/python-office-mcp-server.git"
+python -m venv .venv
+. .venv/bin/activate  # Windows PowerShell: .venv\\Scripts\\Activate.ps1
+python -m pip install "git+https://github.com/rcarmo/python-office-mcp-server.git"
 ```
 
-This installs the `office-mcp-server` command. Requires Python >=3.10; locally tested on 3.10, 3.12 and 3.13.
+This installs the `office-mcp-server` command. Requires Python >=3.10; locally tested on 3.10, 3.12 and 3.13. If a GUI client cannot find the command, configure the absolute executable path; its environment may not inherit your shell's `PATH`.
 
 ### Install from local clone
 
 ```bash
 git clone https://github.com/rcarmo/python-office-mcp-server.git
 cd python-office-mcp-server
-uv pip install .
-# or: pip install .
-# or for development: pip install -e .
+uv sync --frozen
+uv run office-mcp-server
+# For development and tests: uv sync --frozen --extra dev
+# In an activated pip environment: python -m pip install -e '.[dev]'
 ```
 
 ### Run without installing
@@ -503,9 +506,24 @@ uv pip install .
 ```bash
 git clone https://github.com/rcarmo/python-office-mcp-server.git
 cd python-office-mcp-server
-pip install -r requirements.txt
+python -m venv .venv
+. .venv/bin/activate  # Windows PowerShell: .venv\\Scripts\\Activate.ps1
+python -m pip install -r requirements.txt
 python office_server.py
 ```
+
+This starts the stdio server; it waits for MCP messages rather than opening a web page. Configure the client with the same virtual-environment interpreter and an absolute script path:
+
+```json
+{
+  "command": "/absolute/path/to/python-office-mcp-server/.venv/bin/python",
+  "args": ["/absolute/path/to/python-office-mcp-server/office_server.py"]
+}
+```
+
+On Windows, use `.venv\\Scripts\\python.exe` and escape backslashes in JSON. Relative document paths depend on the server process's working directory; absolute paths avoid ambiguity.
+
+For network flags and security limits, see [transports](docs/operations.md#transports). The examples below use the tested stdio path.
 
 ### MCP client configuration
 
@@ -562,7 +580,7 @@ This enablement behavior is controlled by the MCP client/host, not by this serve
 
 ### VS Code (Automatic)
 
-The server can be set to be auto-discovered from `.vscode/mcp.json`. That is left as an exercise to the reader, but to verify: Open Command Palette → **MCP: List Servers** → confirm `officeServer` is listed.
+Create `.vscode/mcp.json` using the VS Code example above; the repository does not ship that file. Open the Command Palette and run **MCP: List Servers** to confirm `office` is listed.
 
 ### GitHub Copilot CLI
 
@@ -622,12 +640,14 @@ dist\office-mcp-server.exe
 
 Use the generated executable in MCP client configuration by pointing `command` to the `.exe` path.
 
+The Windows workflow builds the executable and checks tool discovery. Mutation workflows have been exercised through Python and clean-wheel stdio, not the Windows executable.
+
 ## Dependencies
 
 - `python-docx` — Word document handling
 - `openpyxl` — Excel workbook handling  
 - `python-pptx` — PowerPoint presentation handling
-- `aioumcp` — Async MCP server framework
+- `aioumcp.py` — Bundled asynchronous MCP transport module
 - `pyinstaller` — Build-time dependency for one-file Windows executable
 
 ## Architecture
@@ -636,7 +656,7 @@ The server dynamically loads tool modules from `tools/`:
 
 - `office_unified_tools.py` — Unified document operations
 - `word_tools.py` — Word conversion tools
-- `word_advanced_tools.py` — SOW-specific tools
+- `word_advanced_tools.py` — Revisions, anchors, tables and legacy SOW workflows
 - `excel_tools.py` — Excel conversion tools
 - `excel_advanced_tools.py` — Excel advanced operations (internal)
 - `pptx_tools.py` — PowerPoint conversion tools

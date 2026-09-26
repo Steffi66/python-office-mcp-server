@@ -1,14 +1,12 @@
 # Word OOXML Track Changes and Comments Research
 
-## Executive Summary
+## Scope and current implementation
 
-This document provides comprehensive research on Word OOXML format for track changes (revisions) and comments, based on the ECMA-376 standard and practical implementation testing.
+WordprocessingML represents text insertions/deletions with `w:ins`/`w:del` and has additional structures for moves, formatting and other revisions. Comments use separate package parts and range markers. These structures describe file content, not a complete historical audit log.
 
-**Key Findings:**
-- Word supports full track changes via `w:ins` and `w:del` elements for insertions and deletions
-- Comments are supported through `w:comments` and `w:commentRangeStart`/`w:commentRangeEnd` markers
-- python-docx has partial support; full tracked changes require manual XML manipulation
-- Track changes preserve revision history with author, date, and revision ID
+The server creates tracked text edits, manages comment replies/resolution and accepts insertion/deletion wrappers in the main document XML. It does not implement complete revision resolution across all stories, reject-all or Word comparison. See [operating limits](operations.md) and [selected improvements](provenance/selected-enhancements.md).
+
+The fragments below are illustrations with omitted namespace/package context. They are not independently schema-validated fixtures. python-docx 1.2 provides basic comment APIs; the server also edits extension metadata directly.
 
 ---
 
@@ -29,7 +27,7 @@ To enable track changes, set the `trackRevisions` element:
 
 | Element | Description |
 |---------|-------------|
-| `w:trackRevisions` | Enables revision tracking |
+| `w:trackRevisions` | Requests that Word track future edits; it does not wrap programmatic XML edits automatically |
 | `w:revisionView` | Controls what revisions are visible |
 
 ---
@@ -88,23 +86,21 @@ Word tracks moved content with paired elements:
 
 ```xml
 <!-- Source location -->
-<w:moveFrom w:id="2" w:author="John Doe" w:date="2026-01-21T12:00:00Z" w:name="move1">
+<w:moveFrom w:id="2" w:author="John Doe" w:date="2026-01-21T12:00:00Z">
   <w:r>
     <w:t>Moved paragraph</w:t>
   </w:r>
 </w:moveFrom>
 
 <!-- Destination location -->
-<w:moveTo w:id="3" w:author="John Doe" w:date="2026-01-21T12:00:00Z" w:name="move1">
+<w:moveTo w:id="3" w:author="John Doe" w:date="2026-01-21T12:00:00Z">
   <w:r>
     <w:t>Moved paragraph</w:t>
   </w:r>
 </w:moveTo>
 ```
 
-| Attribute | Description |
-|-----------|-------------|
-| `w:name` | Links the moveFrom and moveTo pair |
+These wrappers alone are not a complete paired-move representation. Move-range markers and their identifiers link the source/destination ranges; `w:name` belongs to range-start metadata rather than these wrappers. The server does not create or resolve move revisions.
 
 ---
 
@@ -200,7 +196,9 @@ Comments reference text ranges using start/end markers in the document body:
 ### 2.3 Extended Comments (commentsExtended.xml)
 
 **Location:** `/word/commentsExtended.xml`  
-**Content-Type:** `application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml`
+**Content type used by the current Python implementation:** `application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml`.
+
+Content-type compatibility requires specification evidence and independent consumer validation.
 
 Stores additional comment metadata for threading and resolution:
 
@@ -276,9 +274,11 @@ Each run can have revision session IDs:
 
 | Attribute | Description |
 |-----------|-------------|
-| `w:rsidR` | Revision ID for run content |
-| `w:rsidRPr` | Revision ID for run properties |
-| `w:rsidDel` | Revision ID for deletion |
+| `w:rsidR` | Editing-session identifier associated with run content |
+| `w:rsidRPr` | Editing-session identifier associated with run properties |
+| `w:rsidDel` | Editing-session identifier associated with deletion |
+
+RSIDs group editing sessions; they are distinct from `w:ins/@w:id` and other revision-element identifiers.
 
 ---
 
@@ -316,7 +316,9 @@ Example: `2026-01-21T10:30:00Z`
 
 ---
 
-## 6. XSD Schema Excerpts (ECMA-376)
+## 6. Illustrative schema shapes
+
+These abbreviated shapes omit the surrounding schema and type definitions. Consult ECMA-376 for normative declarations and qualification rules.
 
 ### CT_TrackChange (Base for ins/del)
 
@@ -363,7 +365,7 @@ Example: `2026-01-21T10:30:00Z`
 
 ### 7.1 Using python-docx for Basic Operations
 
-python-docx has limited built-in support. For simple tracked changes:
+These low-level helpers illustrate insertion/deletion wrappers. They do not perform a complete replacement, enforce document-wide revision-ID uniqueness or stage output; production callers should use the server tools. The fixed IDs below are placeholders and must not be reused in a real document.
 
 ```python
 from docx import Document
@@ -372,17 +374,18 @@ from docx.oxml import OxmlElement
 
 def add_tracked_insertion(paragraph, text, author="Author"):
     """Add text as a tracked insertion."""
-    from datetime import datetime
+    from datetime import datetime, timezone
     
     # Create w:ins element
     ins = OxmlElement('w:ins')
     ins.set(qn('w:id'), '0')
     ins.set(qn('w:author'), author)
-    ins.set(qn('w:date'), datetime.now().isoformat() + 'Z')
+    ins.set(qn('w:date'), datetime.now(timezone.utc).isoformat())
     
     # Create run inside
     run = OxmlElement('w:r')
     t = OxmlElement('w:t')
+    t.set(qn('xml:space'), 'preserve')
     t.text = text
     run.append(t)
     ins.append(run)
@@ -391,17 +394,18 @@ def add_tracked_insertion(paragraph, text, author="Author"):
 
 def add_tracked_deletion(paragraph, text, author="Author"):
     """Add text as a tracked deletion."""
-    from datetime import datetime
+    from datetime import datetime, timezone
     
     # Create w:del element
     del_elem = OxmlElement('w:del')
     del_elem.set(qn('w:id'), '1')
     del_elem.set(qn('w:author'), author)
-    del_elem.set(qn('w:date'), datetime.now().isoformat() + 'Z')
+    del_elem.set(qn('w:date'), datetime.now(timezone.utc).isoformat())
     
     # Create run with delText
     run = OxmlElement('w:r')
     del_text = OxmlElement('w:delText')
+    del_text.set(qn('xml:space'), 'preserve')
     del_text.text = text
     run.append(del_text)
     del_elem.append(run)
@@ -409,7 +413,9 @@ def add_tracked_deletion(paragraph, text, author="Author"):
     paragraph._p.append(del_elem)
 ```
 
-### 7.2 Working with Comments
+### 7.2 Comment range-marker sketch
+
+This historical sketch is incomplete: it marks an entire paragraph, ignores its `text` selector and does not write the comment definition. It is not a runnable replacement for `Document.add_comment` or `office_comment`.
 
 ```python
 from docx import Document
@@ -418,7 +424,7 @@ from docx.oxml import OxmlElement
 from datetime import datetime
 
 def add_comment(document, paragraph, text, comment_text, author="Author", initials="A"):
-    """Add a comment to specific text in a paragraph."""
+    """Incomplete range-marker sketch; does not append a comment definition."""
     
     # Get the comments part (create if needed)
     comments_part = document.part.comments_part
@@ -450,6 +456,8 @@ def add_comment(document, paragraph, text, comment_text, author="Author", initia
 ```
 
 ### 7.3 Enabling Track Changes
+
+The minimal helper below only adds a missing element; it does not re-enable an existing false-valued setting. The server's `_enable_track_revisions` handles that case. Tracking settings alone do not create revision wrappers for library edits.
 
 ```python
 from docx import Document
@@ -505,13 +513,13 @@ To reject a deletion, convert `w:delText` back to `w:t` and remove the `w:del` w
 
 | Feature | Word | PowerPoint |
 |---------|------|------------|
-| Track Changes | ✅ Full support (`w:ins`, `w:del`) | ❌ No text tracking |
+| Text revision representation | Insertion/deletion and other structures | No Word-style inline wrappers |
 | Move Tracking | ✅ Yes (`w:moveFrom`, `w:moveTo`) | ❌ No |
 | Format Changes | ✅ Yes (`w:rPrChange`) | ❌ No |
 | Comments | ✅ Rich text, ranges | ✅ Plain text, coordinates |
-| Comment Threading | ✅ Yes (commentsExtended) | ✅ Yes (extensions) |
-| Comment Resolution | ✅ Yes (`w15:done`) | ❌ No |
-| Revision IDs | ✅ RSIDs per run | ❌ N/A |
+| Thread workflow in this server | Replies via extension metadata | Unsupported |
+| Resolution workflow in this server | `w15:done` | Unsupported |
+| Revision-element identity | `w:id`; RSIDs identify editing sessions separately | No corresponding API here |
 
 ---
 
@@ -533,17 +541,15 @@ To reject a deletion, convert `w:delText` back to `w:t` and remove the `w:del` w
 
 ---
 
-## Assumptions
+## Implementation status and references
 
-- Research based on ECMA-376 5th Edition specification
-- Tested with python-docx 1.x and Microsoft 365 Word
-- Extended features (threading, resolution) require Word 2013 or later
+`word_patch_with_track_changes`, comment add/reply/resolve/reopen and `word_accept_all_changes` are implemented. Acceptance removes `w:del` and unwraps `w:ins` in the main document XML only. Separate headers/footers/footnotes, move/format revisions and reject-all are outside that operation's scope. The resolution rules in section 8 describe XML transformations, not additional exposed tools.
 
-## Next Steps
+Recorded checks use python-docx, package assertions and MCP stdio; current Microsoft Word UI validation is not recorded. The illustrative Word-extension content types in these notes mirror existing code where applicable; they have not been independently certified against every Office extension schema.
 
-- [x] Implement track changes support in the MCP Office Server
-- [x] Add `word_patch_with_track_changes` tool
-- [x] Add `word_add_comment` tool
-- [ ] Implement accept/reject changes tools
-- [ ] Add comment reply/threading support
+* [ECMA-376 specification](https://ecma-international.org/publications-and-standards/standards/ecma-376/)
+* [python-docx comments](https://python-docx.readthedocs.io/en/latest/user/comments.html)
+* [Tracked edits and acceptance implementation](../tools/word_advanced_tools.py)
+* [Comment extension implementation](../tools/word_tools.py)
+* [Test results and limits](testing.md)
 

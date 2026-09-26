@@ -10,11 +10,11 @@ Keep the openpyxl dependency and require saved-document compatibility tests befo
 
 - `office_patch` edits cell values/formulas on existing worksheets through staged publication.
 - Existing style indices stay stable. Supported new style registry entries are appended; semantic rewrites of old indexed styles refuse.
-- Formula caches are invalidated conservatively across all worksheets after cell edits; calculation flags and chain removal are consistent with that policy.
+- Cached values on cell-level formula elements are invalidated across worksheets after cell edits; calculation flags and chain removal follow that policy. Chart/external-link caches and array-result followers are not a general freshness contract.
 - Original opaque members remain byte-identical unless they are identified edited-sheet/style/calculation dependencies.
 - Malformed/adversarial package admission has explicit size/entry/inflation bounds.
 
-No calculation engine runs in production. Cached values are unavailable until an external application recalculates. `recalculation-required` is a receipt state, not proof of Excel calculation correctness.
+No calculation engine runs in production. Invalidated cell caches are unavailable until an external application recalculates; other cache families need separate checks. `recalculation-required` requests that work and does not establish Excel calculation correctness.
 
 ## Separate contracts and refusals
 

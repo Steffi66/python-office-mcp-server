@@ -1,13 +1,10 @@
 # PowerPoint OOXML Comments and Track Changes Research
 
-## Executive Summary
+## Scope and current implementation
 
-This document provides comprehensive research on PowerPoint OOXML format for comments and track changes (revisions), based on the ECMA-376 standard and practical implementation testing.
+PowerPoint packages contain both legacy and Microsoft-extension comment formats. Sections 1 and 2 describe legacy `p:cmAuthorLst`/`p:cmLst` parts; the current server writes modern comments and reads/deletes both formats. Word-style inline insertion/deletion revisions are not supported by the PowerPoint tools.
 
-**Key Findings:**
-- PowerPoint supports comments through `p:cmAuthorLst` and `p:cmLst` XML structures
-- **PowerPoint does NOT support track changes like Word does** - there is no equivalent to `w:ins` and `w:del`
-- Comments can be added programmatically via manual XML manipulation since python-pptx lacks native support
+These XML and XSD fragments are illustrations, not complete validated packages. The current implementation is in `tools/pptx_advanced_tools.py`; [writer scope](writer-scope.md) and [testing](testing.md) describe its publication guarantees and validation limits.
 
 ---
 
@@ -127,56 +124,17 @@ Add to `[Content_Types].xml`:
 
 ## 3. Track Changes / Revisions in PowerPoint
 
-### ⚠️ IMPORTANT: PowerPoint Does NOT Support Track Changes Like Word
+The server does not implement a PowerPoint revision-history API or emit Word-style `w:ins`/`w:del`. PowerPoint version history and comparison features are application-specific; the presence of revision-related package parts does not establish what this server records or preserves.
 
-Unlike Word which has `w:ins` and `w:del` elements for tracking insertions and deletions, **PowerPoint has NO equivalent mechanism for tracking text content changes**.
-
-### What PowerPoint DOES Have
-
-PowerPoint tracks **slide-level operations only** through revision-related parts:
-
-| Part | Content Type |
-|------|--------------|
-| `/ppt/revisionInfo.xml` | `application/vnd.ms-powerpoint.revisioninfo+xml` |
-
-**Relationship Type:** `http://schemas.microsoft.com/office/2015/10/relationships/revisionInfo`
-
-### What Revisions Track
-
-- ✅ Slide additions/deletions
-- ✅ Slide reordering  
-- ❌ Text content changes
-- ❌ Shape modifications
-- ❌ Formatting changes
-
-### Alternative for "Track Changes"
-
-For tracking text changes in presentations, **comments are the standard approach**. You can add comments to indicate:
-- What was changed
-- Why it was changed
-- Previous values (in comment text)
+Use explicit before/after files, package diffs or comments to record edits. Comments are annotations, not a reversible revision model, and the server does not automatically add one for every change.
 
 ---
 
-## 4. Modern Comments (Office 2019+)
+## 4. Modern comments used by this server
 
-Microsoft introduced "Modern Comments" in newer Office versions with threading capabilities:
+The implementation uses namespace `http://schemas.microsoft.com/office/powerpoint/2018/8/main`, author metadata in `ppt/authors.xml`, and comments under `ppt/comments/modernComment_*.xml`. Its comment relationship type is `http://schemas.microsoft.com/office/2018/10/relationships/comments`.
 
-```xml
-<p:cm authorId="0" dt="2026-01-21T10:30:00.000" idx="1">
-  <p:pos x="1524000" y="914400"/>
-  <p:text>Original comment</p:text>
-  <p:extLst>
-    <p:ext uri="{C676402C-5697-4E1C-873F-D02D1690AC5C}">
-      <p15:threadingInfo 
-          xmlns:p15="http://schemas.microsoft.com/office/powerpoint/2015/main" 
-          timeZoneBias="0"/>
-    </p:ext>
-  </p:extLst>
-</p:cm>
-```
-
-**Modern Comment Namespace:** `http://schemas.microsoft.com/office/powerpoint/2015/main` (prefix: `p15`)
+Those parts differ from the legacy examples above. Office build/channel support for modern comments varies; an Office marketing version alone is not a compatibility guarantee. The server exposes add/get/delete for PowerPoint comments. Reply, resolve and reopen are unsupported by its unified PowerPoint interface even if an Office application supports richer threads.
 
 ---
 
@@ -222,7 +180,9 @@ Example: `2026-01-21T10:30:00.000`
 
 ---
 
-## 6. XSD Schema Excerpts (ECMA-376)
+## 6. Illustrative schema shapes
+
+These abbreviated declarations omit surrounding type definitions and namespaces. Consult ECMA-376 for normative schema rules; they are not standalone validation inputs.
 
 ### CT_CommentAuthor
 
@@ -300,7 +260,7 @@ Since python-pptx doesn't natively support comments, here's how to add them manu
    - Modify `ppt/_rels/presentation.xml.rels` for comment authors
    - Modify `ppt/slides/_rels/slideN.xml.rels` for each slide's comments
 
-### Working Python Code
+### Legacy XML construction sketch
 
 ```python
 import zipfile
@@ -391,22 +351,19 @@ slide_comments = {
 |---------|------|------------|
 | Comments | ✅ Yes (`w:comments`) | ✅ Yes (`p:cmLst`) |
 | Comment Authors | Part of comment | Separate part (`p:cmAuthorLst`) |
-| Track Changes | ✅ Yes (`w:ins`, `w:del`) | ❌ No |
-| Position | Range markers | X/Y coordinates (EMUs) |
-| Threading | Via replies | Via extensions (Office 2019+) |
-| Rich Text | ✅ Yes | ❌ Plain text only |
+| Inline revisions in these tools | Word insertion/deletion wrappers | Not implemented |
+| Legacy comment position | Range markers | X/Y coordinates (EMUs) |
+| Thread workflow in this server | Replies and resolution | Add/get/delete only |
+| Legacy comment text | Paragraph/run content | `p:text` string |
 
 ---
 
-## Assumptions
+## Validation and references
 
-- Research based on ECMA-376 5th Edition specification
-- Tested with python-pptx 0.6.x and Microsoft 365 PowerPoint
-- Modern comments (threading) require Office 2019 or later
+Comment add/get/delete is implemented and exercised in `tests/test_comment_tools_e2e.py` and the unified/PowerPoint suites. The legacy XML helpers above only build fragments; they do not wire a complete package or provide the staged-write contract. Prefer `office_comment` to direct ZIP editing.
 
-## Next Steps
+No current Microsoft 365 PowerPoint UI result is recorded in the validation reports. See [testing](testing.md) for the independent-rendering gap.
 
-- [ ] Implement comment support in the MCP Office Server
-- [ ] Add `pptx_add_comment` tool
-- [ ] Test with various PowerPoint versions
-- [ ] Consider implementing a visual comment indicator approach
+* [ECMA-376 specification](https://ecma-international.org/publications-and-standards/standards/ecma-376/)
+* [Microsoft PowerPoint extension specifications](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-pptx/)
+* [Current comment implementation](../tools/pptx_advanced_tools.py)
