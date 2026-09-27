@@ -29550,12 +29550,20 @@
       "gaps": []
     },
     {
-      "candidateScenarioId": "@candidate-python-workflows-2b4937f7f0",
+      "candidateScenarioId": "@candidate-python-workflow-coverage-ddad2d0e41",
       "nativeDefinition": "tests/test_workflows.py::TestListSupportedFormats::test_tool_classes_available",
       "sourcePath": "tests/test_workflows.py",
       "sourceLine": 413,
       "sourceSha256": "f9b0903b8b897d06c293fe385bfa301d7b860d05668404ff19d45fc5fee10c3c",
-      "feature": "references/fixtures-ooxml/staging/python/features/test_workflows.feature",
+      "feature": "references/fixtures-ooxml/staging/python/features/test_workflow_coverage.feature",
+      "equivalenceAlias": {
+        "formerCandidateScenarioId": "@candidate-python-workflows-2b4937f7f0",
+        "formerFeature": "references/fixtures-ooxml/staging/python/features/test_workflows.feature",
+        "historicalFeatureSha256": "4ba79a1ceca3cf58cc95aac833d74cbc6701993228a13824b4df4b3774bf18ac",
+        "representativeCandidateScenarioId": "@candidate-python-workflow-coverage-ddad2d0e41",
+        "predicate": "Both native tests import TOOL_CLASSES from tools and assert only len(TOOL_CLASSES) >= 1; neither checks class membership, order or validity.",
+        "executionCredit": false
+      },
       "scenario": "Native check: tool classes available [TestListSupportedFormats]",
       "parameterGroups": [],
       "collectedCases": [
@@ -30915,7 +30923,8 @@
     },
     {
       "nativeDefinition": "tests/test_workflows.py::TestListSupportedFormats::test_tool_classes_available",
-      "candidateScenarioId": "@candidate-python-workflows-2b4937f7f0",
+      "candidateScenarioId": "@candidate-python-workflow-coverage-ddad2d0e41",
+      "formerCandidateScenarioId": "@candidate-python-workflows-2b4937f7f0",
       "gaps": [
         "It does not assert which classes are present, their order, or whether each entry is a valid tool class.",
         "It only checks that the collection is non-empty."

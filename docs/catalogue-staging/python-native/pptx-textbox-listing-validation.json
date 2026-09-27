@@ -52,11 +52,21 @@
   "nativeTestsRun": false,
   "executionCredit": false,
   "parityCredit": false,
+  "historicalFeatureSeal": {
+    "path": "references/fixtures-ooxml/staging/python/features/test_workflows.feature",
+    "sha256": "4ba79a1ceca3cf58cc95aac833d74cbc6701993228a13824b4df4b3774bf18ac",
+    "scope": "Three PowerPoint text-box listing definitions reviewed at 0229c1415ed436f4fea46acf0e5c812b6f7d8fcc. The later TOOL_CLASSES predicate alias removal changed this feature; this hash records the earlier review, not a validation of the current central copy."
+  },
+  "currentFeatureCustody": {
+    "path": "references/fixtures-ooxml/staging/python/features/test_workflows.feature",
+    "sha256": "1585bba8bc80d84901dfe11cfeb84b91787f712b0b7d6869323834a06286dba3",
+    "scope": "Current central feature after removal of the exact TOOL_CLASSES predicate alias. The three text-box scenarios are unchanged; current-copy custody grants no retrospective semantic review or execution credit."
+  },
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "18b15b6d572996d793403bb8e0dc6b0880df03533cd4e42bb01d3c1ae2417174",
     "references/fixtures-ooxml/staging/python/features/test_final_coverage.feature": "1edf3e862d89281ade98bcc921793fc52100907cf4abfc9da7b707cf13c030dd",
     "references/fixtures-ooxml/staging/python/features/test_workflow_coverage.feature": "377c32d5a4a4e16a94e6336888332b6634aa40112c097df931065bc8d2622dc2",
-    "references/fixtures-ooxml/staging/python/features/test_workflows.feature": "4ba79a1ceca3cf58cc95aac833d74cbc6701993228a13824b4df4b3774bf18ac",
+    "references/fixtures-ooxml/staging/python/features/test_workflows.feature": "1585bba8bc80d84901dfe11cfeb84b91787f712b0b7d6869323834a06286dba3",
     "docs/catalogue-staging/python-native/mapping.json": "20e1e339177e18e939b98d89bb789d7b4e96ba54b29cec8906eaf3d2f6bb3d5d",
     "docs/catalogue-staging/python-native/pptx-textbox-listing-review.md": "683ef2149207415d388427e8a4fd44da16262f49c8dbe25aab9f38f188422747"
   },
