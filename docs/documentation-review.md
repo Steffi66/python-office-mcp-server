@@ -1,18 +1,20 @@
 ## Documentation review, 2026-09-26
 
+This file records the 2026-09-26 documentation audit. For the active fixture tag and scoped test results, use [testing](testing.md#fixture-migration-verification) and `tests/fixtures-pin.json`.
+
 ### Canonical workflow contract cleanup
 
-Current test instructions use `workflows/mutation-safety.feature` and `contracts/mutation-safety.json`. The root manifest seals both artifacts; fixture IDs resolve through the same registry. A nested pack seal and generated expanded-case JSON are no longer needed. The official Gherkin compiler derives the same 19 stable case identities.
+At that review, test instructions used `workflows/mutation-safety.feature` and `contracts/mutation-safety.json`. The root manifest seals both artifacts; fixture IDs resolve through the same registry. A nested pack seal and generated expanded-case JSON are no longer needed. The official Gherkin compiler derives the same 19 stable case identities.
 
 The compact contract retains exact ZIP membership, read-back facts, member hashes and the allowed changed parts. Tests derive the preserve set as all members outside that allowance; it matches every previous preservation hash. Original fixture derivation records remain in root asset provenance alongside import origins. The lineage checks still run.
 
-Earlier reports below describe the formats and results at their recorded source revisions. They do not define the current contract layout or pin format.
+Earlier reports below describe the formats and results at their recorded source revisions. Use the linked testing guide and pin record for the active contract layout and fixture release.
 
 ### Grouped fixture and dependency migration
 
-The current review covers all 16 tracked Markdown documents. Setup now requires recursive submodule initialisation and Git for the exact transport dependency. Tests resolve schema-2 fixture IDs through the manifest, preserve one physical payload per digest, and refuse dirty facts/workflows before collection. The grouped layout is `fixtures/<format>/<scenario-group>/`; aliases are metadata, not compatibility directories.
+That review covered 16 tracked Markdown documents. Setup requires recursive submodule initialisation and Git for the exact transport dependency. Tests resolve schema-2 fixture IDs through the manifest, preserve one physical payload per digest, and refuse dirty facts/workflows before collection. The grouped layout is `fixtures/<format>/<scenario-group>/`; aliases are metadata, not compatibility directories.
 
-Current instructions distinguish candidate checks in an isolated clone from verification of a published annotated release. Historical counts, source IDs and source-pack seals are labelled as historical evidence. Native catalogue staging retains explicit semantic gaps and grants no execution credit; reusable generated-input inventory is separate unfinished work.
+The instructions distinguish candidate checks in an isolated clone from verification of a published annotated release. Historical counts, source IDs and source-pack seals are labelled as historical evidence. Native catalogue staging retains explicit semantic gaps and grants no execution credit; reusable generated-input inventory is separate unfinished work.
 
 The direct review checked 60 local links/anchors and parsed 40 Python/JSON snippets across the 16 documents. Snippet parsing checks syntax, not native Office rendering or every example workflow. The additional independent documentation review timed out and is not counted as a pass. [Testing](testing.md) and the source-pinned migration report give current runtime scopes.
 

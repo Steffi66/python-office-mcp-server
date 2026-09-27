@@ -1,38 +1,18 @@
 # Office Document MCP Server
 
-This Python MCP server reads, edits and generates Word, Excel and PowerPoint documents. It defaults to local stdio; its pinned transport dependency also supports persistent Streamable HTTP sessions and legacy HTTP/SSE or raw TCP.
+This Python MCP server reads and edits unencrypted `.docx`, `.xlsx`, `.xlsm` and `.pptx` files, and can create `.docx`, `.xlsx` and `.pptx` files. It runs over local stdio by default; the pinned transport dependency also supports Streamable HTTP sessions and legacy HTTP/SSE or raw TCP. Legacy binary Office files, encrypted packages and Information Rights Management are unsupported.
 
-This standalone version has its own build workflows and can be installed with `uv`. It works with unencrypted `.docx`, `.xlsx`, `.xlsm` and `.pptx` files. Legacy binary `.doc`/`.xls`/`.ppt` files, password-encrypted packages and Information Rights Management are unsupported.
+Covered edits use a private copy, reopen the saved package and replace the destination once. Excel cell patches preserve style dependencies and invalidate cell-level formula caches; supported Word and PowerPoint literal replacements retain formatting across adjacent runs. Reopening does not verify rendered layout or recalculate formulas. See the [operating limits](docs/operations.md) and [writer scope](docs/writer-scope.md) before editing complex files.
 
-The code is considered _stable_, so it will not be maintained other than patches/hotfixes and there is _zero_ support or issue tracking.
-
-The current `main` stages covered edits on a private copy, checks that the saved package reopens, then replaces the destination once. Tools exposing `mode` also offer preview and strict matching. Excel cell patches preserve style dependencies and invalidate stale formula caches; Word and PowerPoint literal replacements preserve formatting across adjacent text runs. See the [documentation index](docs/README.md) for operating guidance, writer limits, test instructions and format notes.
+The project accepts patches and hotfixes but does not offer support or issue tracking.
 
 ## Available Tools
 
-### Core-First Tool Model
+Start with `office_help` when choosing a workflow. Use `office_read` or `office_inspect` before editing with `office_patch`, `office_table`, `office_template`, `office_comment` or `office_image`; use `office_audit` to check the result. `word_insert_at_anchor` handles paragraph placement when a literal target is unsuitable. The specialised tools below cover conversion, slides, tracked changes and older SOW templates.
 
-For systems architecture and consulting workflows, treat the server as **core-first**:
+### Unified tools
 
-#### Core tools
-- `office_help`
-- `office_read`
-- `office_inspect`
-- `office_patch`
-- `office_table`
-- `office_template`
-- `office_audit`
-- `word_insert_at_anchor`
-
-#### Advanced tool roles
-- **fallback**: alternate generation/mutation paths when the core flow is not enough
-- **diagnostic**: structure discovery, template guidance, anchors, and document maps
-- **legacy compatibility**: parity-oriented tools kept for integration compatibility
-- **expert/specialized**: deeper SOW/track-changes utilities for narrower workflows
-
-### Unified Tools (Primary Interface)
-
-These tools select document handlers from the file extension or provide cross-format workflow guidance. `office_set_comment_identity` configures default comment attribution separately.
+These tools select document handlers from the file extension or provide cross-format guidance. `office_set_comment_identity` configures default comment attribution separately.
 
 | Tool | Description |
 |------|-------------|
@@ -46,13 +26,13 @@ These tools select document handlers from the file extension or provide cross-fo
 | `office_audit` | Audit for placeholders, completion, or tracking status |
 | `office_image` | Insert images into Word, Excel, or PowerPoint documents |
 
-### Specialized Tools
+### Specialised tools
 
-These remain discoverable, but should usually be reached from `office_help`, diagnostics, or a clear recovery need rather than as the default starting point.
+Use these for operations that the unified tools do not expose, or when an existing integration calls them directly.
 
 #### Word SOW Generation
 
-These were a proof-of-concept approach for managing and updating specific document templates. Tools marked `sow` are deprecated and retained for compatibility; prefer the unified editing tools for new workflows.
+The `sow` tools began as a template-specific proof of concept. They are deprecated but remain available for existing integrations; use the unified tools for new editing workflows.
 
 | Tool | Description |
 |------|-------------|
@@ -133,12 +113,7 @@ office_help(
 
 ### Template Analysis Cache
 
-Word template metadata is cached on disk as JSON to avoid re-scanning the same template on every analysis call.
-
-- default cache location: `.office-metadata-cache/`
-- override with: `OFFICE_MCP_METADATA_CACHE_DIR`
-- invalidation uses: resolved path + file size + mtime
-- current cache-backed flow: `word_parse_sow_template` and `office_template(operation="analyze")`
+`word_parse_sow_template` and `office_template(operation="analyze")` cache Word template metadata as JSON in `.office-metadata-cache/`. Set `OFFICE_MCP_METADATA_CACHE_DIR` to move the cache. A resolved-path, file-size or mtime change invalidates an entry.
 
 ### Reading Documents
 
@@ -243,9 +218,9 @@ Install the development dependencies before running `bash tests/run_tests.sh`, o
 
 Shared acceptance scenarios execute through pytest-bdd in `tests/acceptance/`. Each run replaces `test-results/acceptance.json` with a fresh inventory and per-step outcomes. Planned, undefined, ambiguous and unexecuted cases cannot count as acceptance passes. Fixtures and shared requirements come from the tagged `references/fixtures-ooxml` submodule. Python reads the shared Gherkin directly and uses `tests/acceptance/shared-mapping.json` for local implementation status; no duplicate executable feature copy is maintained. Schema-2 document inputs have stable content IDs and one physical payload under central `fixtures/<format>/<scenario-group>/`; tests obtain paths from the manifest. The separate native-test catalogue staging directory is incomplete reconciliation input, not additional executable coverage.
 
-The [testing guide](docs/testing.md) separates historical runtime results, fixture-migration measurements and current release checks. The [uMCP integration report](validation/umcp-upgrade.json) records its original source pin, scope-separated test counts and official-SDK smoke result; it is not the current fixture-release report. LibreOffice checks were skipped locally because the executable was unavailable. Native Microsoft Office rendering and Windows executable behaviour have not been verified locally.
+The [testing guide](docs/testing.md) separates historical runtime results, fixture-migration measurements and current release checks. The [uMCP integration report](validation/umcp-upgrade.json) records results at its original source pin, including an official-SDK smoke check. See the [testing guide](docs/testing.md#fixture-migration-verification) for the current fixture release and its bounded checks. Optional local LibreOffice tests skipped when the executable was unavailable; the [manual oracle workflow](.github/workflows/oracle.yml) installs it for separate checks. Native Microsoft Office rendering and Windows executable mutation workflows have not been verified locally.
 
-The [test results](docs/testing.md#recorded-results) distinguish committed tests from local-only tests. The [implementation checklist](docs/checklists/preservation-safety.md) records the completed merge into `main`; the [XLSX adoption decision](docs/xlsx-adoption-decision.md) explains why the server retains upstream openpyxl.
+[Recorded test results](docs/testing.md#recorded-results) distinguish committed tests from local-only tests. The [XLSX adoption decision](docs/xlsx-adoption-decision.md) explains why the server retains upstream openpyxl.
 
 ### Table Operations
 
@@ -474,7 +449,7 @@ office_read(file_path="review.docx")
 office_audit(file_path="review.docx", checks=["placeholders", "completion"])
 ```
 
-Preview reports planned changes; strict commit requires every requested target to apply. Word replacement tools use tracked revisions, and read-back includes insertions while excluding deletions. Inspect the saved document before accepting those revisions. Package checks cannot establish that a document's meaning or rendered layout is correct.
+Preview reports planned changes; strict commit requires every requested target to apply. `word_patch_with_track_changes` writes tracked replacements; `office_patch` does not route its `track_changes` argument into Word editing. Read-back includes tracked insertions and excludes deletions. Inspect the saved document before accepting revisions; package checks cannot establish its meaning or rendered layout.
 
 ## Setup
 
@@ -646,14 +621,14 @@ dist\office-mcp-server.exe
 
 Use the generated executable in MCP client configuration by pointing `command` to the `.exe` path.
 
-The Windows workflow builds the executable and checks tool discovery. Mutation workflows have been exercised through Python and clean-wheel stdio, not the Windows executable.
+The Windows workflow builds the executable and checks tool discovery. It does not run mutation workflows through the executable.
 
 ## Dependencies
 
 - `python-docx` — Word document handling
 - `openpyxl` — Excel workbook handling  
 - `python-pptx` — PowerPoint presentation handling
-- `references/fixtures-ooxml` — Tagged shared fixtures, facts and behaviour contracts used by tests
+- `references/fixtures-ooxml` — Git submodule of tagged fixtures and behaviour contracts used by tests
 - Installed uMCP 0.2.2 dependency — Async transport and request context; exact Git revision declared in project metadata
 - `pyinstaller` — Build-time dependency for one-file Windows executable
 
