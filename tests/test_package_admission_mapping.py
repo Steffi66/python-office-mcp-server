@@ -28,6 +28,7 @@ def inputs():
 def test_reviewed_package_mapping_marks_not_run_only(tmp_path):
     cases = validate_cases(*inputs())
     assert len(cases) == 14
+    assert set(c["stableCaseKey"] for c in cases) == set(json.loads(MAPPING.read_text())["reviewedCaseKeys"])
     assert all(c["outcome"] == "not-run" for c in cases)
     assert all(s["outcome"] == "not-run" for c in cases for s in c["steps"])
     ledger = Ledger(tmp_path / "evidence.json")
@@ -36,7 +37,7 @@ def test_reviewed_package_mapping_marks_not_run_only(tmp_path):
     assert ledger.report["outcome"] == "incomplete-or-failed"
 
 
-@pytest.mark.parametrize("fault", ["source", "implementation", "missing", "duplicate", "lifecycle", "input", "order", "limit", "encoding", "compression", "action", "outcome", "payload-hash"])
+@pytest.mark.parametrize("fault", ["source", "implementation", "missing", "duplicate", "lifecycle", "input", "order", "limit", "encoding", "compression", "action", "outcome", "payload-hash", "unexpected-id", "reviewed-key", "unbound-key", "unbound-lifecycle", "unbound-missing", "feature-sha"])
 def test_changed_package_declarations_refuse(fault):
     cases, mapping, source, implementation = inputs()
     if fault == "source":
@@ -67,10 +68,36 @@ def test_changed_package_declarations_refuse(fault):
     elif fault == "outcome":
         case = next(c for c in cases if "Prefix-only" in c["name"])
         case["steps"][-1]["text"] = 'the removed member list is ["missing.bin"]'
+    elif fault == "unexpected-id":
+        case = next(c for c in cases if c["scenarioId"] == "@id-zip-physical-member-overlap-refusal")
+        case["scenarioId"] = "@id-unexpected"
+    elif fault == "reviewed-key":
+        cases[0]["stableCaseKey"] = "@id-package-admission-unsafe-members:{}"
+    elif fault == "unbound-key":
+        case = next(c for c in cases if c["scenarioId"] == "@id-zip-physical-member-overlap-refusal")
+        case["stableCaseKey"] = "@id-zip-physical-member-overlap-refusal:{\"variant\":\"other\"}"
+    elif fault == "unbound-lifecycle":
+        case = next(c for c in cases if c["scenarioId"] == "@id-zip-physical-member-overlap-refusal")
+        case["outcome"] = "passed"
+    elif fault == "unbound-missing":
+        mapping["unboundPlannedCase"]["stableCaseKey"] = "missing"
+    elif fault == "feature-sha":
+        mapping["featureSha256"]["workflows/package/zip-admission.feature"] = "bad"
     else:
         mapping["mapping"][0]["inputs"]["members"][0]["payloadSha256"] = "bad"
     with pytest.raises(ValueError):
         validate_cases(cases, mapping, source, implementation)
+
+
+def test_only_sealed_overlap_case_is_unbound():
+    cases, mapping, source, implementation = inputs()
+    overlap = next(c for c in cases if c["scenarioId"] == "@id-zip-physical-member-overlap-refusal")
+    assert overlap["stableCaseKey"] == mapping["unboundPlannedCase"]["stableCaseKey"]
+    assert overlap["outcome"] == "planned"
+    assert all(step["outcome"] == "planned" for step in overlap["steps"])
+    assert overlap not in validate_cases(cases, mapping, source, implementation)
+    assert overlap["outcome"] == "planned"
+    assert all(step["outcome"] == "planned" for step in overlap["steps"])
 
 
 def test_canonical_utf16_bytes_are_explicit_little_endian_with_bom():

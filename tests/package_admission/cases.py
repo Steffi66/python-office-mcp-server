@@ -115,27 +115,51 @@ def validate_cases(cases, mapping, source_digest, implementation_hashes):
     if (mapping.get("sourcePath") != NATIVE or mapping.get("sourceSha256") != source_digest
             or mapping.get("implementationHashes") != implementation_hashes):
         raise ValueError("Reviewed native package source or implementation changed")
+    feature_hashes = mapping.get("featureSha256", {})
+    if set(feature_hashes) != set(FEATURES):
+        raise ValueError("Unexpected package feature seals")
+    sealed_paths = {str(FIXTURE_SOURCE / relative): feature_hashes[relative] for relative in FEATURES}
+    if any(case["feature"] not in sealed_paths or case["featureSha256"] != sealed_paths[case["feature"]]
+           for case in cases):
+        raise ValueError("Package feature declarations differ from reviewed seals")
     rows = mapping.get("mapping", [])
     if len(rows) != 14 or len({row["nativeId"] for row in rows}) != 4:
         raise ValueError("Expected four native package declarations and fourteen variants")
     expected = {(r["proposedScenarioId"], r["variant"]): r for r in rows}
-    keys = {(c["scenarioId"], c["name"]) for c in cases}
-    if len(expected) != 14 or len(cases) != 14 or len(keys) != 14 or keys != set(expected):
+    reviewed_keys = mapping.get("reviewedCaseKeys")
+    unbound = mapping.get("unboundPlannedCase")
+    if (len(expected) != 14 or len(rows) != 14 or not isinstance(reviewed_keys, list)
+            or len(reviewed_keys) != 14 or len(set(reviewed_keys)) != 14
+            or not isinstance(unbound, dict) or set(unbound) != {"scenarioId", "stableCaseKey", "feature"}
+            or unbound != {"scenarioId": "@id-zip-physical-member-overlap-refusal",
+                           "stableCaseKey": "@id-zip-physical-member-overlap-refusal:{}",
+                           "feature": "workflows/package/zip-admission.feature"}):
+        raise ValueError("Missing or unexpected reviewed/unbound package mapping")
+    keys = [(c["scenarioId"], c["name"]) for c in cases]
+    stable_keys = [c["stableCaseKey"] for c in cases]
+    if (len(cases) != 15 or len(set(keys)) != 15 or len(set(stable_keys)) != 15
+            or len({c["scenarioId"] for c in cases}) != 6):
         raise ValueError("Missing, duplicate or unexpected package variants")
-    if len({c["scenarioId"] for c in cases}) != 5:
-        raise ValueError("Expected five package scenario identities")
-    for case in cases:
+    reviewed = [c for c in cases if (c["scenarioId"], c["name"]) in expected]
+    excluded = [c for c in cases if (c["scenarioId"], c["name"]) not in expected]
+    if (len(reviewed) != 14 or set(c["stableCaseKey"] for c in reviewed) != set(reviewed_keys)
+            or len(excluded) != 1 or excluded[0]["scenarioId"] != unbound["scenarioId"]
+            or excluded[0]["stableCaseKey"] != unbound["stableCaseKey"]
+            or excluded[0]["feature"] != str(FIXTURE_SOURCE / unbound["feature"])
+            or excluded[0]["outcome"] != "planned"
+            or any(step["outcome"] != "planned" for step in excluded[0]["steps"])):
+        raise ValueError("Unreviewed package case is not the single sealed planned overlap")
+    for case in reviewed:
         if case["outcome"] != "planned":
             raise ValueError("Package declarations cannot supply execution credit")
         inputs, outcomes = decode_case(case)
-        reviewed = expected[(case["scenarioId"], case["name"])]
-        if input_signature(inputs) != mapped_signature(reviewed["inputs"]) or outcomes != reviewed["expectedOutcomes"]:
+        row = expected[(case["scenarioId"], case["name"])]
+        if input_signature(inputs) != mapped_signature(row["inputs"]) or outcomes != row["expectedOutcomes"]:
             raise ValueError("Canonical package setup or outcomes differ from reviewed native assertions")
-    for case in cases:
         case["outcome"] = "not-run"
         for step in case["steps"]:
             step["outcome"] = "not-run"
-    return cases
+    return reviewed
 
 
 def load_cases():

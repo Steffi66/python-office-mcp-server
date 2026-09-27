@@ -12,8 +12,25 @@
   "featureSha256": {
     "workflows/package/semantic-diff.feature": "eebe822867a6f83d77351a0590dd81d7e929dc13f2d1add0bfcbbc44c5e90ca7",
     "workflows/package/xml-member-admission.feature": "19fa717632d689e7ff4e883fb2af3f31e018373dc79ddb78efecf7742ea14e91",
-    "workflows/package/zip-admission.feature": "28b1599e839f360929e689ff2d99e13599e000b98d6aa0d58c2e6a47b4efe696"
+    "workflows/package/zip-admission.feature": "8fa7b8618fd9797e3470dfdfa1132b76784f180fe31d344f1d9d758f5c30f09c"
   },
+  "reviewedCaseKeys": [
+    "@id-package-admission-unsafe-members:{\"entries_json\":\"[[\\\"a.xml\\\",\\\"<a/>\\\"],[\\\"a.xml\\\",\\\"<b/>\\\"]]\",\"variant\":\"duplicate member names\"}",
+    "@id-package-admission-unsafe-members:{\"entries_json\":\"[[\\\"../a.xml\\\",\\\"<a/>\\\"]]\",\"variant\":\"parent traversal name\"}",
+    "@id-package-admission-unsafe-members:{\"entries_json\":\"[[\\\"/a.xml\\\",\\\"<a/>\\\"]]\",\"variant\":\"absolute member name\"}",
+    "@id-package-admission-unsafe-members:{\"entries_json\":\"[[\\\"x\\\\\\\\a.xml\\\",\\\"<a/>\\\"]]\",\"variant\":\"backslash member name\"}",
+    "@id-package-admission-unsafe-members:{\"entries_json\":\"[[\\\"a/\\\",\\\"payload\\\"]]\",\"variant\":\"directory entry with bytes\"}",
+    "@id-package-admission-resource-limits:{\"limit\":\"max_members\",\"value\":\"0\"}",
+    "@id-package-admission-resource-limits:{\"limit\":\"max_member_bytes\",\"value\":\"2\"}",
+    "@id-package-admission-resource-limits:{\"limit\":\"max_total_bytes\",\"value\":\"2\"}",
+    "@id-package-admission-resource-limits:{\"limit\":\"max_ratio\",\"value\":\"1\"}",
+    "@id-package-admission-unsupported-compression:{}",
+    "@id-package-admission-unsafe-xml-members:{\"encoding\":\"UTF-8\",\"variant\":\"internal DTD with entity\",\"xml\":\"<!DOCTYPE a [<!ENTITY e \\\"text\\\">]><a>&e;</a>\"}",
+    "@id-package-admission-unsafe-xml-members:{\"encoding\":\"UTF-16 with BOM\",\"variant\":\"UTF-16 DTD\",\"xml\":\"<!DOCTYPE a><a/>\"}",
+    "@id-package-admission-unsafe-xml-members:{\"encoding\":\"UTF-8\",\"variant\":\"malformed XML\",\"xml\":\"<broken>\"}",
+    "@id-package-diff-equivalent-xml-and-binary-changes:{}"
+  ],
+  "unboundPlannedCase": {"scenarioId": "@id-zip-physical-member-overlap-refusal", "stableCaseKey": "@id-zip-physical-member-overlap-refusal:{}", "feature": "workflows/package/zip-admission.feature"},
   "nativeDefinitionCount": 4,
   "nativeExpandedCaseCount": 14,
   "proposedScenarioCount": 5,
