@@ -27279,6 +27279,18 @@
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
+      "canonicalTransfer": {
+        "formerCandidateScenarioId": "@candidate-python-word-deep-coverage-c24aff0acc",
+        "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_word_deep_coverage.feature",
+        "historicalFeatureSha256": "23b331885ce6db67cd138ae6d762645bf8ec5fb463ef202395fa9ad505cf9e93",
+        "currentFeature": "references/fixtures-ooxml/staging/python/features/test_word_deep_coverage.feature",
+        "currentFeatureSha256": "a3c4b8a32099e70c4a7da1efc5a13efebc2d2e7ae73e0d8a5668547a46975b04",
+        "canonicalScenarioId": "@id-docx-audit-completion-read",
+        "variant": "deep",
+        "controls": ["@id-docx-audit-completion-placeholders", "@id-docx-audit-completion-missing-file"],
+        "executionCredit": false,
+        "scope": "Original dict-only declaration retained; strengthened native assertions cover exact READY/95 and placeholder/missing-file controls. Mapping does not execute shared Gherkin."
+      },
       "gaps": []
     },
     {
@@ -29121,6 +29133,17 @@
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
+      "canonicalTransfer": {
+        "formerCandidateScenarioId": "@candidate-python-workflow-coverage-ff3e87288d",
+        "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_workflow_coverage.feature",
+        "historicalFeatureSha256": "377c32d5a4a4e16a94e6336888332b6634aa40112c097df931065bc8d2622dc2",
+        "currentFeature": "references/fixtures-ooxml/staging/python/features/test_workflow_coverage.feature",
+        "currentFeatureSha256": "b31c1e8b4e853240ad1ee937739cfc999fc9c17d5aa2324ceb750266e0628367",
+        "canonicalScenarioId": "@id-docx-audit-completion-read",
+        "variant": "workflow",
+        "executionCredit": false,
+        "scope": "Original dict-only declaration retained; strengthened native assertions cover exact READY/95 and source package custody. Mapping does not execute shared Gherkin."
+      },
       "gaps": []
     },
     {

@@ -14,6 +14,7 @@ from tools.excel_tools import ExcelTools
 from tools.pptx_advanced_tools import PresentationAdvancedTools
 from tools.pptx_tools import PowerPointTools
 from tools.word_advanced_tools import WordAdvancedTools, _get_text_with_track_changes
+from tests.completion_audit_expectations import assert_complete_audit
 
 
 @pytest.fixture
@@ -546,17 +547,10 @@ class TestAuditOperations:
     """Tests for audit operations."""
 
     def test_word_audit_complete(self, temp_dir):
-        """Should audit document completion."""
+        """Audit the workflow heading/body with exact score and archive custody."""
         tools = WordAdvancedTools()
-
-        doc = Document()
-        doc.add_heading("Document", level=1)
-        doc.add_paragraph("Complete content without placeholders")
-        path = temp_dir / "complete.docx"
-        doc.save(path)
-
-        result = tools.tool_word_audit_completion(str(path))
-        assert isinstance(result, dict)
+        assert_complete_audit(tools, temp_dir,
+                              heading="Document", body="Complete content without placeholders")
 
     def test_pptx_audit_clean(self, temp_dir):
         """Should audit clean presentation."""

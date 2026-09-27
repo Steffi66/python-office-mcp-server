@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "consumer": "python",
+  "executionCredit": false,
+  "scope": "Two strengthened native complete-document variants plus placeholder and missing-file controls map to planned completion-audit scenarios; native pytest does not execute shared Gherkin.",
+  "canonicalFeature": "workflows/docx/completion-audit.feature",
+  "canonicalFeatureSha256": "b3e838f7823c52b5d0dd8fb498418d4144b39906ff7cce1f015e606f1583f34c",
+  "candidateCommit": "735c8f45ab6738753859e1212c1a647a61753e4a",
+  "fixtureId": "fixture-b051c0c2ff43f2ab9213e19a52ccbc51217537cf3b336d54a68a91beb6670f9a",
+  "nativeSourceSha256": {
+    "tests/test_word_deep_coverage.py": "5b137998f804f5503531c5ad03a0af9ef439d091fab6bd59da012707ddee545e",
+    "tests/test_workflow_coverage.py": "a52e8e5c70ed539878b0436f772b98c61c7ededd72f74f0deabdd3020fbe7c9b",
+    "tests/completion_audit_expectations.py": "02846d82432c39a62fb89c9d5c05731df10e2e0aa8756909081b91271b59365a"
+  },
+  "historicalNativeSources": [
+    {
+      "nativeDefinition": "tests/test_word_deep_coverage.py::TestWordAuditCompletion::test_audit_complete_doc",
+      "formerCandidateScenarioId": "@candidate-python-word-deep-coverage-c24aff0acc",
+      "historicalNativeSourceSha256": "2fd8b359d418010ceb6f682794d63662342b2f30b3a3a1bb05d7b9ce4f0ab8ee",
+      "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_word_deep_coverage.feature",
+      "historicalFeatureSha256": "23b331885ce6db67cd138ae6d762645bf8ec5fb463ef202395fa9ad505cf9e93",
+      "currentStagedFeatureSha256": "a3c4b8a32099e70c4a7da1efc5a13efebc2d2e7ae73e0d8a5668547a46975b04",
+      "variant": "deep"
+    },
+    {
+      "nativeDefinition": "tests/test_workflow_coverage.py::TestAuditOperations::test_word_audit_complete",
+      "formerCandidateScenarioId": "@candidate-python-workflow-coverage-ff3e87288d",
+      "historicalNativeSourceSha256": "1f19978357a9d981b830ce1f604ec58a1dc15d9bf27a86d8fb003b2382053e10",
+      "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_workflow_coverage.feature",
+      "historicalFeatureSha256": "377c32d5a4a4e16a94e6336888332b6634aa40112c097df931065bc8d2622dc2",
+      "currentStagedFeatureSha256": "b31c1e8b4e853240ad1ee937739cfc999fc9c17d5aa2324ceb750266e0628367",
+      "variant": "workflow"
+    }
+  ],
+  "nativeCases": [
+    {"nodeid": "tests/test_word_deep_coverage.py::TestWordAuditCompletion::test_audit_complete_doc", "scenarioId": "@id-docx-audit-completion-read", "example": "deep"},
+    {"nodeid": "tests/test_workflow_coverage.py::TestAuditOperations::test_word_audit_complete", "scenarioId": "@id-docx-audit-completion-read", "example": "workflow"},
+    {"nodeid": "tests/test_word_deep_coverage.py::TestWordAuditCompletion::test_audit_complete_doc", "scenarioId": "@id-docx-audit-completion-placeholders", "controlWithinNativeCase": true},
+    {"nodeid": "tests/test_word_deep_coverage.py::TestWordAuditCompletion::test_audit_complete_doc", "scenarioId": "@id-docx-audit-completion-missing-file", "controlWithinNativeCase": true}
+  ],
+  "limits": [
+    "The two former IDs, native paths, historical source hashes and collected node IDs remain in python-native/mapping.json. Historical capture is 1022 definitions / 1147 cases; the sealed central candidate has 1015 current staged IDs.",
+    "Both former staged scenarios asserted only dict type. Strengthened native assertions and this mapping do not retroactively execute shared Gherkin or grant completion-audit execution credit.",
+    "The Document Start empty-section finding is an observed current result of a leading heading; this profile does not assert a pristine score of 100 or SOW-template completion."
+  ]
+}

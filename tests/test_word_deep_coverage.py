@@ -10,6 +10,7 @@ from docx import Document
 from docx.shared import RGBColor
 
 from tools.word_advanced_tools import WordAdvancedTools
+from tests.completion_audit_expectations import assert_complete_audit, assert_placeholder_and_missing_audit
 
 
 @pytest.fixture
@@ -210,17 +211,11 @@ class TestWordAuditCompletion:
         assert isinstance(result, dict)
 
     def test_audit_complete_doc(self, temp_dir):
-        """Should pass audit for complete doc."""
+        """Audit the deep-coverage heading/body with exact score and archive custody."""
         tools = WordAdvancedTools()
-
-        doc = Document()
-        doc.add_heading("Complete Project", level=1)
-        doc.add_paragraph("All content is filled in properly.")
-        path = temp_dir / "complete.docx"
-        doc.save(path)
-
-        result = tools.tool_word_audit_completion(str(path))
-        assert isinstance(result, dict)
+        assert_complete_audit(tools, temp_dir,
+                              heading="Complete Project", body="All content is filled in properly.")
+        assert_placeholder_and_missing_audit(tools, temp_dir)
 
 
 class TestWordAuditSow:
