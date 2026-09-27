@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "consumer": "python",
+  "executionCredit": false,
+  "scope": "Current native five-row layout-ranking and missing-path assertions against the sealed eleven-layout PPTX; catalogue mapping alone does not execute shared Gherkin.",
+  "canonicalFeature": "workflows/pptx/layout-recommendation.feature",
+  "canonicalFeatureSha256": "b41b1f3ef7fe9cc022a74113a4b3edbd1fe2d93934ee83225d7e0b99e6b25a75",
+  "fixtureId": "fixture-c54a7b746c0328fc1930525edd91387eedbbca69a6f388f7ec024150187b6bab",
+  "nativeSourceSha256": {
+    "tests/test_high_volume.py": "a6ba80a3552dcc4e4ff2d3fd8945eb928cde59958327be7e17b202ea3b5a2a84",
+    "tests/test_word_pptx_advanced_ops.py": "145e3478eb0265d3f8a22b44700f90708d3133c4cd60b91a52c55aedae47a0b1",
+    "tests/layout_recommendation_expectations.py": "6f15689f4bfcb9ded42dbcb781f04f46fea30579d1ca32ec98666fc5ea7d68b8"
+  },
+  "historicalNativeSources": [
+    {
+      "nativeDefinition": "tests/test_high_volume.py::TestPptxRecommendLayout::test_recommend_layout",
+      "formerCandidateScenarioId": "@candidate-python-high-volume-5465e20c3f",
+      "historicalNativeSourceSha256": "59505137d72bc97fe06bad6161d62a3ed88b1cb060b3810c2b836fe4cf4d6e0a",
+      "historicalFeatureSha256": "f3425a3273202dc2f58ef554ddf30c79f9fb58d40349bfa56c31eb06d6769c2f",
+      "currentStagedFeatureSha256": "a794ecf4405ba3c40cc31009f4ceb90e075a88773667591d222c5f7a59882c22",
+      "contentTypes": ["title", "bullets", "table"]
+    },
+    {
+      "nativeDefinition": "tests/test_word_pptx_advanced_ops.py::TestPptxLayoutOperations::test_recommend_layout",
+      "formerCandidateScenarioId": "@candidate-python-word-pptx-advanced-ops-895995c6d6",
+      "historicalNativeSourceSha256": "f2f350d19b449dd59ad335773846d1a5455016349cefbbeb6a0f077643034337",
+      "historicalFeatureSha256": "ed3eb2d0d7cdb20757eaf97549b1b4615be110c60144308920a4d3905fcafb5c",
+      "currentStagedFeatureSha256": "a93477a7f007fc9e2d9754466a890ace273e1ad318fae6f2cc84e10eaf3a1d45",
+      "contentTypes": ["comparison", "blank"]
+    }
+  ],
+  "nativeCases": [
+    {"nodeid": "tests/test_high_volume.py::TestPptxRecommendLayout::test_recommend_layout[title]", "scenarioId": "@id-pptx-layout-recommendation-ranked", "example": "title"},
+    {"nodeid": "tests/test_high_volume.py::TestPptxRecommendLayout::test_recommend_layout[bullets]", "scenarioId": "@id-pptx-layout-recommendation-ranked", "example": "bullets"},
+    {"nodeid": "tests/test_high_volume.py::TestPptxRecommendLayout::test_recommend_layout[table]", "scenarioId": "@id-pptx-layout-recommendation-ranked", "example": "table"},
+    {"nodeid": "tests/test_word_pptx_advanced_ops.py::TestPptxLayoutOperations::test_recommend_layout[comparison]", "scenarioId": "@id-pptx-layout-recommendation-ranked", "example": "comparison"},
+    {"nodeid": "tests/test_word_pptx_advanced_ops.py::TestPptxLayoutOperations::test_recommend_layout[blank]", "scenarioId": "@id-pptx-layout-recommendation-ranked", "example": "blank"},
+    {"nodeid": "tests/test_word_pptx_advanced_ops.py::TestPptxLayoutOperations::test_recommend_layout_missing_file", "scenarioId": "@id-pptx-layout-recommendation-missing-file"}
+  ],
+  "limits": [
+    "Both source candidate IDs and 1022 historical native definitions remain in docs/catalogue-staging/python-native/mapping.json.",
+    "The prior tests asserted only a dict; this mapping does not retroactively validate the earlier test runs.",
+    "No Python shared Gherkin binding or execution credit is granted until the reviewed runner executes the canonical cases."
+  ]
+}

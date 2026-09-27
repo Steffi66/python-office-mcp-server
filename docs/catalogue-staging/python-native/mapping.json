@@ -10861,6 +10861,17 @@
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
+      "canonicalTransfer": {
+        "formerCandidateScenarioId": "@candidate-python-high-volume-5465e20c3f",
+        "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_high_volume.feature",
+        "historicalFeatureSha256": "f3425a3273202dc2f58ef554ddf30c79f9fb58d40349bfa56c31eb06d6769c2f",
+        "currentFeature": "references/fixtures-ooxml/staging/python/features/test_high_volume.feature",
+        "currentFeatureSha256": "a794ecf4405ba3c40cc31009f4ceb90e075a88773667591d222c5f7a59882c22",
+        "canonicalScenarioId": "@id-pptx-layout-recommendation-ranked",
+        "contentTypes": ["title", "bullets", "table"],
+        "executionCredit": false,
+        "scope": "Original native identity and collected variants retained. The retired staged scenario asserted only a dict; exact ranking and custody require the strengthened native test and reviewed shared binding."
+      },
       "gaps": []
     },
     {
@@ -27948,6 +27959,17 @@
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
+      "canonicalTransfer": {
+        "formerCandidateScenarioId": "@candidate-python-word-pptx-advanced-ops-895995c6d6",
+        "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature",
+        "historicalFeatureSha256": "ed3eb2d0d7cdb20757eaf97549b1b4615be110c60144308920a4d3905fcafb5c",
+        "currentFeature": "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature",
+        "currentFeatureSha256": "a93477a7f007fc9e2d9754466a890ace273e1ad318fae6f2cc84e10eaf3a1d45",
+        "canonicalScenarioId": "@id-pptx-layout-recommendation-ranked",
+        "contentTypes": ["comparison", "blank"],
+        "executionCredit": false,
+        "scope": "Original native identity and collected variants retained. The retired staged scenario asserted only a dict; exact ranking and custody require the strengthened native test and reviewed shared binding."
+      },
       "gaps": []
     },
     {

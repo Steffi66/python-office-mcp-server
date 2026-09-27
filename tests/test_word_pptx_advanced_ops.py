@@ -10,6 +10,8 @@ from docx.shared import RGBColor
 from pptx import Presentation
 from pptx.util import Inches as PptxInches
 
+from tests.layout_recommendation_expectations import assert_ranked_layout, assert_unchanged, fixture_path, snapshot, FIXTURE_ID
+
 # Fixture temp_dir is provided by conftest.py
 
 
@@ -204,15 +206,20 @@ class TestPptxLayoutOperations:
     """Test layout-related operations."""
 
     @pytest.mark.parametrize("layout_name", ["comparison", "blank"])
-    def test_recommend_layout(self, pptx_advanced_tools, temp_dir, layout_name):
-        """Should recommend requested layout."""
-        prs = Presentation()
-        prs.slides.add_slide(prs.slide_layouts[0])
-        path = temp_dir / f"rec_{layout_name}.pptx"
-        prs.save(path)
+    def test_recommend_layout(self, pptx_advanced_tools, layout_name):
+        """Rank the sealed presentation's layouts without changing its bytes."""
+        assert_ranked_layout(pptx_advanced_tools, layout_name)
 
-        result = pptx_advanced_tools.tool_pptx_recommend_layout(str(path), layout_name)
-        assert isinstance(result, dict)
+    def test_recommend_layout_missing_file(self, pptx_advanced_tools, tmp_path):
+        """Refuse an absent sibling without creating an output or touching the fixture."""
+        path = fixture_path(FIXTURE_ID)
+        before = snapshot(path)
+        missing = tmp_path / "missing-layout-recommendation.pptx"
+        assert not missing.exists()
+        result = pptx_advanced_tools.tool_pptx_recommend_layout(str(missing), "title")
+        assert result == {"error": f"File not found: {missing}"}
+        assert not missing.exists()
+        assert_unchanged(path, before)
 
 
 class TestWordSowOperations:

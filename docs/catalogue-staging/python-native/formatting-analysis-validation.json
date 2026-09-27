@@ -52,11 +52,21 @@
   "nativeTestsRun": false,
   "executionCredit": false,
   "parityCredit": false,
+  "historicalFeatureSeal": {
+    "path": "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature",
+    "sha256": "ed3eb2d0d7cdb20757eaf97549b1b4615be110c60144308920a4d3905fcafb5c",
+    "scope": "Three formatting-analysis response-shape descriptions reviewed at bf56bf95b868348c1ca393b68c262ad8abd6856a. The later removal of a weak layout candidate changes this feature; this is historical review evidence, not a current-copy seal."
+  },
+  "currentFeatureCustody": {
+    "path": "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature",
+    "sha256": "a93477a7f007fc9e2d9754466a890ace273e1ad318fae6f2cc84e10eaf3a1d45",
+    "scope": "Current central copy after retiring the dict-only layout outline. The reviewed formatting scenarios are unchanged; the move gives no retrospective semantic review or execution credit."
+  },
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "05d59a1f9866844bb5297557812a41226a5dce9df8373ac779b4effe6061aab6",
     "references/fixtures-ooxml/staging/python/features/test_word_advanced_tools.feature": "fa16326009252b1524e217747216aead42ebafb6b62cada7035576b169b45703",
     "references/fixtures-ooxml/staging/python/features/test_word_coverage.feature": "2ab7144ffc61ca779b6a933405dbdf2e08aaae237b7c069eaa23d11fed581d67",
-    "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature": "ed3eb2d0d7cdb20757eaf97549b1b4615be110c60144308920a4d3905fcafb5c",
+    "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature": "a93477a7f007fc9e2d9754466a890ace273e1ad318fae6f2cc84e10eaf3a1d45",
     "docs/catalogue-staging/python-native/formatting-analysis-review.md": "6672e42250a550755b42e8559929c46caff4e598357493d91cdbaa7389f35c28",
     "docs/catalogue-staging/python-native/mapping.json": "ee20e578e5fd06c65f26ceb80e16e7c01d1e50968982e0e418e0d78ef104d765"
   },
