@@ -4,9 +4,9 @@
   "consumer": "python",
   "sourceCommit": "e6fc76ca35dc378b35ab00a44fc5932eb5b9edaf",
   "sourcePath": "tests/test_package_guard.py",
-  "sourceSha256": "4bdf62929a1fe6c30693e4a9caf860d05ad638fe6512d16a738b740abfe7fb2a",
+  "sourceSha256": "2e2ffe9b4b9447d5d4500c657c05997d12d70ed2485187d8fa5007160ffb80c5",
   "implementationHashes": {
-    "tools/package_guard.py": "cef6909192524c2dc427910f4c30536fb95a449737a2c738bdc40b5de7e1f322",
+    "tools/package_guard.py": "f1a5afa6f0fd3795995e41b1332d0d33bf6fab4cf09d505c2ed74f861fe46218",
     "tools/package_preservation.py": "e87c942b854a67d0780e688e9a9e53d289edbb46b35bc737d8ec5bf7897c4704"
   },
   "featureSha256": {

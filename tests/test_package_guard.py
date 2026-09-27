@@ -5,7 +5,8 @@ import zipfile
 
 import pytest
 
-from tools.package_guard import PackageAdmissionError, admit_package
+from tools.package_guard import PackageAdmissionArgumentError, PackageAdmissionError, admit_package
+from tests.fixture_paths import fixture_path
 from tools.package_preservation import diff_package
 
 
@@ -34,6 +35,35 @@ def test_limits_refuse_before_large_allocations(tmp_path, limit):
     path = archive(tmp_path, [("a.xml", b"<a>" + b" " * 10000 + b"</a>")], zipfile.ZIP_DEFLATED)
     with pytest.raises(PackageAdmissionError):
         admit_package(path, **limit)
+
+
+def test_source_byte_budget_is_independent_of_total_bytes():
+    source = fixture_path("fixture-d9d6a313182a71a73d75a26a0ff3b7826dbd2e300e1d202114ec9f8fb018fda5")
+    size = source.stat().st_size
+    with pytest.raises(PackageAdmissionError, match="source size"):
+        admit_package(source, max_source_bytes=size - 1)
+    result = admit_package(source, max_source_bytes=size, max_total_bytes=256 * 1024 * 1024)
+    assert result["members"] > 0
+    assert result["uncompressed_bytes"] > 0
+    with pytest.raises(PackageAdmissionError, match="compressed size"):
+        admit_package(source, max_source_bytes=size, max_total_bytes=size - 1)
+
+
+@pytest.mark.parametrize("limit", [
+    {"max_members": -1}, {"max_member_bytes": -1}, {"max_total_bytes": -1},
+    {"max_ratio": -1}, {"max_source_bytes": -1}, {"max_members": True},
+    {"max_source_bytes": 1.5},
+])
+def test_invalid_budget_is_distinct_from_package_refusal(limit, monkeypatch):
+    from pathlib import Path
+
+    def no_stat(*args, **kwargs):
+        raise AssertionError("stat called before invalid-argument refusal")
+
+    monkeypatch.setattr(Path, "stat", no_stat)
+    with pytest.raises(PackageAdmissionArgumentError, match="Invalid admission budget") as exc:
+        admit_package("unused.docx", **limit)
+    assert not isinstance(exc.value, PackageAdmissionError)
 
 
 def test_unsupported_compression_refuses(tmp_path):

@@ -15,10 +15,23 @@ class PackageAdmissionError(ValueError):
     """Input package exceeds resource limits or has ambiguous/unsafe structure."""
 
 
+class PackageAdmissionArgumentError(ValueError):
+    """Caller supplied an invalid admission budget, before package intake."""
+
+
 def admit_package(path, *, max_members=10000, max_member_bytes=64 * 1024 * 1024,
-                  max_total_bytes=256 * 1024 * 1024, max_ratio=1000):
+                  max_total_bytes=256 * 1024 * 1024, max_ratio=1000,
+                  max_source_bytes=256 * 1024 * 1024):
+    for name, value in (("max_members", max_members), ("max_member_bytes", max_member_bytes),
+                        ("max_total_bytes", max_total_bytes), ("max_ratio", max_ratio),
+                        ("max_source_bytes", max_source_bytes)):
+        if type(value) is not int or value < 0:
+            raise PackageAdmissionArgumentError(f"Invalid admission budget: {name}")
     path = Path(path)
-    if path.stat().st_size > max_total_bytes:
+    source_bytes = path.stat().st_size
+    if source_bytes > max_source_bytes:
+        raise PackageAdmissionError("Package source size limit exceeded")
+    if source_bytes > max_total_bytes:
         raise PackageAdmissionError("Package compressed size limit exceeded")
     with zipfile.ZipFile(path) as archive:
         infos = archive.infolist()
