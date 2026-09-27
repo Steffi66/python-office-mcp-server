@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.fixture_paths import CONTRACT, FEATURE, FIXTURE_SOURCE
+from tests.fixture_paths import CONTRACT, FEATURE, FIXTURE_SOURCE, MUTATION_SCENARIO_IDS, acceptance_mapping_path, mutation_contract, mutation_feature_paths
 
 from .ledger import Ledger, apply_implementation_mapping, binding_matches, inventory
 
@@ -21,9 +21,16 @@ def pytest_configure(config):
     ledger = Ledger(ROOT / "test-results" / "acceptance.json")
     config._office_ledger = ledger
     try:
-        mapping_path = HERE / "shared-mapping.json"
-        ledger.report["inventory"] = inventory([FEATURE])
-        apply_implementation_mapping(ledger.report["inventory"], json.loads(mapping_path.read_text()), feature_path=FEATURE)
+        contract = mutation_contract()
+        mapping_path = acceptance_mapping_path(contract)
+        paths = mutation_feature_paths(contract)
+        ledger.report["inventory"] = inventory(paths, scenario_ids=MUTATION_SCENARIO_IDS)
+        if len(ledger.report["inventory"]) != contract["expandedCaseCount"]:
+            raise ValueError("Mutation case count differs from sealed contract")
+        apply_implementation_mapping(ledger.report["inventory"], json.loads(mapping_path.read_text()),
+                                     feature_path=FEATURE if contract["schemaVersion"] == 1 else None,
+                                     feature_paths=paths if contract["schemaVersion"] == 2 else None,
+                                     contract=contract)
         ledger.report["consumer"] = "python"
         ledger.report["implementationMappingSha256"] = hashlib.sha256(mapping_path.read_bytes()).hexdigest()
         ledger.report["fixtureManifestSha256"] = hashlib.sha256((FIXTURE_SOURCE / "manifest.json").read_bytes()).hexdigest()
@@ -32,6 +39,9 @@ def pytest_configure(config):
         ledger.report["fixtureSourceCommit"] = source_head.stdout.strip() if source_head.returncode == 0 else None
         ledger.report["fixtureSourceStatus"] = subprocess.check_output(["git", "status", "--porcelain"], cwd=FIXTURE_SOURCE, text=True).splitlines()
         ledger.report["fixtureSourceTag"] = subprocess.run(["git", "describe", "--tags", "--exact-match"], cwd=FIXTURE_SOURCE, text=True, capture_output=True).stdout.strip() or None
+        ledger.report["mutationFeatureSha256"] = {
+            str(path.relative_to(FIXTURE_SOURCE)): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths
+        }
         for case in ledger.report["inventory"]:
             config.addinivalue_line("markers", case["scenarioId"][1:] + ": shared contract identity")
         ledger.report["commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()

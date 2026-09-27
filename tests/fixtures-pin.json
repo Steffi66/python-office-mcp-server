@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "repository": "https://github.com/rcarmo/fixtures-ooxml.git",
   "path": "references/fixtures-ooxml",
-  "tag": "v0.20.0",
-  "commit": "0ffd549e2fd8825b4cff5a84e704ac78d72717b9",
-  "manifestSha256": "91c14b7b1371aa410834b58b505a6ae1d84c8f851baa7f71acd6167984e13236"
+  "tag": "v0.22.0",
+  "commit": "048dac539886751c414d3ab075aa1fc37e2e051d",
+  "manifestSha256": "fae357a1f17a6848d61d4f7523a1c2c1cfaa036fb6bb738933e3c1760db7f131"
 }

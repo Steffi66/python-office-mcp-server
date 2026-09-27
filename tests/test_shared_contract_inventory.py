@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import zipfile
+from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
@@ -16,6 +17,9 @@ from tests.fixture_paths import (
     CONTRACT,
     FEATURE,
     FIXTURE_SOURCE,
+    MUTATION_SCENARIO_IDS,
+    acceptance_mapping_path,
+    mutation_feature_paths,
     REPOSITORY,
     fixture_path,
     load_fixture_assets,
@@ -36,23 +40,22 @@ def digest(data):
 def test_shared_pack_matches_pinned_manifest():
     assert not (FIXTURE_SOURCE / "shared").exists()
     assert verified_metadata("contracts/mutation-safety.json", "workflow-contract") == CONTRACT.read_bytes()
-    assert verified_metadata("workflows/mutation-safety.feature", "workflow") == FEATURE.read_bytes()
+    for path in mutation_feature_paths(POLICY):
+        assert verified_metadata(path.relative_to(FIXTURE_SOURCE).as_posix(), "workflow") == path.read_bytes()
     assert POLICY["fixturePolicy"] == {"membership": "exact", "preserve": "all-except-allowed"}
 
 
 def test_expanded_inventory_has_unique_ids_and_exact_fixture_pins():
-    source = FEATURE.read_bytes()
-    scenarios = re.findall(rb"^  (@id-[a-z0-9-]+)$", source, re.MULTILINE)
-    assert len(scenarios) == len(set(scenarios)) == 8
-    compiled = inventory([FEATURE])  # Official Gherkin parser/compiler, strict typed JSON.
+    paths = mutation_feature_paths(POLICY)
+    compiled = inventory(paths, scenario_ids=MUTATION_SCENARIO_IDS)  # Official Gherkin compiler.
     assert len(compiled) == POLICY["expandedCaseCount"] == 19
-    assert {c["scenarioId"] for c in compiled} == set(POLICY["scenarioIds"]) == {s.decode() for s in scenarios}
-    mapping = json.loads((REPOSITORY / "tests/acceptance/shared-mapping.json").read_text())
+    assert {c["scenarioId"] for c in compiled} == set(POLICY["scenarioIds"]) == set(MUTATION_SCENARIO_IDS)
+    mapping = json.loads(acceptance_mapping_path(POLICY).read_text())
     assert {c["stableCaseKey"] for c in compiled} == set(mapping["implementedCaseKeys"])
     fixtures = {f["id"]: f for f in POLICY["fixtures"]}
     for case in compiled:
         assert case["outcome"] == "planned"
-        assert case["featureSha256"] == digest(source)
+        assert case["featureSha256"] == digest(Path(case["feature"]).read_bytes())
         assert any(step["type"] == "Outcome" for step in case["steps"])
         fixture_id = next(re.fullmatch(r'fixture "([^"]+)" verified against the fixture manifest', s["text"])[1]
                           for s in case["steps"] if s["text"].startswith('fixture "'))
@@ -151,6 +154,6 @@ def test_python_constants_match_selected_shared_facts():
 
 
 def test_fixture_submodule_matches_common_tag_and_seals():
-    from tests.fixture_paths import REPOSITORY, verify_fixture_source
+    from tests.fixture_paths import verify_selected_fixture_source
 
-    verify_fixture_source(FIXTURE_SOURCE, json.loads((REPOSITORY / "tests/fixtures-pin.json").read_text()))
+    verify_selected_fixture_source()

@@ -14,7 +14,11 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
-def inventory(paths):
+def inventory(paths, *, scenario_ids=None):
+    """Compile sealed features; select only contract IDs when files contain other work."""
+    selected = None if scenario_ids is None else set(scenario_ids)
+    if selected is not None and (len(selected) != len(scenario_ids) or not selected):
+        raise ValueError("Invalid selected scenario IDs")
     cases = []
     seen_ids = set()
     seen_features = set()
@@ -33,11 +37,18 @@ def inventory(paths):
         rows = {}
         names = set()
         scenarios = []
+        children = []
         for child in feature["children"]:
+            if "scenario" in child:
+                children.append(child)
+            elif "rule" in child:
+                children.extend(child["rule"]["children"])
+            else:
+                raise ValueError("Unsupported feature child")
+        for child in children:
             if "scenario" not in child:
-                raise ValueError("Only direct scenarios are supported in this acceptance lane")
+                raise ValueError("Only scenarios are supported in this acceptance lane")
             scenario = child["scenario"]
-            scenarios.append(scenario)
             if any(t["name"] in {"@implemented", "@planned", "@python"} for t in scenario["tags"]):
                 raise ValueError("Scenario cannot override lifecycle or runner")
             ids = [t["name"] for t in scenario["tags"] if t["name"].startswith("@id-")]
@@ -47,6 +58,8 @@ def inventory(paths):
             if not scenario["name"].strip() or scenario["name"] in names:
                 raise ValueError("Empty or duplicate scenario name")
             names.add(scenario["name"])
+            if selected is None or ids[0] in selected:
+                scenarios.append(scenario)
             if not scenario["steps"] or not any(s["keywordType"] == "Outcome" for s in scenario["steps"]):
                 raise ValueError("Scenario needs at least one outcome assertion")
             for examples in scenario["examples"]:
@@ -66,6 +79,11 @@ def inventory(paths):
         if len({c["name"] for c in compiled}) != len(compiled):
             raise ValueError("Duplicate expanded case name")
         for case in compiled:
+            ids = [t["name"] for t in case["tags"] if t["name"].startswith("@id-")]
+            if len(ids) != 1:
+                raise ValueError("Case overrides scenario identity")
+            if selected is not None and ids[0] not in selected:
+                continue
             for step in case["steps"]:
                 table = step.get("argument", {}).get("dataTable", {}).get("rows", [])
                 if table:
@@ -74,9 +92,6 @@ def inventory(paths):
                         column = header.index("value_json")
                         for row in table[1:]:
                             json.loads(row["cells"][column]["value"])
-            ids = [t["name"] for t in case["tags"] if t["name"].startswith("@id-")]
-            if len(ids) != 1:
-                raise ValueError("Case overrides scenario identity")
             values = next((rows[i] for i in case["astNodeIds"] if i in rows), {})
             stable_key = ids[0] + ":" + json.dumps(values, sort_keys=True, separators=(",", ":"))
             cases.append({
@@ -89,20 +104,50 @@ def inventory(paths):
             })
     if len({c["stableCaseKey"] for c in cases}) != len(cases):
         raise ValueError("Duplicate expanded case identity")
+    if selected is not None and {c["scenarioId"] for c in cases} != selected:
+        raise ValueError("Selected mutation scenarios are missing from sealed features")
     return cases
 
 
-def apply_implementation_mapping(cases, mapping, *, feature_path):
+def apply_implementation_mapping(cases, mapping, *, feature_path=None, feature_paths=None, contract=None):
     """Select locally implemented cases without granting credit from other runners."""
-    if mapping.get("schemaVersion") != 1 or mapping.get("consumer") != "python":
+    if mapping.get("consumer") != "python" or mapping.get("contractRevision") != "ooxml-shared-contracts-v2":
         raise ValueError("Invalid Python implementation mapping")
-    if mapping.get("contractRevision") != "ooxml-shared-contracts-v2":
-        raise ValueError("Unexpected mapped contract revision")
-    if mapping.get("feature") != "workflows/mutation-safety.feature":
-        raise ValueError("Unexpected mapped feature")
-    digest = hashlib.sha256(Path(feature_path).read_bytes()).hexdigest()
-    if mapping.get("featureSha256") != digest or any(c["featureSha256"] != digest for c in cases):
-        raise ValueError("Mapped feature hash mismatch")
+    if mapping.get("schemaVersion") == 1:
+        if (feature_path is None or feature_paths is not None
+                or (contract is not None and contract.get("schemaVersion") != 1)):
+            raise ValueError("Schema-1 mapping requires its released feature")
+        if mapping.get("feature") != "workflows/mutation-safety.feature" or "features" in mapping:
+            raise ValueError("Unexpected mapped feature")
+        digest = hashlib.sha256(Path(feature_path).read_bytes()).hexdigest()
+        if mapping.get("featureSha256") != digest or any(c["featureSha256"] != digest for c in cases):
+            raise ValueError("Mapped feature hash mismatch")
+    elif mapping.get("schemaVersion") == 2:
+        if (contract is None or contract.get("schemaVersion") != 2 or feature_paths is None
+                or feature_path is not None or "feature" in mapping or "featureSha256" in mapping):
+            raise ValueError("Schema-2 mapping requires its feature set")
+        names = contract["features"]
+        records = mapping.get("features")
+        if (not isinstance(records, list) or len(records) != len(names)
+                or [r.get("path") for r in records if isinstance(r, dict)] != names
+                or len(feature_paths) != len(names)):
+            raise ValueError("Mapped feature paths differ from mutation contract")
+        digests = {}
+        for name, record, path in zip(names, records, feature_paths):
+            if Path(path).as_posix().endswith('/' + name) is False:
+                raise ValueError("Mapped feature path mismatch")
+            digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+            if record.get("sha256") != digest:
+                raise ValueError("Mapped feature hash mismatch")
+            digests[str(path)] = digest
+        if any(c["featureSha256"] != digests.get(c["feature"]) for c in cases):
+            raise ValueError("Mapped case feature hash mismatch")
+        if ({c["scenarioId"] for c in cases} != set(contract["scenarioIds"])
+                or len(cases) != contract["expandedCaseCount"]
+                or set(digests) != {c["feature"] for c in cases}):
+            raise ValueError("Mapped mutation case inventory mismatch")
+    else:
+        raise ValueError("Unsupported Python mapping schema")
     keys = mapping.get("implementedCaseKeys")
     if not isinstance(keys, list) or not all(isinstance(k, str) for k in keys) or len(keys) != len(set(keys)):
         raise ValueError("Invalid or duplicate mapped case identities")

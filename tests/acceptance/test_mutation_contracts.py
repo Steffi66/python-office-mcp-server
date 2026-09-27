@@ -12,16 +12,40 @@ import pytest
 from docx import Document
 from openpyxl import load_workbook
 from pptx import Presentation
-from pytest_bdd import given, parsers, scenarios, then, when
+from pytest_bdd import given, parsers, scenario, scenarios, then, when
 
 from office_server import OfficeServer
-from tests.fixture_paths import FEATURE, mutation_contract, preserved_members, shared_fixture
+from tests.fixture_paths import FEATURE, MUTATION_SCENARIO_IDS, mutation_contract, mutation_feature_paths, preserved_members, shared_fixture
 from tools.word_advanced_tools import _get_text_with_track_changes
 
 CONTRACT = mutation_contract()
 S = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
-scenarios(str(FEATURE))
+if CONTRACT["schemaVersion"] == 1:
+    scenarios(str(FEATURE))
+else:
+    # pytest-bdd's scenarios() registers every scenario in a file. Two of the
+    # five schema-2 files also contain style/receipt work owned by other lanes.
+    from gherkin.parser import Parser
+    from tests.acceptance.ledger import inventory
+
+    paths = mutation_feature_paths(CONTRACT)
+    selected = set(MUTATION_SCENARIO_IDS)
+    if len(inventory(paths, scenario_ids=MUTATION_SCENARIO_IDS)) != CONTRACT["expandedCaseCount"]:
+        raise ValueError("Mutation scenario case count differs from sealed contract")
+    for path in paths:
+        feature = Parser().parse(path.read_text())["feature"]
+        for child in feature["children"]:
+            for item in child.get("rule", {}).get("children", [child]):
+                definition = item.get("scenario")
+                if definition is None:
+                    continue
+                ids = [tag["name"] for tag in definition["tags"] if tag["name"].startswith("@id-")]
+                if len(ids) == 1 and ids[0] in selected:
+                    # pytest-bdd expands the outline; never register unrelated
+                    # style or receipt scenarios sharing these feature files.
+                    name = "test_mutation_" + ids[0].removeprefix("@id-").replace("-", "_")
+                    globals()[name] = scenario(str(path), definition["name"])(lambda: None)
 
 
 @pytest.fixture

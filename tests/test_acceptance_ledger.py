@@ -109,3 +109,41 @@ def test_shared_mapping_selects_cases_without_awarding_passes(tmp_path):
             apply_implementation_mapping(inventory([path]), {**mapping, key: value}, feature_path=path)
     apply_implementation_mapping(cases := inventory([path]), {**mapping, 'implementedCaseKeys': []}, feature_path=path)
     assert cases[0]['outcome'] == 'planned'
+
+
+def test_schema2_selects_only_sealed_mutation_cases_across_features(tmp_path):
+    import hashlib
+    from tests.acceptance.ledger import apply_implementation_mapping
+
+    paths = [tmp_path / 'workflows/docx/mutation-safety.feature', tmp_path / 'workflows/xlsx/cell-style.feature']
+    for path in paths:
+        path.parent.mkdir(parents=True, exist_ok=True)
+    paths[0].write_text(FEATURE.replace('@implemented @python', '@planned').replace('@id-xlsx-example', '@id-docx-edit'))
+    paths[1].write_text(FEATURE.replace('@implemented @python', '@planned').replace('Feature: Example', 'Feature: Spreadsheet') + '''
+  @id-xlsx-extra-style
+  Scenario: Unrelated style operation
+    Given an input
+    When editing
+    Then saved value matches
+''')
+    contract = {'schemaVersion': 2, 'features': ['workflows/docx/mutation-safety.feature', 'workflows/xlsx/cell-style.feature'],
+                'scenarioIds': ['@id-docx-edit', '@id-xlsx-example'], 'expandedCaseCount': 2}
+    cases = inventory(paths, scenario_ids=contract['scenarioIds'])
+    assert len(cases) == 2 and '@id-xlsx-extra-style' not in {c['scenarioId'] for c in cases}
+    mapping = {'schemaVersion': 2, 'consumer': 'python', 'contractRevision': 'ooxml-shared-contracts-v2',
+               'features': [{'path': name, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+                            for name, path in zip(contract['features'], paths)],
+               'implementedCaseKeys': [c['stableCaseKey'] for c in cases]}
+    apply_implementation_mapping(cases, mapping, feature_paths=paths, contract=contract)
+    assert all(c['outcome'] == 'not-run' for c in cases)
+    for changed in [dict(mapping, feature='workflows/mutation-safety.feature'),
+                    dict(mapping, features=mapping['features'][:1]),
+                    dict(mapping, features=[dict(mapping['features'][0], sha256='0' * 64), mapping['features'][1]]),
+                    dict(mapping, implementedCaseKeys=mapping['implementedCaseKeys'] + ['unknown'])]:
+        with pytest.raises(ValueError):
+            apply_implementation_mapping(inventory(paths, scenario_ids=contract['scenarioIds']), changed,
+                                         feature_paths=paths, contract=contract)
+    with pytest.raises(ValueError, match='missing'):
+        inventory(paths[:1], scenario_ids=contract['scenarioIds'])
+    with pytest.raises(ValueError):
+        apply_implementation_mapping(cases, mapping, feature_path=paths[0], contract=contract)

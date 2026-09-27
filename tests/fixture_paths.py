@@ -8,9 +8,22 @@ import subprocess
 from pathlib import Path, PurePosixPath
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-FIXTURE_SOURCE = REPOSITORY / "references" / "fixtures-ooxml"
+CANDIDATE_ROOT = os.environ.get("OOXML_FIXTURE_CANDIDATE_ROOT")
+FIXTURE_SOURCE = (Path(CANDIDATE_ROOT).resolve() if CANDIDATE_ROOT
+                  else REPOSITORY / "references" / "fixtures-ooxml")
 CONTRACT = FIXTURE_SOURCE / "contracts" / "mutation-safety.json"
-FEATURE = FIXTURE_SOURCE / "workflows" / "mutation-safety.feature"
+FEATURE = FIXTURE_SOURCE / "workflows" / "mutation-safety.feature"  # Released schema-1 input.
+MUTATION_SCENARIO_IDS = (
+    "@id-pptx-dry-run-no-mutation", "@id-docx-dry-run-no-mutation",
+    "@id-xlsx-dry-run-no-mutation", "@id-xlsx-strict-batch-atomicity",
+    "@id-docx-strict-batch-per-target-results", "@id-pptx-batch-output-accumulates",
+    "@id-xlsx-style-dependency-closure", "@id-xlsx-cross-sheet-cache-invalidation",
+)
+MUTATION_FEATURES_V2 = (
+    "workflows/docx/mutation-safety.feature", "workflows/pptx/mutation-safety.feature",
+    "workflows/xlsx/cell-style.feature", "workflows/xlsx/formula-cache.feature",
+    "workflows/xlsx/mutation-safety.feature",
+)
 
 
 def load_fixture_assets(source):
@@ -102,12 +115,20 @@ def verified_metadata(relative, role, *, source=FIXTURE_SOURCE):
 
 
 def validate_mutation_contract(contract, assets):
-    if (contract.get("schemaVersion") != 1 or contract.get("contractRevision") != "ooxml-shared-contracts-v2"
-            or contract.get("feature") != "workflows/mutation-safety.feature"
+    schema = contract.get("schemaVersion")
+    if (contract.get("contractRevision") != "ooxml-shared-contracts-v2"
             or contract.get("fixturePolicy") != {"membership": "exact", "preserve": "all-except-allowed"}):
         raise RuntimeError("Unsupported mutation contract or preservation policy")
+    if schema == 1:
+        if contract.get("feature") != "workflows/mutation-safety.feature" or "features" in contract:
+            raise RuntimeError("Unexpected schema-1 mutation feature")
+    elif schema == 2:
+        if "feature" in contract or contract.get("features") != list(MUTATION_FEATURES_V2):
+            raise RuntimeError("Unexpected schema-2 mutation features")
+    else:
+        raise RuntimeError("Unsupported mutation contract schema")
     scenario_ids = contract.get("scenarioIds", [])
-    if len(scenario_ids) != 8 or len(set(scenario_ids)) != 8 or contract.get("expandedCaseCount") != 19:
+    if scenario_ids != list(MUTATION_SCENARIO_IDS) or contract.get("expandedCaseCount") != 19:
         raise RuntimeError("Unexpected mutation scenario inventory")
     fixtures = contract.get("fixtures", [])
     if len(fixtures) != 4 or len({r["id"] for r in fixtures}) != 4:
@@ -121,10 +142,19 @@ def validate_mutation_contract(contract, assets):
             raise RuntimeError("Invalid mutation member preservation allowance")
 
 
+def mutation_feature_paths(contract, *, source=FIXTURE_SOURCE):
+    """Return sealed feature files; scenario selection occurs in the compiler."""
+    validate_mutation_contract(contract, load_fixture_assets(source))
+    names = ([contract["feature"]] if contract["schemaVersion"] == 1
+             else contract["features"])
+    for name in names:
+        verified_metadata(name, "workflow", source=source)
+    return [source / name for name in names]
+
+
 def mutation_contract(*, source=FIXTURE_SOURCE):
     contract = json.loads(verified_metadata("contracts/mutation-safety.json", "workflow-contract", source=source))
-    verified_metadata("workflows/mutation-safety.feature", "workflow", source=source)
-    validate_mutation_contract(contract, load_fixture_assets(source))
+    mutation_feature_paths(contract, source=source)
     return contract
 
 
@@ -221,14 +251,51 @@ def verify_fixture_source(source, pin):
         raise RuntimeError("Shared fixture seal mismatch: manifest.json")
 
 
+def acceptance_mapping_path(contract):
+    if contract["schemaVersion"] not in {1, 2}:
+        raise RuntimeError("Unsupported mutation contract schema")
+    return REPOSITORY / "tests/acceptance" / (
+        "shared-mapping-v1.json" if contract["schemaVersion"] == 1 else "shared-mapping.json"
+    )
+
+
+def verify_selected_fixture_source():
+    if not CANDIDATE_ROOT:
+        verify_fixture_source(FIXTURE_SOURCE, json.loads((REPOSITORY / "tests/fixtures-pin.json").read_text()))
+        return
+    commit = os.environ.get("OOXML_FIXTURE_CANDIDATE_COMMIT")
+    seal = os.environ.get("OOXML_FIXTURE_CANDIDATE_MANIFEST_SHA256")
+    if (not commit or len(commit) != 40 or any(c not in "0123456789abcdef" for c in commit)
+            or not seal or len(seal) != 64 or any(c not in "0123456789abcdef" for c in seal)):
+        raise RuntimeError("Candidate requires exact commit and manifest SHA-256")
+    source = FIXTURE_SOURCE
+    if source.is_symlink() or Path(subprocess.check_output([
+            "git", "-C", str(source), "rev-parse", "--show-toplevel"], text=True).strip()).resolve() != source:
+        raise RuntimeError("Candidate root must be a Git checkout, not a symlink")
+    if subprocess.check_output(["git", "-C", str(source), "rev-parse", "HEAD"], text=True).strip() != commit:
+        raise RuntimeError("Candidate commit mismatch")
+    if subprocess.check_output(["git", "--no-optional-locks", "-C", str(source), "status", "--porcelain",
+                                "--untracked-files=all"], text=True).strip():
+        raise RuntimeError("Candidate checkout must be clean")
+    if hashlib.sha256((source / "manifest.json").read_bytes()).hexdigest() != seal:
+        raise RuntimeError("Candidate manifest seal mismatch")
+    def git_bytes(*args):
+        result = subprocess.run(["git", "--no-optional-locks", "--no-replace-objects", "-C", str(source), *args], capture_output=True)
+        if result.returncode:
+            raise RuntimeError("Cannot verify candidate Git blobs")
+        return result.stdout
+    _verify_tracked_payloads(source, commit, git_bytes)
+
+
 def require_fixtures():
-    required = [FIXTURE_SOURCE / "manifest.json", CONTRACT, FEATURE]
+    required = [FIXTURE_SOURCE / "manifest.json", CONTRACT]
     missing = [str(path.relative_to(REPOSITORY)) for path in required if not path.is_file()]
     if missing:
         raise RuntimeError("Shared fixtures are missing; run git submodule update --init --recursive. "
                            "Missing: " + ", ".join(missing))
-    verify_fixture_source(FIXTURE_SOURCE, json.loads((REPOSITORY / "tests/fixtures-pin.json").read_text()))
+    verify_selected_fixture_source()
+    contract = mutation_contract()
     for asset_id in template_asset_ids().values():
         fixture_path(asset_id)
-    for record in mutation_contract()["fixtures"]:
+    for record in contract["fixtures"]:
         shared_fixture(record["id"])
