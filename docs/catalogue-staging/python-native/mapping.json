@@ -10613,6 +10613,18 @@
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
+      "canonicalTransfer": {
+        "formerCandidateScenarioId": "@candidate-python-high-volume-68bcd8d447",
+        "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_high_volume.feature",
+        "historicalFeatureSha256": "f3425a3273202dc2f58ef554ddf30c79f9fb58d40349bfa56c31eb06d6769c2f",
+        "previousCurrentFeatureSha256": "a794ecf4405ba3c40cc31009f4ceb90e075a88773667591d222c5f7a59882c22",
+        "currentFeature": "references/fixtures-ooxml/staging/python/features/test_high_volume.feature",
+        "currentFeatureSha256": "30af102c1cd276c39095593bd493117a0b5469e4a5957924a48a01b1feff6953",
+        "canonicalScenarioId": "@id-pptx-notes-collection-read",
+        "variant": "untitled",
+        "executionCredit": false,
+        "scope": "The retired staged scenario checked only dict type. This native test now checks exact notes, refusals and package custody on an untitled four-slide copy; mapping does not execute shared Gherkin."
+      },
       "gaps": []
     },
     {
@@ -28052,6 +28064,18 @@
       "captureStatus": "captured-for-reconciliation",
       "semanticReview": "unreviewed-extraction",
       "executionStatus": "not-executed-by-catalogue",
+      "canonicalTransfer": {
+        "formerCandidateScenarioId": "@candidate-python-word-pptx-advanced-ops-b86a4362b4",
+        "historicalFeature": "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature",
+        "historicalFeatureSha256": "ed3eb2d0d7cdb20757eaf97549b1b4615be110c60144308920a4d3905fcafb5c",
+        "previousCurrentFeatureSha256": "a93477a7f007fc9e2d9754466a890ace273e1ad318fae6f2cc84e10eaf3a1d45",
+        "currentFeature": "references/fixtures-ooxml/staging/python/features/test_word_pptx_advanced_ops.feature",
+        "currentFeatureSha256": "6731cc5824c25bdb838feb24500c8bf1321c722a063e595d1feddde5b77bbc1e",
+        "canonicalScenarioId": "@id-pptx-notes-collection-read",
+        "variant": "titled",
+        "executionCredit": false,
+        "scope": "The retired staged scenario checked only dict type. This native test now checks exact notes, refusals and package custody on a titled four-slide copy; mapping does not execute shared Gherkin."
+      },
       "gaps": []
     },
     {

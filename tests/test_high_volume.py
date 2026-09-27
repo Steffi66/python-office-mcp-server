@@ -9,6 +9,7 @@ from pptx import Presentation
 from pptx.util import Inches as PptxInches
 
 from tests.layout_recommendation_expectations import assert_ranked_layout
+from tests.notes_collection_expectations import assert_notes_collection
 
 # Fixture temp_dir is provided by conftest.py
 
@@ -299,17 +300,8 @@ class TestPptxGetNotes:
         assert isinstance(result, dict)
 
     def test_get_notes_all_slides(self, pptx_advanced_tools, temp_dir):
-        """Should get notes from all slides."""
-        prs = Presentation()
-        for i in range(3):
-            slide = prs.slides.add_slide(prs.slide_layouts[1])
-            notes_slide = slide.notes_slide
-            notes_slide.notes_text_frame.text = f"Notes for slide {i+1}"
-        path = temp_dir / "all_notes.pptx"
-        prs.save(path)
-
-        result = pptx_advanced_tools.tool_pptx_get_notes(str(path))
-        assert isinstance(result, dict)
+        """Untitled slides return three exact notes without creating a fourth notes part."""
+        assert_notes_collection(pptx_advanced_tools, temp_dir, titled=False)
 
 
 class TestPptxGetTable:
