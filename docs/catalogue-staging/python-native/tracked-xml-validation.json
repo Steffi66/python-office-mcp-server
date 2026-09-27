@@ -62,9 +62,19 @@
   "nativeTestsRun": false,
   "executionCredit": false,
   "parityCredit": false,
+  "historicalFeatureSeal": {
+    "path": "docs/catalogue-staging/python-native/features/test_track_changes.feature",
+    "sha256": "85248830137acd30f3e291814a6fe4b2ad2b6cb32e80546cceaf6f774776a59b",
+    "scope": "Six tracked-change helper XML structure descriptions reviewed at a90503dd5473fa427d8a713cb353ce7a8e82ff79; later tracked-workflow edits changed the feature bytes. This is historical review evidence, not a seal on the current central copy."
+  },
+  "currentFeatureCustody": {
+    "path": "references/fixtures-ooxml/staging/python/features/test_track_changes.feature",
+    "sha256": "f723d55d19a6f5f4454cf5b2cf3cc4e87947570f4ff411412cf7d4433ee72133",
+    "scope": "Byte-identical move of the latest local candidate feature; no retrospective semantic review or execution credit."
+  },
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "033163827c01765f59ee4ad37ac2f09eb8182eaf72f305b68b6053ecb20a5b0b",
-    "docs/catalogue-staging/python-native/features/test_track_changes.feature": "85248830137acd30f3e291814a6fe4b2ad2b6cb32e80546cceaf6f774776a59b",
+    "references/fixtures-ooxml/staging/python/features/test_track_changes.feature": "f723d55d19a6f5f4454cf5b2cf3cc4e87947570f4ff411412cf7d4433ee72133",
     "docs/catalogue-staging/python-native/mapping.json": "8e1651abf4e4707acc2a51ba224a18979d1abdbe303a0e482b6d05dd72cbd590",
     "docs/catalogue-staging/python-native/tracked-xml-review.md": "dbf579d42e2ed007ad62c81a5151a676ae12a051ce33f0612eaa723698ff1e85"
   },

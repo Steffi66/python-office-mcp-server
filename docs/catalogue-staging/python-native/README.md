@@ -1,6 +1,6 @@
 # Python native behaviour capture — reconciliation input
 
-This directory stages Python test descriptions for import and reconciliation in `fixtures-ooxml`. It is not an independent functional specification, an executable binding suite or a claim that every description is semantically complete.
+The 67 captured feature files live in the pinned shared submodule at `references/fixtures-ooxml/staging/python/features/`. This directory retains Python's native-source mapping and historical review records. The capture is reconciliation input, not an executable binding suite or a claim that every description is semantically complete.
 
 ## Scope
 
@@ -16,7 +16,7 @@ Every definition has a candidate scenario ID, source path/line/hash, native node
 
 ## What was checked
 
-The official Gherkin parser/compiler accepts all 67 feature files and finds 1,022 unique candidate scenarios. Each scenario has context, action and outcome steps. Mappings cover every collected native definition and parameter instance. These checks establish inventory and syntax, not semantic equivalence or execution.
+The official Gherkin parser/compiler accepted all 67 feature files and found 1,022 unique candidate scenarios at the recorded capture. The relocated files retain those exact bytes and IDs. Each scenario has context, action and outcome steps. Mappings cover every collected native definition and parameter instance. These checks establish inventory and syntax, not semantic equivalence or execution.
 
 Descriptions were extracted from native fixture documentation, concrete calls, assertions and collected parameters. Sixty-six definitions have manually authored semantic overrides, covering manual Word inspection, LibreOffice, HTTP, mutation faults, pure helpers and selected Markdown/package cases. Other entries are explicitly marked `unreviewed-extraction` in the mapping.
 
@@ -78,12 +78,14 @@ The [slide-transfer review](slide-transfer-review.md) checks five definitions at
 
 `mapping.json` lists 217 entries with explicit gaps: all 140 original entries, ten comment-resolution entries, ten reply/roundtrip entries, six cross-format comment entries, two new formatting-analysis entries, seven transaction entries, three text-box listing entries, three new XLSX dependency entries, five text/clone entries, six tracked-XML entries, nine new tracked-workflow entries, eleven diagnostics/mode entries and five slide-transfer entries. The tracked-workflow review also corrects one existing gap while retaining its original text. The XLSX review also extends two existing gaps without dropping their earlier messages. The formatting review also extends one existing gap without dropping its earlier message. This includes conditional assertions that may not run, alternative outcomes, timing-window checks, manual-only observations and extraction details needing semantic review. Entries without an automatic gap flag still need central semantic review; absence of a flag is not approval.
 
+`mapping.json` points each of its 1,022 candidate definitions to `references/fixtures-ooxml/staging/python/features/`; `sourceFileHashes` continue to identify native Python test files. Existing historical validation records retain their source revisions and review scope. In `tracked-xml-validation.json`, `historicalFeatureSeal` records the older reviewed feature hash while `currentFeatureCustody` identifies the latest byte-identical central copy; moving a feature does not rerun its semantic review.
+
 The central reconciliation must:
 
 1. Dedupe these candidates against existing canonical scenarios by behaviour, not test names.
 2. Preserve real preconditions, operations, saved-document effects and exact parameter/refusal variants.
 3. Record conflicting expectations as issues rather than merging contradictory outcomes.
 4. Keep coverage gaps and smoke-only assertions distinct from stronger requirements.
-5. Move authoritative functional Gherkin centrally and retain only Python mappings/adapters locally.
+5. Keep authoritative functional Gherkin and captured candidates centrally; retain only Python mappings and adapters locally.
 
 Captured scenarios receive no execution credit. Existing pytest and 19-case acceptance results remain separate source-pinned evidence. Merely parsing this directory does not run an Office operation. No external implementation or test source is included here.

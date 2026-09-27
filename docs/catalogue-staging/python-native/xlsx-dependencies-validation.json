@@ -60,7 +60,7 @@
   "parityCredit": false,
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "50bf03b741fb7e2c9387e3c3334fcaf8d0db916eef4c71ed7e84706cff7fc8f9",
-    "docs/catalogue-staging/python-native/features/test_xlsx_dependency_preservation.feature": "887eea35fea9dd8ec799b3c75653e6ca16fa076742a54f85bd79be6cab036dde",
+    "references/fixtures-ooxml/staging/python/features/test_xlsx_dependency_preservation.feature": "887eea35fea9dd8ec799b3c75653e6ca16fa076742a54f85bd79be6cab036dde",
     "docs/catalogue-staging/python-native/mapping.json": "0d882ebf88cee0c1e488faab5cd6910c4677a23bdc8dcce579832a339170e8e0",
     "docs/catalogue-staging/python-native/xlsx-dependencies-review.md": "605d96ca1a59e8aac2132b1f137b907f61e4ba2687df7894a9e6c6b7a3702452"
   },

@@ -80,7 +80,7 @@
   "parityCredit": false,
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "0edb7a33c9fd829801c32e7ead2ad23c513af4ac22c78646538a03ba710d18d3",
-    "docs/catalogue-staging/python-native/features/test_track_changes.feature": "f723d55d19a6f5f4454cf5b2cf3cc4e87947570f4ff411412cf7d4433ee72133",
+    "references/fixtures-ooxml/staging/python/features/test_track_changes.feature": "f723d55d19a6f5f4454cf5b2cf3cc4e87947570f4ff411412cf7d4433ee72133",
     "docs/catalogue-staging/python-native/mapping.json": "a95855ae4a2327240edd4cdb57aa0b841d8e93127edc1b90c915fb19dc9c6b3d",
     "docs/catalogue-staging/python-native/tracked-workflows-review.md": "aa2232b8c132fdf22401742fe3f138862e65a927c1f1f99b7c89cba7045b1112"
   },

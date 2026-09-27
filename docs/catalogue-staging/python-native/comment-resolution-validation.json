@@ -36,7 +36,7 @@
   "executionCredit": false,
   "parityCredit": false,
   "artifactSha256": {
-    "docs/catalogue-staging/python-native/features/test_word_comment_resolution.feature": "e463eeff4c9e2446857c029b62f1826662ee826ae7d3f0d66e7bfadd392de1f4",
+    "references/fixtures-ooxml/staging/python/features/test_word_comment_resolution.feature": "e463eeff4c9e2446857c029b62f1826662ee826ae7d3f0d66e7bfadd392de1f4",
     "docs/catalogue-staging/python-native/mapping.json": "4b17cdc714551c32677cbf0dffe8421fc2624c0697700957333a2cfd6561a4ea",
     "docs/catalogue-staging/python-native/comment-resolution-review.md": "b6b4ca7273f22ec1ee7f1c2072884e8d8fd038fea9ccd8c2bf51149e32d8d3b2",
     "docs/catalogue-staging/python-native/README.md": "8c3ac99262fa40d0e928d04929f63a27f251b4e0526088fa10dd73b1c17cddd6"

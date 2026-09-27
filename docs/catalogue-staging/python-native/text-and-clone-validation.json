@@ -23,7 +23,7 @@
     "compiledCases": 5,
     "features": [
       {
-        "feature": "docs/catalogue-staging/python-native/features/test_preserving_text_and_clone.feature",
+        "feature": "references/fixtures-ooxml/staging/python/features/test_preserving_text_and_clone.feature",
         "cases": 5,
         "compiledStepsIncludingBackground": 45
       }
@@ -44,7 +44,7 @@
   "parityCredit": false,
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "3515bb8f99f1065264001c1470cfefaf819d384d09a0c12ed80ecca18a74e728",
-    "docs/catalogue-staging/python-native/features/test_preserving_text_and_clone.feature": "49f9c33fecb4db637ceb3240a5d0f4860dc188841b4e7629ee2bcedd39115ecd",
+    "references/fixtures-ooxml/staging/python/features/test_preserving_text_and_clone.feature": "49f9c33fecb4db637ceb3240a5d0f4860dc188841b4e7629ee2bcedd39115ecd",
     "docs/catalogue-staging/python-native/mapping.json": "b7bb5eed39ebc72393dad70b655f6afcdfc3d634e70828bc1817374666a4a027",
     "docs/catalogue-staging/python-native/text-and-clone-review.md": "8ab75743808c37263c6219c1c3a39a87037aca0f5cbfb57ecb69dc0dd9aea2ce"
   },

@@ -24,7 +24,7 @@
     "compiledCases": 5,
     "features": [
       {
-        "feature": "docs/catalogue-staging/python-native/features/test_pptx_slide_transfer_tools.feature",
+        "feature": "references/fixtures-ooxml/staging/python/features/test_pptx_slide_transfer_tools.feature",
         "cases": 5,
         "compiledStepsIncludingBackground": 50
       }
@@ -45,7 +45,7 @@
   "parityCredit": false,
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "83f6637144c1a0a27f28c9babcdda13477aa8834e1026efa036d47673ba600ce",
-    "docs/catalogue-staging/python-native/features/test_pptx_slide_transfer_tools.feature": "75fa5a41a16c0654d17a841e05930d7c34db1de5e29d17fd0ba3e4bbd1c781f9",
+    "references/fixtures-ooxml/staging/python/features/test_pptx_slide_transfer_tools.feature": "75fa5a41a16c0654d17a841e05930d7c34db1de5e29d17fd0ba3e4bbd1c781f9",
     "docs/catalogue-staging/python-native/mapping.json": "580ccd51b140f4178c308b81fb964c09f0331a923094038a3e1e19546b3b5793",
     "docs/catalogue-staging/python-native/slide-transfer-review.md": "851f8b5b17fac98a8cf7c90115078dd2b2d932e4b2e12ae94689ef4b7dfed6a4"
   },

@@ -24,12 +24,12 @@
     "compiledCases": 11,
     "features": [
       {
-        "feature": "docs/catalogue-staging/python-native/features/test_mutation_diagnostics.feature",
+        "feature": "references/fixtures-ooxml/staging/python/features/test_mutation_diagnostics.feature",
         "cases": 5,
         "compiledStepsIncludingBackground": 36
       },
       {
-        "feature": "docs/catalogue-staging/python-native/features/test_mutation_modes.feature",
+        "feature": "references/fixtures-ooxml/staging/python/features/test_mutation_modes.feature",
         "cases": 6,
         "compiledStepsIncludingBackground": 37
       }
@@ -50,8 +50,8 @@
   "parityCredit": false,
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "8f0e9299fa0e2f5df233371300b062df67e0a7ab408a45b0e915457a58348637",
-    "docs/catalogue-staging/python-native/features/test_mutation_diagnostics.feature": "396c2ab36de5094a21a495e11faed2f1ffd50463b1954a7ab8933be85f0ee9ed",
-    "docs/catalogue-staging/python-native/features/test_mutation_modes.feature": "bb4d06658417bc0da307f9833a23b317a6f75d35a7dc448cc14624331ad6903f",
+    "references/fixtures-ooxml/staging/python/features/test_mutation_diagnostics.feature": "396c2ab36de5094a21a495e11faed2f1ffd50463b1954a7ab8933be85f0ee9ed",
+    "references/fixtures-ooxml/staging/python/features/test_mutation_modes.feature": "bb4d06658417bc0da307f9833a23b317a6f75d35a7dc448cc14624331ad6903f",
     "docs/catalogue-staging/python-native/mapping.json": "b2616638b98bfbcaddac695a4cc5c51a6deff3c9bc99cc9c76ed91a1e1bfe5e2",
     "docs/catalogue-staging/python-native/mutation-diagnostics-modes-review.md": "4d81a8efe10906051bac22e7c29f173817acc16edde4f75e2df2f60f928fa378"
   },

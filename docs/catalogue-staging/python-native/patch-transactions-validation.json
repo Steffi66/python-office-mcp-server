@@ -24,7 +24,7 @@
     "parameterTableRowsUnchanged": true,
     "features": [
       {
-        "feature": "docs/catalogue-staging/python-native/features/test_patch_transactions.feature",
+        "feature": "references/fixtures-ooxml/staging/python/features/test_patch_transactions.feature",
         "cases": 7,
         "compiledStepsIncludingBackground": 54
       }
@@ -45,7 +45,7 @@
   "parityCredit": false,
   "artifactSha256": {
     "docs/catalogue-staging/python-native/README.md": "171f1b4371b5cb1136aba48a9afe375d8693c24a7c4d904130efa11fc2ae30c7",
-    "docs/catalogue-staging/python-native/features/test_patch_transactions.feature": "d5367cafbf97e21990bb98f32693b3b0789ad4835fb4eeefd743dd0f0bceb9c2",
+    "references/fixtures-ooxml/staging/python/features/test_patch_transactions.feature": "d5367cafbf97e21990bb98f32693b3b0789ad4835fb4eeefd743dd0f0bceb9c2",
     "docs/catalogue-staging/python-native/mapping.json": "c41ea26f2b25ea304de2dbaa93a6a75c4dfa5917c548219acd380b10c8e8a704",
     "docs/catalogue-staging/python-native/patch-transactions-review.md": "d42c3494509f780e21b18081bad9033c5431d6b5e2f314318077979bc7e325d3"
   },
