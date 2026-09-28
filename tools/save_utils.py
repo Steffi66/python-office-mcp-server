@@ -247,6 +247,8 @@ def merge_xlsx_preserving_package(
     staged_path: str,
     output_path: str,
     edited_sheets: set[str],
+    cache_policy: str = "invalidate-all-formula-caches",
+    edited_cells: set[tuple[str, str]] | None = None,
 ) -> dict[str, Any]:
     """Write edited sheets and their supported dependencies into the original package.
 
@@ -270,7 +272,8 @@ def merge_xlsx_preserving_package(
 
     with zipfile.ZipFile(source_path) as source_zip, zipfile.ZipFile(staged_path) as staged_zip:
         removed, recalculation_required = repair_dependencies(
-            source_zip, staged_zip, replacement_entries, set(source_sheet_map.values())
+            source_zip, staged_zip, replacement_entries, set(source_sheet_map.values()),
+            cache_policy=cache_policy, edited_cells=edited_cells, sheet_map=source_sheet_map,
         )
 
     fd, temp_output = tempfile.mkstemp(suffix=Path(output_path).suffix or ".xlsx", dir=Path(output_path).parent)
@@ -299,7 +302,7 @@ def merge_xlsx_preserving_package(
             os.unlink(temp_output)
     return {
         "calculation_state": "recalculation-required" if recalculation_required else "not-required",
-        "cache_policy": "invalidate-all-formula-caches",
+        "cache_policy": cache_policy,
         "changed_parts": sorted(replacement_entries),
         "removed_parts": sorted(removed),
     }
