@@ -767,6 +767,7 @@ class OfficeUnifiedTools:
         track_changes: bool = True,
         output_path: str | None = None,
         mode: Literal["best_effort", "safe", "strict", "dry_run"] = "best_effort",
+        cache_policy: Literal["invalidate-all-formula-caches", "invalidate-dependent-formula-caches"] = "invalidate-all-formula-caches",
     ) -> dict[str, Any]:
         """Apply edits to Word, Excel, or PowerPoint documents.
 
@@ -847,15 +848,21 @@ class OfficeUnifiedTools:
         if doc_format is None:
             return _unsupported_format_error(file_path)
 
+        if not isinstance(changes, list):
+            return {"error": "Each change requires a non-empty string target", "success": False, "changes_applied": 0, "errors": 1}
         if not changes:
             return {"error": "No changes provided", "changes_applied": 0}
         if mode not in {"best_effort", "safe", "strict", "dry_run"}:
             return {"error": "Unsupported mutation mode", "success": False, "changes_applied": 0}
-        if not isinstance(changes, list) or any(
-            not isinstance(change, dict) or not isinstance(change.get("target"), str)
-            or not change["target"].strip() for change in changes
-        ):
+        if cache_policy not in {"invalidate-all-formula-caches", "invalidate-dependent-formula-caches"}:
+            return {"error": "Unsupported formula cache policy", "success": False, "changes_applied": 0}
+        if any(not isinstance(change, dict) or not isinstance(change.get("target"), str)
+               or not change["target"].strip() for change in changes):
             return {"error": "Each change requires a non-empty string target", "success": False, "changes_applied": 0, "errors": 1}
+        if cache_policy == "invalidate-dependent-formula-caches" and (doc_format != "excel" or len(changes) != 1
+                or type(changes[0].get("value")) not in (int, float)
+                or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*![A-Z]{1,3}[1-9][0-9]{0,6}", changes[0]["target"])):
+            return {"error": "Dependency-aware cache policy requires one explicit-sheet numeric cell edit", "success": False, "changes_applied": 0}
 
         if mode == "safe" and (output_path is None or Path(output_path).resolve() == Path(file_path).resolve()):
             return {
@@ -873,11 +880,11 @@ class OfficeUnifiedTools:
         return stage_patch(
             file_path, output_path, mode, len(changes),
             lambda staged: self._apply_patch_staged(
-                staged, changes, doc_format, "strict" if mode == "strict" else "best_effort"
+                staged, changes, doc_format, "strict" if mode == "strict" else "best_effort", cache_policy
             ),
         )
 
-    def _apply_patch_staged(self, file_path, changes, doc_format, mode):
+    def _apply_patch_staged(self, file_path, changes, doc_format, mode, cache_policy="invalidate-all-formula-caches"):
         """Internal writer: file_path is always a private staged document."""
         output_path = None
         results = []
@@ -894,6 +901,7 @@ class OfficeUnifiedTools:
                 return {"error": f"Failed to load workbook: {e}"}
 
             edited_sheets: set[str] = set()
+            edited_cells: set[tuple[str, str]] = set()
             preservation_receipt = {}
             try:
                 any_applied = False
@@ -1011,6 +1019,7 @@ class OfficeUnifiedTools:
                         _auto_row_height(ws, cell.row, cell=cell)
                     any_applied = True
                     edited_sheets.add(target_sheet)
+                    edited_cells.add((target_sheet, cell.coordinate))
                     results.append({
                         "target": target,
                         "success": True,
@@ -1031,6 +1040,8 @@ class OfficeUnifiedTools:
                             staged_path=staged_save_path,
                             output_path=save_path,
                             edited_sheets=edited_sheets,
+                            cache_policy=cache_policy,
+                            edited_cells=edited_cells,
                         )
                     except Exception as e:
                         return {"error": f"Failed to save workbook: {e}"}
