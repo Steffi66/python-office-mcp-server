@@ -4,7 +4,7 @@ The 67 captured feature files live in the pinned shared submodule at `references
 
 ## Scope
 
-This is the recorded pre-v0.4 capture denominator, not the current pytest collection. The bounded persistent comparison and package-admission lanes and their mapping guards were added afterwards; wider catalogue regeneration/reconciliation has not been completed.
+This is the recorded pre-v0.4 capture denominator, not the current pytest collection. The [current-source reconciliation](current-denominator.md) counts definitions, parameter variants and six distinct acceptance lanes at Python `2608e13` without changing this historical mapping. Wider catalogue regeneration/reconciliation has not been completed.
 
 - 1,022 native test definitions across 67 test modules.
 - 1,147 collected native cases, including parameter variants.
