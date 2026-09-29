@@ -1,7 +1,8 @@
 """Bounded ZIP/XML admission for staged Office writes.
 
-Implements the documented rejection contracts. Complete raw ZIP offset/overlap
-validation and ECMA schema validation are outside this helper's scope.
+Includes a narrow ZIP32 single-disk STORED extent preflight. Complete ZIP64,
+compressed-member overlap validation and ECMA schema validation remain outside
+this helper's scope.
 """
 
 import posixpath
@@ -63,6 +64,55 @@ def inspect_unsigned_zip32_descriptor(path):
             "compressed_bytes": compressed, "uncompressed_bytes": uncompressed}
 
 
+def _refuse_zip32_stored_overlap(path, infos):
+    """Reject intersecting local-header/payload extents in a bounded ZIP32 profile.
+
+    Unsupported layouts fall through to normal admission, not an assertion of
+    overlap safety. No decompression or CRC result is inferred from this probe.
+    """
+    if path.stat().st_size > 1024 * 1024 or not infos:
+        return
+    data = path.read_bytes()
+    eocd = len(data) - 22
+    if eocd < 0 or data[eocd:eocd + 4] != b"PK\x05\x06":
+        return  # Comments, ZIP64, or other layouts are not this profile.
+    try:
+        disk, central_disk, disk_count, count, central_size, central_start, comment = struct.unpack_from("<HHHHIIH", data, eocd + 4)
+        if (disk, central_disk, comment) != (0, 0, 0) or count != disk_count or count != len(infos) or central_start + central_size != eocd:
+            return
+        cursor = central_start
+        extents = []
+        for _ in range(count):
+            if cursor + 46 > eocd:
+                return
+            (sig, _, _, flags, method, _, _, crc, size, length, name_size,
+             extra_size, comment_size, start_disk, _, _, local) = struct.unpack_from("<IHHHHHHIIIHHHHHII", data, cursor)
+            if (sig != 0x02014B50 or flags != 0 or method != 0 or start_disk != 0
+                    or size != length or size == 0xffffffff or local == 0xffffffff
+                    or cursor + 46 + name_size + extra_size + comment_size > eocd
+                    or local + 30 > central_start):
+                return
+            name = data[cursor + 46:cursor + 46 + name_size]
+            (local_sig, _, local_flags, local_method, _, _, local_crc, local_size,
+             local_length, local_name_size, local_extra_size) = struct.unpack_from("<IHHHHHIIIHH", data, local)
+            payload_start = local + 30 + local_name_size + local_extra_size
+            payload_end = payload_start + size
+            if (local_sig != 0x04034B50 or local_flags != flags or local_method != method
+                    or (local_crc, local_size, local_length) != (crc, size, length)
+                    or data[local + 30:local + 30 + local_name_size] != name
+                    or payload_end > central_start):
+                return
+            extents.append((local, payload_end))
+            cursor += 46 + name_size + extra_size + comment_size
+        if cursor != eocd:
+            return
+    except (struct.error, ValueError):
+        return
+    extents.sort()
+    if any(next_start < end for (_, end), (next_start, _) in zip(extents, extents[1:])):
+        raise PackageAdmissionError("Invalid package: physical member overlap")
+
+
 def admit_package(path, *, max_members=10000, max_member_bytes=64 * 1024 * 1024,
                   max_total_bytes=256 * 1024 * 1024, max_ratio=1000,
                   max_source_bytes=256 * 1024 * 1024):
@@ -103,6 +153,7 @@ def admit_package(path, *, max_members=10000, max_member_bytes=64 * 1024 * 1024,
             total += info.file_size
             if total > max_total_bytes or info.file_size > max(1, info.compress_size) * max_ratio:
                 raise PackageAdmissionError("Package inflation limit exceeded")
+        _refuse_zip32_stored_overlap(path, infos)
         for info in infos:
             if info.is_dir():
                 continue
