@@ -94,6 +94,11 @@ def staged_writer(function=None, *, source_argument="file_path", read_operations
                 result = method(self, **call)
                 if not isinstance(result, dict):
                     raise ValueError("Writer must return structured diagnostics")
+                if (method.__name__ == "tool_word_resolve_comment" and result.get("unchanged")
+                        and output and Path(output).resolve() != Path(source)):
+                    # A no-op cannot name an output that stage_patch will not
+                    # publish. Leave even a pre-existing destination untouched.
+                    result.update(success=False, error="No-op comment resolution cannot publish a distinct output_path")
                 changed = Path(staged).read_bytes() != before
                 accepted = not result.get("error") and result.get("success", True)
                 result.setdefault("success", bool(accepted))

@@ -46,6 +46,151 @@ def _is_done_value(value: str | None) -> bool:
     return str(value or "").strip().lower() in {"1", "true", "yes"}
 
 
+def _splice_existing_comment_done(source: bytes, para_id: str, resolved: bool) -> bytes | None:
+    """Select a unique expanded-name commentEx and replace only its UTF-8 done value.
+
+    Expat supplies the start-tag byte offset and expanded element/attribute names;
+    a deliberately narrow lexical scanner binds that exact start tag to one value
+    span. Refuse lexical forms whose one-byte edit cannot be proved unambiguous.
+    """
+    import re
+    from xml.parsers import expat
+
+    if (source.startswith((b'\xef\xbb\xbf', b'\xff\xfe', b'\xfe\xff'))
+            or b'\x00' in source or b'<!' in source or b'&' in source):
+        raise ValueError("Unsafe existing commentsExtended encoding or markup")
+    if not re.match(rb'^<\?xml[ \t\r\n]+version[ \t\r\n]*=[ \t\r\n]*([\x27\x22])1\.0\1[ \t\r\n]+encoding[ \t\r\n]*=[ \t\r\n]*([\x27\x22])[Uu][Tt][Ff]-8\2', source):
+        raise ValueError("Existing commentsExtended must declare UTF-8")
+
+    selected: list[tuple[int, int, bytes, dict[str, str], dict[str, str]]] = []
+    seen_para_ids: set[str] = set()
+    parser = expat.ParserCreate(namespace_separator='}')
+    parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
+    root_tag = f'{W15_NS}}}commentsEx'
+    entry_tag = f'{W15_NS}}}commentEx'
+    para_attr = f'{W15_NS}}}paraId'
+    done_attr = f'{W15_NS}}}done'
+    depth = 0
+    pending_ns: dict[str, str] = {}
+    namespaces: list[dict[str, str]] = []
+
+    def declare(prefix, uri):
+        pending_ns[prefix or ''] = uri
+
+    def start(name, attrs):
+        nonlocal depth
+        current_ns = dict(namespaces[-1]) if namespaces else {}
+        current_ns.update(pending_ns)
+        pending_ns.clear()
+        namespaces.append(current_ns)
+        if depth == 0 and name != root_tag:
+            raise ValueError("Unexpected commentsExtended root")
+        if depth > 1:
+            raise ValueError("Nested existing commentEx structure is unsupported")
+        if depth == 1:
+            if name != entry_tag:
+                raise ValueError("Unsupported commentsExtended child")
+            pid = attrs.get(para_attr)
+            if not pid or pid in seen_para_ids:
+                raise ValueError("Missing or duplicate commentEx paraId")
+            seen_para_ids.add(pid)
+            if done_attr not in attrs or attrs[done_attr] not in ('0', '1'):
+                raise ValueError("Missing or invalid commentEx done value")
+            if pid == para_id:
+                offset = parser.CurrentByteIndex
+                # Reject > inside quotes and all nonempty or mixed-content entries;
+                # only the selected empty element has a unique lexical span.
+                quote = None
+                stop = None
+                for position in range(offset, len(source)):
+                    char = source[position]
+                    if quote is not None:
+                        if char == quote:
+                            quote = None
+                    elif char in (34, 39):
+                        quote = char
+                    elif char == 62:
+                        stop = position
+                        break
+                if stop is None or source[offset:stop].rstrip()[-1:] != b'/':
+                    raise ValueError("Unsupported commentEx lexical structure")
+                tag = source[offset:stop + 1]
+                if not re.fullmatch(rb'<[A-Za-z_][\w.:-]*(?:[ \t\r\n]+[A-Za-z_][\w.:-]*[ \t\r\n]*=[ \t\r\n]*([\x27\x22])[^\x27\x22<>]*\1)*[ \t\r\n]*/[ \t\r\n]*>', tag):
+                    raise ValueError("Unsupported commentEx lexical attributes")
+                literal_tag = re.match(rb'<([A-Za-z_][\w.:-]*)', tag).group(1).decode('ascii')
+                if ':' in literal_tag:
+                    prefix, local = literal_tag.split(':', 1)
+                    expanded_tag = f'{current_ns.get(prefix)}}}{local}'
+                else:
+                    expanded_tag = f'{current_ns.get("")}}}{literal_tag}' if current_ns.get('') else literal_tag
+                if expanded_tag != name:
+                    raise ValueError("Lexical commentEx element disagrees with expanded identity")
+                selected.append((offset, stop, tag, current_ns, attrs))
+        depth += 1
+
+    def end(_name):
+        nonlocal depth
+        depth -= 1
+        namespaces.pop()
+
+    def text(data):
+        if data.strip():
+            raise ValueError("Existing commentsExtended text content is unsupported")
+
+    def refuse_instruction(_target, _data):
+        raise ValueError("Processing instructions in commentsExtended are unsupported")
+
+    parser.StartNamespaceDeclHandler = declare
+    parser.StartElementHandler = start
+    parser.EndElementHandler = end
+    parser.CharacterDataHandler = text
+    parser.ProcessingInstructionHandler = refuse_instruction
+    parser.Parse(source, True)
+    if len(selected) != 1:
+        raise ValueError("Missing or ambiguous root commentEx")
+    offset, stop, tag, current_ns, attrs = selected[0]
+    # Match each lexical QName against the expanded parser attributes. Never
+    # select a same-local-name attribute from another namespace.
+    lexical_attrs = list(re.finditer(rb'([A-Za-z_][\w.:-]*)[ \t\r\n]*=[ \t\r\n]*([\x27\x22])([^\x27\x22<>]*)\2', tag))
+    expanded = {}
+    spans = {}
+    local_names = []
+    for match in lexical_attrs:
+        literal = match.group(1).decode('ascii', 'strict')
+        if literal == 'xmlns' or literal.startswith('xmlns:'):
+            continue
+        if ':' in literal:
+            prefix, local = literal.split(':', 1)
+            if prefix not in current_ns:
+                raise ValueError("Unbound lexical commentEx attribute")
+            name = f'{current_ns[prefix]}}}{local}'
+        else:
+            name = literal
+        if name in expanded:
+            raise ValueError("Duplicate lexical commentEx attribute")
+        local_names.append(literal.split(':')[-1])
+        expanded[name] = match.group(3).decode('utf-8', 'strict')
+        spans[name] = match
+    if (expanded != attrs or para_attr not in spans or done_attr not in spans
+            or local_names.count('paraId') != 1 or local_names.count('done') != 1):
+        raise ValueError("Ambiguous lexical commentEx attributes")
+    if expanded[para_attr] != para_id or expanded[done_attr] not in ('0', '1'):
+        raise ValueError("Unexpected lexical commentEx value")
+    value_span = spans[done_attr]
+    before = value_span.group(3)
+    after = b'1' if resolved else b'0'
+    if before == after:
+        return None
+    left, right = offset + value_span.start(3), offset + value_span.end(3)
+    changed = source[:left] + after + source[right:]
+    check = expat.ParserCreate(namespace_separator='}')
+    check.Parse(changed, True)
+    if (len(changed) != len(source) or changed[:left] != source[:left]
+            or changed[right:] != source[right:]):
+        raise ValueError("Existing comment edit changed unrelated extension bytes")
+    return changed
+
+
 def _qname_attr(element, *attr_names: str) -> str | None:
     for name in attr_names:
         if name in element.attrib and element.attrib[name] is not None:
@@ -762,17 +907,31 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
 
         try:
             with zipfile.ZipFile(resolved_path, 'r') as zf_in:
-                parts = {name: zf_in.read(name) for name in zf_in.namelist()}
+                names = zf_in.namelist()
+                if len(names) != len(set(names)):
+                    raise ValueError("Duplicate comment package members")
+                parts = {name: zf_in.read(name) for name in names}
 
             if 'word/comments.xml' not in parts:
                 return {"error": "No comments.xml found in document"}
 
-            comments_root = etree.fromstring(parts['word/comments.xml'])
+            existing_extension = 'word/commentsExtended.xml' in parts
+            if existing_extension:
+                # Existing metadata is a separate fail-closed lexical profile. The
+                # legacy authoring path below may still create an absent extension.
+                for name in ('word/comments.xml', 'word/commentsIds.xml', 'word/commentsExtended.xml'):
+                    if name in parts and (b'<!' in parts[name] or b'&' in parts[name]):
+                        raise ValueError(f"Unsafe comment XML markup in {name}")
+            parser = etree.XMLParser(resolve_entities=False, load_dtd=False, no_network=True)
+            comments_root = etree.fromstring(parts['word/comments.xml'], parser)
             comments_ids_bytes = parts.get('word/commentsIds.xml')
+            if existing_extension and comments_ids_bytes:
+                etree.fromstring(comments_ids_bytes,
+                                 etree.XMLParser(resolve_entities=False, load_dtd=False, no_network=True))
             comments_ex_root = (
-                etree.fromstring(parts['word/commentsExtended.xml'])
-                if 'word/commentsExtended.xml' in parts
-                else None
+                etree.fromstring(parts['word/commentsExtended.xml'],
+                                 etree.XMLParser(resolve_entities=False, load_dtd=False, no_network=True))
+                if existing_extension else None
             )
 
             comments = self._word_collect_comment_records(
@@ -786,6 +945,18 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
                 for comment in comments
                 if comment.get('id') is not None
             }
+            if existing_extension:
+                ids = [str(comment.get('id')) for comment in comments]
+                para_ids = [str(comment['para_id']) for comment in comments if comment.get('para_id')]
+                if (len(ids) != len(set(ids)) or not all(ids)
+                        or len(para_ids) != len(set(para_ids))):
+                    raise ValueError("Ambiguous existing comment ID or paragraph ID")
+                para_set = set(para_ids)
+                for node in comments_ex_root.findall(f'{{{W15_NS}}}commentEx'):
+                    if (node.get(f'{{{W15_NS}}}paraId') not in para_set
+                            or (node.get(f'{{{W15_NS}}}paraIdParent') is not None
+                                and node.get(f'{{{W15_NS}}}paraIdParent') not in para_set)):
+                        raise ValueError("Existing comment extension references an unknown paragraph")
 
             if target_comment_id not in comments_by_id:
                 valid_ids = sorted(comments_by_id.keys(), key=lambda x: (0, int(x)) if x.isdigit() else (1, x))
@@ -800,12 +971,41 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
             while root_comment_id in comments_by_id and root_comment_id not in seen:
                 seen.add(root_comment_id)
                 parent_id = comments_by_id[root_comment_id].get('parent_id')
-                if not parent_id or str(parent_id) not in comments_by_id:
+                if not parent_id:
+                    break
+                if str(parent_id) not in comments_by_id:
+                    if existing_extension:
+                        raise ValueError("Existing comment parent is missing")
                     break
                 root_comment_id = str(parent_id)
+            if existing_extension and root_comment_id in seen and comments_by_id[root_comment_id].get('parent_id'):
+                raise ValueError("Existing comment parent cycle")
 
             root_comment = comments_by_id.get(root_comment_id)
             root_para_id = root_comment.get('para_id') if root_comment else None
+            if existing_extension:
+                if not root_para_id:
+                    raise ValueError("Existing comment root has no paragraph ID")
+                root_nodes = [node for node in comments_root.findall(f'.//{{{W_NS}}}comment')
+                              if node.get(f'{{{W_NS}}}id') == root_comment_id]
+                if len(root_nodes) != 1 or root_nodes[0].find(f'{{{W_NS}}}p') is None or (
+                    root_nodes[0].find(f'{{{W_NS}}}p').get(f'{{{W14_NS}}}paraId') != root_para_id
+                ):
+                    raise ValueError("Existing comment root paragraph ID is missing or ambiguous")
+                changed = _splice_existing_comment_done(parts['word/commentsExtended.xml'],
+                                                        str(root_para_id), bool(resolved))
+                if changed is None:
+                    # Do not rewrite an already matching archive, even when the
+                    # original extension has noncanonical quotes or CRLF.
+                    return {
+                        "success": True, "file": output_path or resolved_path,
+                        "unchanged": True,
+                        "comment_id": target_comment_id,
+                        "thread_root_comment_id": root_comment_id,
+                        "resolved": bool(resolved), "done": bool(resolved),
+                        "message": "Comment resolution state already set",
+                    }
+                parts['word/commentsExtended.xml'] = changed
             if not root_para_id:
                 # Legacy docs may omit w14:paraId. Synthesize one on the root comment
                 # so resolution metadata can be attached and future lookups are stable.
@@ -849,44 +1049,26 @@ The project is **on track** for Q4 delivery with ~~no~~ minor delays.
                     standalone='yes',
                 )
 
-            created_comments_extended = False
-            if comments_ex_root is None:
+            if not existing_extension:
                 comments_ex_root = etree.Element(f'{{{W15_NS}}}commentsEx', nsmap={'w15': W15_NS})
-                created_comments_extended = True
-
-            para_attr = f'{{{W15_NS}}}paraId'
-            done_attr = f'{{{W15_NS}}}done'
-            entry = None
-            for node in comments_ex_root.findall(f'.//{{{W15_NS}}}commentEx'):
-                if node.get(para_attr) == str(root_para_id):
-                    entry = node
-                    break
-
-            if entry is None:
                 entry = etree.SubElement(comments_ex_root, f'{{{W15_NS}}}commentEx')
-                entry.set(para_attr, str(root_para_id))
-
-            entry.set(done_attr, '1' if resolved else '0')
-
-            parts['word/commentsExtended.xml'] = etree.tostring(
-                comments_ex_root,
-                xml_declaration=True,
-                encoding='UTF-8',
-                standalone='yes',
-            )
-
-            if created_comments_extended:
+                entry.set(f'{{{W15_NS}}}paraId', str(root_para_id))
+                entry.set(f'{{{W15_NS}}}done', '1' if resolved else '0')
+                parts['word/commentsExtended.xml'] = etree.tostring(
+                    comments_ex_root, xml_declaration=True, encoding='UTF-8', standalone='yes',
+                )
                 _ensure_comments_extended_package_bits(parts, etree)
 
-            with tempfile.NamedTemporaryFile(delete=False, suffix='.docx') as tmp:
-                tmp_path = tmp.name
-
-            with zipfile.ZipFile(tmp_path, 'w', zipfile.ZIP_DEFLATED) as zf_out:
-                for name, blob in parts.items():
-                    zf_out.writestr(name, blob)
-
-            destination = output_path or resolved_path
-            move(tmp_path, destination)
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.docx', dir=path.parent) as tmp:
+                tmp_path = Path(tmp.name)
+            try:
+                with zipfile.ZipFile(tmp_path, 'w', zipfile.ZIP_DEFLATED) as zf_out:
+                    for name, blob in parts.items():
+                        zf_out.writestr(name, blob)
+                destination = output_path or resolved_path
+                move(str(tmp_path), destination)
+            finally:
+                tmp_path.unlink(missing_ok=True)
 
             return {
                 "success": True,
