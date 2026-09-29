@@ -1,5 +1,7 @@
 """Explicit step binding over official Gherkin pickles; no local feature copy."""
 
+import hashlib
+
 from tools.package_preservation import equivalent_xml
 
 
@@ -17,11 +19,23 @@ def test_canonical_xml_comparison(comparison_case, request):
             elif step["type"] == "Context" and text.startswith("the right XML is "):
                 pair["right"] = text.removeprefix("the right XML is ").encode("utf-8")
             elif step["type"] == "Action" and text == "the conservative XML comparator compares their UTF-8 bytes":
+                before = {side: memoryview(pair[side]).tobytes() for side in ("left", "right")}
                 pair["result"] = equivalent_xml(pair["left"], pair["right"])
                 case["observedBoolean"] = pair["result"]
+                after = {side: memoryview(pair[side]).tobytes() for side in ("left", "right")}
+                case["operandCustody"] = {
+                    f"{side}Unchanged": before[side] == after[side] for side in ("left", "right")
+                }
+                case["operandBytes"] = {
+                    side: {"beforeLength": len(before[side]), "afterLength": len(after[side]),
+                           "beforeSha256": hashlib.sha256(before[side]).hexdigest(),
+                           "afterSha256": hashlib.sha256(after[side]).hexdigest()}
+                    for side in ("left", "right")
+                }
             elif step["type"] == "Outcome" and text in {"the comparison result is true", "the comparison result is false"}:
                 assert type(pair["result"]) is bool
                 assert pair["result"] is text.endswith(" true")
+                assert case["operandCustody"] == {"leftUnchanged": True, "rightUnchanged": True}
             else:
                 raise AssertionError("Unbound canonical XML step: " + text)
             step["outcome"] = "passed"

@@ -52,11 +52,11 @@ PYTHON=.venv/bin/python bash tests/run_tests.sh \
   tests/test_package_preservation.py -q -o addopts=''
 ```
 
-The separate XML lane compiles `workflows/xml/comparison.feature` from the pinned submodule with the official Gherkin parser. Its five IDs expand to ten input pairs and 40 steps. Explicit bindings call the conservative Boolean comparator and check the exact expected result. They do not test lexical parsing, XML canonical output, signatures or Office rendering.
+The separate XML lane compiles `workflows/xml/comparison.feature` from the pinned submodule with the official Gherkin parser. Its five IDs expand to ten input pairs and 40 steps. Explicit bindings call the conservative Boolean comparator and check the exact expected result. A separate native test compares well-formed, non-OPC namespace aliases and requires `True`, so the nine negative cases cannot pass under an always-false comparator. The existing positive OPC-like Relationships row omits required `Type` attributes; its structural `True` is not evidence of valid OPC relationship semantics and that ID remains planned. They do not test lexical parsing, XML canonical output, signatures or Office rendering.
 
 The native-source mapping retains the reviewed input pairs and source hashes. Changed inputs, operation wording, expected results, missing/duplicate variants or unreviewed native implementation changes refuse before execution. Mapping starts cases at `not-run`; central consumer ledgers cannot award a local pass.
 
-`test-results/xml-comparison.json` resets before collection and records each step outcome, observed Boolean, feature/native implementation hashes, release pin, working status and a fresh run ID. Selecting only part of this lane leaves it incomplete and returns failure. The mutation report remains independent at `test-results/acceptance.json`; neither lane can overwrite the other's results. The canonical feature is read in place, with no accepted local feature copy.
+`test-results/xml-comparison.json` resets before collection and records each step outcome, observed Boolean, before/after UTF-8 operand lengths and SHA-256 values, byte-unchanged assertions for both operands in all ten canonical cases, feature/native implementation hashes, release pin, working status and a fresh run ID. Selecting only part of this lane leaves it incomplete and returns failure. The mutation report remains independent at `test-results/acceptance.json`; neither lane can overwrite the other's results. The canonical feature is read in place, with no accepted local feature copy.
 
 ## Canonical package admission and semantic diff
 
