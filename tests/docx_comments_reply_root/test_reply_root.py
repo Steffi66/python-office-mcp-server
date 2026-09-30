@@ -150,6 +150,36 @@ def test_root_target_is_distinct_from_reply_target(tmp_path):
     assert path.read_bytes() == prior
 
 
+def test_reply_selects_its_root_among_two_threads(tmp_path):
+    path = tmp_path / "two-roots.docx"
+    authoring, reader = WordAdvancedTools(), WordTools()
+    document = Document()
+    document.add_paragraph("First thread")
+    document.add_paragraph("Second thread")
+    document.save(path)
+    for target, text in [("First thread", "First root"), ("Second thread", "Second root")]:
+        response = authoring.tool_word_add_comment(str(path), target, text)
+        assert response.get("success") is True
+    roots = _comments(reader, path, 2)
+    assert [(row["text"], row["done"]) for row in roots] == [
+        ("First root", False), ("Second root", False)]
+    first_root, second_root = (str(row["id"]) for row in roots)
+    reply_response = reader.tool_word_reply_to_comment(str(path), second_root, "Second reply")
+    assert reply_response.get("success") is True
+    reply_id = str(reply_response["reply_comment_id"])
+    assert reply_id not in (first_root, second_root)
+    before = _comments(reader, path, 3)
+    assert before[2]["is_reply"] is True and str(before[2]["parent_id"]) == second_root
+    resolved = reader.tool_word_resolve_comment(str(path), reply_id, True)
+    assert resolved.get("success") is True
+    assert str(resolved.get("comment_id")) == reply_id
+    assert str(resolved.get("thread_root_comment_id")) == second_root
+    after = _comments(reader, path, 3)
+    assert [(str(row["id"]), row["done"]) for row in after] == [
+        (first_root, False), (second_root, True), (reply_id, False)]
+    assert after[2]["is_reply"] is True and str(after[2]["parent_id"]) == second_root
+
+
 def test_unknown_reply_id_does_not_publish(tmp_path):
     path = tmp_path / "missing.docx"
     authoring, reader = WordAdvancedTools(), WordTools()
