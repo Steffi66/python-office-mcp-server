@@ -76,6 +76,16 @@ def test_canonical_authored_mixed_done(mixed_done_case, tmp_path, request):
                 assert first_id != second_id
                 original_parts = _archive_parts(path)
                 assert "word/comments.xml" in original_parts
+                body = etree.fromstring(original_parts["word/document.xml"])
+                w = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+                paragraphs = body.findall(".//" + w + "body/" + w + "p")
+                targets = [p for p in paragraphs if "".join(p.itertext()) in ("Alpha target", "Beta target")]
+                assert ["".join(p.itertext()) for p in targets] == ["Alpha target", "Beta target"]
+                for target, expected_id in zip(targets, (first_id, second_id)):
+                    starts = target.findall(".//" + w + "commentRangeStart")
+                    ends = target.findall(".//" + w + "commentRangeEnd")
+                    assert [n.get(w + "id") for n in starts] == [expected_id]
+                    assert [n.get(w + "id") for n in ends] == [expected_id]
                 case["returnedOrder"] = [first_id, second_id]
             elif index == 3:
                 resolved = reader.tool_word_resolve_comment(str(path), first_id, True)
