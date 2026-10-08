@@ -79,6 +79,8 @@ def staged_writer(function=None, *, source_argument="file_path", read_operations
             data = values.get("data")
             nested_output = data.get("output_path") if isinstance(data, dict) else None
             output = values.get("output_path") or nested_output
+            if output:
+                output = str(Path(resolve_office_path(output)).resolve())
             if mode == "safe" and (not output or Path(output).resolve() == Path(source)):
                 return {"success": False, "mode": mode, "status": "failed", "error": "safe mode requires a distinct output_path", "changes_applied": 0}
 

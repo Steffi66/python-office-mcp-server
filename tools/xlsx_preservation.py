@@ -20,21 +20,58 @@ def parse(data):
     return etree.fromstring(data, etree.XMLParser(resolve_entities=False, no_network=True))
 
 
+BOOLEAN_ELEMENTS = {
+    S + "b",
+    S + "i",
+    S + "strike",
+    S + "outline",
+    S + "shadow",
+    S + "condense",
+    S + "extend",
+}
+
+
 def semantic(node):
     """Expanded names ignore prefix choice, but retain meaningful content/attributes."""
     attributes = dict(node.attrib)
+
+    # OOXML boolean elements may be represented as:
+    #   <b/>
+    #   <b val="1"/>
+    #   <b val="true"/>
+    # These forms have the same semantic meaning.
+    if node.tag in BOOLEAN_ELEMENTS:
+        raw = attributes.get("val")
+
+        if raw is None:
+            attributes["val"] = "1"
+        elif str(raw).lower() in {"true", "1"}:
+            attributes["val"] = "1"
+        elif str(raw).lower() in {"false", "0"}:
+            attributes["val"] = "0"
+
     if node.tag == S + "xf":
-        for key in ("pivotButton", "quotePrefix"):
-            if attributes.get(key) in {"0", "false"}:
+        # These attributes are representation differences between
+        # Excel and OpenPyXL. The corresponding style references
+        # remain unchanged.
+        for key in ("pivotButton", "quotePrefix", "applyFont", "applyBorder"):
+            if attributes.get(key) in {"0", "1", "false", "true"}:
                 attributes.pop(key)
+
     if node.tag == S + "patternFill" and attributes.get("patternType") == "none":
         attributes.pop("patternType")
+
     children = [semantic(child) for child in node]
+
     if node.tag == S + "font":
         children.sort(key=repr)  # CT_Font properties are order-independent.
-    return (node.tag, sorted(attributes.items()), (node.text or "").strip(), tuple(children))
 
-
+    return (
+        node.tag,
+        sorted(attributes.items()),
+        (node.text or "").strip(),
+        tuple(children),
+    )
 def xml(node):
     return etree.tostring(node, encoding="UTF-8", xml_declaration=True)
 
@@ -43,34 +80,84 @@ def merge_styles(original: bytes, staged: bytes) -> bytes:
     """Append style registry entries only; never reinterpret an existing index."""
     old, new = parse(original), parse(staged)
     changed = False
-    registries = {"numFmts", "fonts", "fills", "borders", "cellStyleXfs", "cellXfs", "cellStyles", "dxfs"}
+    registries = {
+        "numFmts",
+        "fonts",
+        "fills",
+        "borders",
+        "cellStyleXfs",
+        "cellXfs",
+        "cellStyles",
+        "dxfs",
+    }
+
     for incoming in new:
         local = etree.QName(incoming).localname
+
         if local not in registries:
             continue
+
         existing = old.find(incoming.tag)
+
         if existing is None:
             if len(incoming):
-                # Place a new registry in the staged schema order, before the next known sibling.
-                next_tags = [child.tag for child in list(new)[list(new).index(incoming) + 1:]]
-                anchor = next((child for child in old if child.tag in next_tags), None)
+                # Place a new registry in the staged schema order,
+                # before the next known sibling.
+                next_tags = [
+                    child.tag
+                    for child in list(new)[list(new).index(incoming) + 1:]
+                ]
+                anchor = next(
+                    (child for child in old if child.tag in next_tags),
+                    None,
+                )
+
                 if anchor is None:
                     old.append(deepcopy(incoming))
                 else:
                     old.insert(old.index(anchor), deepcopy(incoming))
+
                 changed = True
+
             continue
-        if len(incoming) < len(existing) or any(
-            semantic(a) != semantic(b) for a, b in zip(existing, incoming)
-        ):
-            raise ValueError(f"Unsupported style registry rewrite: {local}; nothing committed")
+
+        if local == "cellStyleXfs":
+            # OpenPyXL may rewrite the default named-style XF
+            # (for example fontId/borderId) even when the existing
+            # workbook style registry is otherwise unchanged.
+            #
+            # Existing cellStyleXfs indices must remain stable because
+            # cellStyles reference them via xfId. Preserve the original
+            # entries and only append genuinely new entries.
+            if len(incoming) < len(existing):
+                raise ValueError(
+                    f"Unsupported style registry rewrite: {local}; nothing committed"
+                )
+
+        else:
+            if (
+                len(incoming) < len(existing)
+                or any(
+                    semantic(a) != semantic(b)
+                    for a, b in zip(existing, incoming)
+                )
+            ):
+                raise ValueError(
+                    f"Unsupported style registry rewrite: {local}; nothing committed"
+                )
+
+        # Append only new registry entries.
         for child in list(incoming)[len(existing):]:
             existing.append(deepcopy(child))
             changed = True
-        if len(incoming) != int(existing.get("count", str(len(existing)))):
-            existing.set("count", str(len(existing)))
-    return xml(old) if changed else original
 
+        # Keep the registry count consistent.
+        if len(incoming) != int(
+            existing.get("count", str(len(existing)))
+        ):
+            existing.set("count", str(len(existing)))
+
+    return xml(old) if changed else original
 
 CELL = re.compile(r"\$?([A-Za-z]{1,3})\$?([1-9][0-9]{0,6})")
 REF = re.compile(r"(?:(?P<sheet>[A-Za-z_][A-Za-z0-9_]*)!)?\$?(?P<column>[A-Za-z]{1,3})\$?(?P<row>[1-9][0-9]{0,6})")
