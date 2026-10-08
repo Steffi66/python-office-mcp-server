@@ -19,6 +19,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal
+from .save_utils import resolve_office_path
 
 try:
     from openpyxl import load_workbook
@@ -392,7 +393,9 @@ class ExcelAdvancedTools:
         if not HAS_OPENPYXL:
             return {"error": "openpyxl not installed. Run: pip install openpyxl"}
 
+        file_path = resolve_office_path(file_path)
         path = Path(file_path)
+
         if not path.exists():
             return {"error": f"File not found: {file_path}"}
 

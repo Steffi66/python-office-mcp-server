@@ -50,6 +50,17 @@ def semantic(node):
         elif str(raw).lower() in {"false", "0"}:
             attributes["val"] = "0"
 
+    if node.tag == S + "cellStyle":
+        # OpenPyXL drops the Office revision UID when rewriting
+        # cellStyles. This is metadata only and does not change
+        # the referenced style.
+        attributes = {
+            key: value
+            for key, value in attributes.items()
+            if not key.startswith(
+                "{http://schemas.microsoft.com/office/2014/revision}"
+            )
+        }
     if node.tag == S + "xf":
         # These attributes are representation differences between
         # Excel and OpenPyXL. The corresponding style references
@@ -121,7 +132,7 @@ def merge_styles(original: bytes, staged: bytes) -> bytes:
 
             continue
 
-        if local == "cellStyleXfs":
+        if local in {"fills", "cellStyleXfs", "cellStyles"}:
             # OpenPyXL may rewrite the default named-style XF
             # (for example fontId/borderId) even when the existing
             # workbook style registry is otherwise unchanged.
@@ -374,11 +385,15 @@ def repair_dependencies(source: ZipFile, staged: ZipFile, replacements: dict[str
         raise ValueError("Unsupported formula cache policy")
     dependent = (_dependent_formula_cells(source, sheet_map or {}, edited_cells or set())
                  if cache_policy == "invalidate-dependent-formula-caches" else None)
-    original_styles = source.read("xl/styles.xml")
-    styles = merge_styles(original_styles, staged.read("xl/styles.xml"))
-    if styles != original_styles:
-        replacements["xl/styles.xml"] = styles
+
+    # Keep the original style registry unchanged.
+    #
+    # OpenPyXL may heavily rewrite styles.xml even when only cell
+    # values were changed. Existing worksheet style indices must
+    # remain valid, so the original styles.xml is authoritative.
+    styles = source.read("xl/styles.xml")
     style_count = len(parse(styles).find(S + "cellXfs"))
+
     formulas = False
     reverse_sheets = {path: sheet for sheet, path in (sheet_map or {}).items()}
     for name in sorted(sheet_paths):

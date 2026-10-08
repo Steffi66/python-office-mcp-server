@@ -120,7 +120,6 @@ def _dedupe_zip_entries(zip_path: str) -> None:
             if os.path.exists(tmp_path):
                 os.unlink(tmp_path)
 
-
 def resolve_office_path(file_path: str) -> str:
     """Resolve a file path against common workspace roots.
 
@@ -128,25 +127,34 @@ def resolve_office_path(file_path: str) -> str:
     1. Path as provided (absolute or cwd-relative)
     2. MCP and CI workspace roots from environment variables
     3. Repository root inferred from this module location
-    4. Inferred repo_root/workspace sandbox path
+    4. Current working directory
+
+    Existing files are resolved by checking the complete path.
+    Non-existing files are resolved when their parent directory exists
+    below an explicit workspace root. This is required for output paths
+    that will be created by a writer.
 
     Returns:
-        First existing path, otherwise original file_path
+        Resolved path when a matching file or parent directory exists,
+        otherwise the original file_path.
     """
     p = Path(file_path)
     if p.exists():
         return str(p)
 
     candidate_roots: list[Path] = []
+
+    # Explicit workspace roots take precedence. This is important for
+    # containerized deployments where documents live outside the
+    # application source tree.
     for env_var in ("MCP_WORKSPACE_ROOT", "GITHUB_WORKSPACE", "WORKSPACE_FOLDER"):
         raw = os.environ.get(env_var)
         if raw:
             candidate_roots.append(Path(raw))
 
-    repo_root = Path(__file__).resolve().parents[3]
-    candidate_roots.extend([repo_root, repo_root / "workspace", Path.cwd()])
-
     seen: set[str] = set()
+
+    # First check complete paths for existing files.
     for root in candidate_roots:
         root_str = str(root)
         if root_str in seen:
@@ -157,8 +165,43 @@ def resolve_office_path(file_path: str) -> str:
         if candidate.exists():
             return str(candidate)
 
-    return file_path
+    # For output paths that do not exist yet, resolve them against a
+    # workspace root when the parent directory already exists.
+    for root in candidate_roots:
+        candidate = root / file_path
+        if candidate.parent.exists():
+            return str(candidate)
 
+    # Infer repository roots only when the installation layout provides
+    # enough parent levels. In a Docker installation such as
+    # /app/tools/save_utils.py, parents[3] does not exist.
+    module_parents = Path(__file__).resolve().parents
+    if len(module_parents) > 3:
+        repo_root = module_parents[3]
+        candidate_roots.extend([
+            repo_root,
+            repo_root / "workspace",
+        ])
+
+    # Check inferred roots for existing files.
+    for root in candidate_roots:
+        root_str = str(root)
+        if root_str in seen:
+            continue
+        seen.add(root_str)
+
+        candidate = root / file_path
+        if candidate.exists():
+            return str(candidate)
+
+    # Check inferred roots for non-existing output paths.
+    for root in candidate_roots:
+        candidate = root / file_path
+        if candidate.parent.exists():
+            return str(candidate)
+
+    # Current working directory is the final fallback.
+    return file_path
 
 def open_pptx_with_retries(file_path: str, retries: int = 2, retry_delay: float = 0.2) -> tuple[Any | None, str, str | None]:
     """Open a PowerPoint file with retries and diagnostics.

@@ -92,6 +92,26 @@ def test_existing_custom_style_indices_remain_valid(tmp_path):
         wb.close()
 
 
+def test_original_styles_xml_is_preserved_for_cell_edit(tmp_path):
+    source = tmp_path / "source.xlsx"
+    output = tmp_path / "out.xlsx"
+    shutil.copy2(shared_fixture("default-style.xlsx"), source)
+
+    before = parts(source)
+
+    result = OfficeServer().tool_office_patch(
+        str(source),
+        [{"target": "A1", "value": "changed"}],
+        mode="safe",
+        output_path=str(output),
+    )
+
+    assert result["changes_applied"] == 1, result
+
+    after = parts(output)
+
+    assert after["xl/styles.xml"] == before["xl/styles.xml"]
+
 def test_style_reindexing_is_refused():
     original = f'<styleSheet xmlns="{S[1:-1]}"><cellXfs count="1"><xf fontId="0"/></cellXfs></styleSheet>'.encode()
     rewritten = original.replace(b'fontId="0"', b'fontId="1"')
